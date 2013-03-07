@@ -1,0 +1,76 @@
+/*! \mainpage Wheel Core Library
+
+Wheel is a free, modular cross-platform library to handle all sorts
+of usual and routine tasks that are annoying to otherwise implement.
+The core library consists of a string, module loader, network and
+resource manager classes and components that are needed to work
+with them.
+
+The library can be extended by modules, that can then be used
+by the module loader.  The modules themselves are simply
+precompiled shared objects (or dlls in windows).
+
+The library is designed to work with Android, Linux and Windows
+OS's, OS X should work as well, but is untested.  The core
+library depends only on <A href="http://icculus.org/physfs/">physfs</A>, 
+which can be statically compiled into the library if required.
+
+This manual is divided in the following sections:
+- \subpage intro
+- \subpage coremodules
+- \subpage creatingmodules "Creating new modules"
+*/
+
+//-----------------------------------------------------------
+
+/*! \page intro Introduction
+   Wheel is free multi-platform library written in C++11 for
+   handling various common tasks that can prove to be painfully
+   annoying to write from the scratch -- and that feel they
+   really shouldn't be written from scratch anyways.  The core
+   library itself is open-source, as are the modules provided
+   with the main Wheel package.  Any additional packages can be
+   either closed-source or open source as their developers intended.
+   The main intention of the Wheel library is to allow unified,
+   clear API for handling multiple tasks required by various
+   programs.  While Wheel is (mostly) intended for developing
+   indie games, there should be nothing that prevents its use
+   elsewhere.
+
+   The library can also be used to abstract different parts of
+   the program to have more unified API of your own.  The modular
+   loading means that you pay only for the modules you want.
+
+   There are four built-in components that are always on.
+   The string, resource manager, network and module loader classes.
+   These modules have internal dependencies on each other by
+   intentional design-choice.  Other modules are also free
+   to use these components as they will.
+*/
+
+//-----------------------------------------------------------
+
+/*! \page coremodules The core modules
+   - \subpage strings
+   - \subpage resourceman
+   - \subpage moduleloader
+   - \subpage network
+*/
+/*! \page strings Core String Module
+*/
+
+/*! \page resourceman Core Resource Manager module
+*/
+
+/*! \page moduleloader Core String Module
+*/
+
+/*! \page network Core Network Module
+*/
+
+//-----------------------------------------------------------
+
+/*! \page creatingmodules How to create new modules for the library
+This page is for advanced users.
+Make sure you have first read \ref intro "the introduction".
+*/
