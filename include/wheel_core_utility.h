@@ -6,6 +6,8 @@
 #ifndef WHEEL_UTILITY_HEADER
 #define WHEEL_UTILITY_HEADER
 
+#include "wheel_core_common.h"
+
 #include <cstdint>
 /*
 namespace wheel

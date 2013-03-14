@@ -6,6 +6,8 @@
 #ifndef WHEEL_STRING_HEADER
 #define WHEEL_STRING_HEADER
 
+#include "wheel_core_common.h"
+
 #include <cstdint>
 #include <vector>
 #include <string>

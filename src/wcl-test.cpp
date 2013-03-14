@@ -1,11 +1,21 @@
 #include <iostream>
 
-#include "../include/wheel_core_string.h"
-#include "../include/wheel_core_resourcemanager.h"
-#include "../include/wheel_core_module.h"
+#include "../include/wheel_core.h"
 
-int main(void)
+namespace wheel
 {
+   namespace core
+   {
+      extern uint32_t _internal_flags;
+   }
+}
+
+int main(int argc, char* argv[])
+{
+   wcl::initialise(argc, argv);
+
+   std::cout << wcl::_internal_flags << "\n\n";
+
    std::cout << "String unit tests" << "\n";
    wcl::string s1, s2, s3;
    s1 = U"ÄÄK!";

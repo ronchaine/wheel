@@ -5,3 +5,10 @@
 
 #include "../include/wheel_core_module.h"
 
+namespace wheel
+{
+   namespace core
+   {
+      
+   }
+}

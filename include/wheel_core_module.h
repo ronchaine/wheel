@@ -6,12 +6,23 @@
 #ifndef WHEEL_MODULE_HEADER
 #define WHEEL_MODULE_HEADER
 
-#include "../include/wheel_core_string.h"
+#include "wheel_core_common.h"
+#include "wheel_core_string.h"
 
 // FIXME: dlfcn is UNIX-specific, windows uses something different.
 //        This should work with MingW32 though.
 #include <dlfcn.h>
 #include <unordered_map>
+
+namespace wheel
+{
+   namespace video
+   {
+      class Renderer
+      {
+      };
+   }
+}
 
 namespace wheel
 {
@@ -39,8 +50,8 @@ namespace wheel
 
             std::unordered_map<string, void*> functionmap;
 
-            uint32_t register_module();
-            uint32_t remove_module();
+            virtual uint32_t register_module() = 0;
+            virtual uint32_t remove_module() = 0;
       };
 
       /*!
@@ -49,6 +60,8 @@ namespace wheel
       class ModuleLibrary
       {
          private:
+            std::vector<string> searchpath;
+
          public:
             std::unordered_map<string, Module*> module;
 

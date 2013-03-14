@@ -1,6 +1,7 @@
 /*!
    @file
    \brief Contains definitions for the resourcemanager class.
+   \author Jari Ronkainen
 */
 
 #ifndef WHEEL_RESOURCEMANAGER_HEADER
@@ -9,6 +10,10 @@
 #include <unordered_map>
 #include <physfs.h>
 
+#define W_PHYSFS_BEGIN           0
+#define W_PHYSFS_END             1
+
+#include "wheel_core_common.h"
 #include "wheel_core_string.h"
 
 namespace wheel
@@ -34,6 +39,7 @@ namespace wheel
                free(data);
          }
       };
+
       //! A collection of resources
       /*!
          Handles loading resources into memory.
@@ -41,8 +47,28 @@ namespace wheel
       class ResourceManager
       {
          private:
+            static uint32_t resourcemanager_count;
+
+            std::unordered_map<string, buffer_t>      library;
+            std::unordered_map<string, PHYSFS_file*>  files;
+
          public:
-            std::unordered_map<string, buffer_t>   library;
+            buffer_t*      BufferFile(const string& file);
+            void           FreeFile(const string& file);
+
+            buffer_t*      RetrieveBuffer(const string& file);
+            size_t         BufferedSize(const string& file);
+
+            uint32_t       AddResource(const string& file);
+            uint32_t       RemoveResource(const string& file);
+
+            uint32_t       OpenFile(const string& file);
+            uint32_t       Close(const string& file);
+
+            PHYSFS_file*   GetHandle(const string& file);
+
+            ResourceManager();
+           ~ResourceManager();
       };
    }
 }
