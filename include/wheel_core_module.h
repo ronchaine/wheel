@@ -45,6 +45,8 @@ namespace wheel
       class Module
       {
          public:
+            void* handle;
+
             virtual ~Module() {}
             virtual void ModInfo(modinfo_t&) = 0;
 
@@ -59,14 +61,16 @@ namespace wheel
       {
          private:
             std::vector<string> searchpath;
+            std::unordered_map<string, Module*> modules;
 
          public:
-            std::unordered_map<string, Module*> module;
 
-            int32_t Add(string file);
-            int32_t Remove(string file);
+            uint32_t Add(const string& file);
+            uint32_t Remove(const string& ident);
 
-            string List(string type);
+            string List(const string& type);
+
+            Module* operator[](const string& ident);
 
             ModuleLibrary();
            ~ModuleLibrary();

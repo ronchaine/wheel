@@ -150,7 +150,7 @@ namespace utf8
         octet_iterator end = it;
         while (utf8::internal::is_trail(*(--it)))
             if (it == pass_start)
-                throw invalid_utf8(*it); // error - no lead byte in the sequence
+                assert("throw invalid_utf8(*it); // error - no lead byte in the sequence" && 0);
         octet_iterator temp = it;
         return utf8::next(temp, end);
     }
