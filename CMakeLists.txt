@@ -11,7 +11,8 @@ set(WHEEL_VERSION "${WHEEL_VERSION_MAJOR}.${WHEEL_VERSION_MINOR}.${WHEEL_VERSION
 
 set(WHEEL_LIB_NAME wheel)
 
-option (WHEEL_BUILD_MODULES "Build the basic modules" OFF)
+option (WHEEL_BUILD_MODULES "Build the basic modules" ON)
+option (WHEEL_BUILD_EXAMPLES "Build the example programs" ON)
 
 #--------------------------------------------------------------
 # Add subdirectories
@@ -21,4 +22,7 @@ add_subdirectory(src)
 
 if (WHEEL_BUILD_MODULES)
   add_subdirectory(src/modules)
+endif()
+if (WHEEL_BUILD_EXAMPLES)
+  add_subdirectory(examples)
 endif()

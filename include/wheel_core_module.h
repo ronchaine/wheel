@@ -48,10 +48,8 @@ namespace wheel
             virtual ~Module() {}
             virtual void ModInfo(modinfo_t&) = 0;
 
-            std::unordered_map<string, void*> functionmap;
-
-            virtual uint32_t register_module() = 0;
-            virtual uint32_t remove_module() = 0;
+            virtual uint32_t register_module();
+            virtual uint32_t remove_module();
       };
 
       /*!
