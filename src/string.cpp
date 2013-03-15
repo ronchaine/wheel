@@ -297,6 +297,15 @@ namespace wheel
 
          return true;
       }
+
+      //! Conversion to const char*
+      /*!
+         Converts string to const char*  (same as using c_str())
+      */
+      string::operator const char*()
+      {
+         return this->c_str();
+      }
    }
 }
 
