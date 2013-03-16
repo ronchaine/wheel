@@ -4,13 +4,25 @@
 */
 
 #include "sdl-opengl.h"
+#include <iostream>
 
 extern "C" {
+   wheel::core::Module* register_module()
+   {
+      return new wheel::video::SDLRenderer;
+   }
+
+   void remove_module(wheel::core::Module* mod)
+   {
+      delete mod;
+   }
+}
+
 namespace wheel
 {
    namespace video
    {
-      void ModInfo(core::modinfo_t* info)
+      void SDLRenderer::get_module_info(core::modinfo_t* info)
       {
          info->type = "VIDEO";
          info->name = "SDL2_VIDEO";
@@ -19,4 +31,3 @@ namespace wheel
       }
    }
 }
-} // extern "C"

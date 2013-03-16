@@ -15,7 +15,7 @@ namespace wheel
       class SDLRenderer : public wheel::core::Module, public Renderer
       {
          public:
-            void ModInfo(core::modinfo_t &info);
+            void get_module_info(core::modinfo_t* info);
       };     
    }
 }
