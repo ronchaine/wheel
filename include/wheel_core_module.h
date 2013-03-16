@@ -1,6 +1,7 @@
 /*!
    @file
    \brief Contains definitions for everything needed to load external modules
+   \author Jari Ronkainen
 */
 
 #ifndef WHEEL_MODULE_HEADER
@@ -45,13 +46,13 @@ namespace wheel
       class Module
       {
          public:
-            void* handle;
+            void* library_handle;
 
             virtual ~Module() {}
-            virtual void ModInfo(modinfo_t&) = 0;
+            virtual void get_module_info(modinfo_t*) = 0;
 
-            virtual uint32_t register_module();
-            virtual uint32_t remove_module();
+//            virtual uint32_t register_module();
+//            virtual uint32_t remove_module();
       };
 
       /*!
@@ -67,6 +68,8 @@ namespace wheel
 
             uint32_t Add(const string& file);
             uint32_t Remove(const string& ident);
+
+            void PrintAll();
 
             string List(const string& type);
 
