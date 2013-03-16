@@ -19,12 +19,14 @@ namespace wheel
          template<typename T>
          friend wheel::core::Log& operator<<(wheel::core::Log& output, const T& stream)
          {
-            if (output.out_to_stdout())
-            {
-               std::cout << stream;
-            } else {
-               wheel::core::Log::out << stream;
-            }
+            #ifndef WHEEL_NO_DEBUG
+               if (output.out_to_stdout())
+               {
+                  std::cout << stream;
+               } else {
+                  wheel::core::Log::out << stream;
+               }
+            #endif
             return output;
          }
 
