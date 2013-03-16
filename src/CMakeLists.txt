@@ -8,11 +8,13 @@ set(COMMON_SOURCES core.cpp module.cpp string.cpp resourcemanager.cpp
 set(WHEEL_SOURCES ${COMMON_SOURCES})
 set(WHEEL_HEADERS ${COMMON_HEADERS})
 
+set(WHEEL_LIBRARIES_UNIX dl)
+
 find_package(PhysFS)
 
-set(WHEEL_LIBRARIES ${PHYSFS_LIBRARY})
+set(WHEEL_LIBRARIES ${PHYSFS_LIBRARY} ${WHEEL_LIBRARIES_UNIX})
 
-set(CMAKE_CXX_FLAGS "--std=c++11 -fno-exceptions -fno-rtti -O3 -fPIC")
+set(CMAKE_CXX_FLAGS "--std=c++11 -fno-exceptions -fno-rtti -O3 -fPIC -g")
 
 add_library(wheel_core SHARED ${WHEEL_SOURCES} ${WHEEL_HEADERS})
 add_library(wheel_core_static STATIC ${WHEEL_SOURCES} ${WHEEL_HEADERS})
