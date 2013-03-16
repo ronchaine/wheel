@@ -28,6 +28,8 @@ namespace wheel
          info->name = "SDL2_VIDEO";
          info->version = "0.1-git";
          info->description = "Wheel reference renderer based on SDL2.0 and OpenGL";
+
+         info->wheel_required_version = "any";
       }
    }
 }

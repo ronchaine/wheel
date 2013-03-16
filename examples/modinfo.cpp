@@ -1,7 +1,5 @@
 #include "../include/wheel_core.h"
 
-#include <iostream>
-
 int main(int argc, char* argv[])
 {
    if (argc != 2)
@@ -29,15 +27,9 @@ int main(int argc, char* argv[])
 
    testlib[argv[1]]->get_module_info(&modinfo);
 
-   std::cout << "---------------------\n";
-   std::cout << "Module information\n" ;
-   std::cout << "---------------------\n";
-   std::cout << "Name:" << modinfo.name << "\n";
-   std::cout << "Version:" << modinfo.version << "\n";
-   std::cout << "Type:" << modinfo.type << "\n";
-   std::cout << "Description:" << modinfo.description << "\n";
-
-   std::cout << "\n";
+   wheel::core::log.open("out.log");
+   wheel::core::log << modinfo << "\n";
+   wheel::core::log.close();
 
    wcl::terminate();
 }
