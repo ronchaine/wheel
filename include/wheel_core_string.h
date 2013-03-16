@@ -55,6 +55,7 @@ namespace wheel
 
             // Operator overloads
             string& operator=(string&& other);
+            string& operator=(const string& other);
             string operator+(const string& other) const;
             bool operator==(const string& other) const;
 
@@ -68,7 +69,7 @@ namespace wheel
             const char* c_str() const;
 
             // Returns std string
-            const std::string std_str();
+            const std::string std_str() const;
 
             // Return unsigned integer
             uint32_t to_uint32();
@@ -101,6 +102,8 @@ namespace std {
                                      __s.length() * sizeof(char32_t)); }
     };
 }
+
+std::ostream& operator<<(std::ostream& out, const wheel::core::string& str);
 
 #ifndef WHEEL_NAMESPACE_CORE_ALIASES_DEFINED
 #define WHEEL_NAMESPACE_CORE_ALIASES_DEFINED

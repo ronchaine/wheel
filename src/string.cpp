@@ -153,7 +153,7 @@ namespace wheel
          Returns data converted from internal UTF-32 format to
          an UTF-8 encoded std::string.
       */
-      const std::string string::std_str()
+      const std::string string::std_str() const
       {
          std::string result;
          utf8::utf32to8(data.begin(), data.end(), std::back_inserter(result));
@@ -232,6 +232,20 @@ namespace wheel
          }
 
          return false;
+      }
+
+      //! Copy assignment operator
+      /*!
+      */
+      string& string::operator=(const string& other)
+      {
+         if (this != &other)
+            return *this;
+
+         data.resize(other.data.size());
+         memcpy(&data[0], &other.data[0], other.data.size() * sizeof(char32_t));
+
+         return *this;
       }
 
       //! Move assignment operator
@@ -313,7 +327,7 @@ namespace wheel
    \related string
    \brief Allows wcl strings to work with ostreams (i.e. cout)
 */
-std::ostream& operator<<(std::ostream& out, wcl::string& str)
+std::ostream& operator<<(std::ostream& out, const wcl::string& str)
 {
    out << str.std_str();
    return out;
