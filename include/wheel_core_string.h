@@ -59,8 +59,11 @@ namespace wheel
             string operator+(const string& other) const;
             bool operator==(const string& other) const;
 
+            bool operator<(const string& other) const;
+            bool operator>(const string& other) const;
+
             // Conversion operators
-            operator const char*();
+//            operator const char*();
 
             // Get pointer to the string
             const char32_t* getptr() const;

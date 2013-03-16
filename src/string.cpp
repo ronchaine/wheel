@@ -28,10 +28,8 @@ namespace wheel
       //! Default copy constructor.
       string::string(const string& other)
       {
-         data.reserve(other.data.size());
-
-         for (size_t i = 0; i < other.data.size(); ++i)
-            data[i] = other.data[i];
+         // Use the assignment operator overload
+         *this = other;
       }
 
       //! Default move constructor.
@@ -239,7 +237,7 @@ namespace wheel
       */
       string& string::operator=(const string& other)
       {
-         if (this != &other)
+         if (this == &other)
             return *this;
 
          data.resize(other.data.size());
@@ -312,14 +310,37 @@ namespace wheel
          return true;
       }
 
+      //! Comparison, before
+      /*!
+         Compares the two strings by their ASCII value.
+      */
+      bool string::operator<(const string& other) const
+      {
+         for (size_t i = 0; i < std::min(length(), other.length()); ++i)
+            if (data[i] < other.data[i])
+               return true;
+
+         return false;
+      }
+
+      bool string::operator>(const string& other) const
+      {
+         for (size_t i = 0; i < std::min(length(), other.length()); ++i)
+            if (data[i] > other.data[i])
+               return true;
+
+         return false;
+      }
+
+
       //! Conversion to const char*
       /*!
          Converts string to const char*  (same as using c_str())
-      */
       string::operator const char*()
       {
          return this->c_str();
       }
+      */
    }
 }
 
