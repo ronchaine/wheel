@@ -28,8 +28,8 @@ namespace wheel
       //! Default copy constructor.
       string::string(const string& other)
       {
-         // Use the assignment operator overload
-         *this = other;
+         data.resize(other.data.size());
+         memcpy(&data[0], &other.data[0], other.data.size() * sizeof(char32_t));
       }
 
       //! Default move constructor.
@@ -235,14 +235,16 @@ namespace wheel
       //! Copy assignment operator
       /*!
       */
-      string& string::operator=(const string& other)
+      string& string::operator=(string& other)
       {
+         swap(*this, other);
+         /*
          if (this == &other)
             return *this;
 
          data.resize(other.data.size());
          memcpy(&data[0], &other.data[0], other.data.size() * sizeof(char32_t));
-
+         */
          return *this;
       }
 

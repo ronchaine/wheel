@@ -7,6 +7,8 @@
 #ifndef WHEEL_CORE_COMMON_HEADER
 #define WHEEL_CORE_COMMON_HEADER
 
+#include <cstdint>
+
 #ifdef NDEBUG
    #define WHEEL_NO_DEBUG
 #endif
@@ -18,7 +20,10 @@
 #define WHEEL_UNABLE_TO_REGISTER_MODULE   0xa001
 
 /// Flags
-#define WHEEL_INITIALISED           0x0001
-#define WHEEL_LITTLE_ENDIAN         0x0002
+#define WHEEL_INITIALISED                 0x0001
+#define WHEEL_LITTLE_ENDIAN               0x0002
+
+/// Typedefs
+typedef int32_t flags_t;
 
 #endif

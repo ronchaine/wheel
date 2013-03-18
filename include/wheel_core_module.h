@@ -17,16 +17,6 @@
 
 namespace wheel
 {
-   namespace video
-   {
-      class Renderer
-      {
-      };
-   }
-}
-
-namespace wheel
-{
    namespace core
    {
       /*!
