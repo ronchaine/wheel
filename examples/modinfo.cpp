@@ -27,9 +27,11 @@ int main(int argc, char* argv[])
 
    testlib[argv[1]]->get_module_info(&modinfo);
 
-   wheel::core::log.open("out.log");
+//   wheel::core::log.open("out.log");
    wheel::core::log << modinfo << "\n";
-   wheel::core::log.close();
+   //wheel::core::log.close();
+
+   testlib.Remove(argv[1]);
 
    wcl::terminate();
 }

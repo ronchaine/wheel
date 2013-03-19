@@ -22,6 +22,15 @@ namespace wheel
 {
    namespace video
    {
+/*
+      SDLRenderer::SDLRenderer()
+      {
+      }
+*/
+      SDLRenderer::~SDLRenderer()
+      {
+      }
+
       void SDLRenderer::get_module_info(core::modinfo_t* info)
       {
          info->type = "VIDEO";

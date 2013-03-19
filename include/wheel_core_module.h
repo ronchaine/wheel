@@ -59,7 +59,7 @@ namespace wheel
          public:
 
             uint32_t Add(const string& file);
-            uint32_t Remove(const string& ident);
+            void Remove(const string& ident);
 
             void PrintAll();
 

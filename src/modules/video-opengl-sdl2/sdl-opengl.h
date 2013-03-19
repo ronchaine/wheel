@@ -17,6 +17,9 @@ namespace wheel
       {
          public:
             void get_module_info(core::modinfo_t* info);
+
+//            SDLRenderer();
+            ~SDLRenderer();
       };     
    }
 }

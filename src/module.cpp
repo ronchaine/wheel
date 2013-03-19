@@ -75,6 +75,26 @@ namespace wheel
 
          return WHEEL_OK;
       }
+      void ModuleLibrary::Remove(const string& ident)
+      {
+         for (auto it = modules.begin(); it != modules.end(); ++it)
+         {
+            if (it->first != ident)
+               continue;
+
+            void* lib_ptr = it->second->library_handle;
+
+            typedef Module* (*modptr_fun_t)(Module*);
+
+            modptr_fun_t remove_module = (modptr_fun_t) dlsym(lib_ptr, "remove_module");
+
+            remove_module(it->second);
+            dlclose(lib_ptr);
+
+            modules.erase(it);
+            break;
+         }
+      }
 
       //! Retrieves a pointer to a module from the module library.
       /*!
