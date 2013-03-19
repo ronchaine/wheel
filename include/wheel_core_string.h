@@ -55,7 +55,7 @@ namespace wheel
 
             // Operator overloads
             string& operator=(string&& other);
-            string& operator=(string& other);
+            string& operator=(const string& other);
             string operator+(const string& other) const;
             bool operator==(const string& other) const;
 
@@ -89,12 +89,6 @@ namespace wheel
             // Contains
             bool contains(const string&);
 
-            friend void swap(string& str1, string& str2)
-            {
-              using std::swap;
-
-              swap(str1.data, str2.data);
-            }
       };
    }
 }
