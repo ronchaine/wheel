@@ -116,7 +116,7 @@ namespace wheel
          std::string result;
          
          utf8::replace_invalid(in.begin(), in.end(), back_inserter(result));
-         utf8::utf8to32(result.begin(), result.end(), back_inserter(data));
+         utf8::unchecked::utf8to32(result.begin(), result.end(), back_inserter(data));
       }
 
       //! Destructor brief

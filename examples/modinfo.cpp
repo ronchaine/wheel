@@ -19,7 +19,7 @@ int main(int argc, char* argv[])
    if (err)
    {
       wcl::terminate();
-      std::cout << "could not open library\n";
+      std::cout << "could not open library (error " << err << ")\n";
       return 1;
    }
 
