@@ -58,7 +58,7 @@ namespace wheel
             string& operator=(const string& other);
             string operator+(const string& other) const;
             bool operator==(const string& other) const;
-
+            bool operator!=(const string& other) const;
             bool operator<(const string& other) const;
             bool operator>(const string& other) const;
 

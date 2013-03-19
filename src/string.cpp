@@ -309,7 +309,13 @@ namespace wheel
 
          return true;
       }
-
+      //! Comparison, not equal
+      /*!
+      */
+      bool string::operator!=(const string& other) const
+      {
+         return !(*this == other);
+      }
       //! Comparison, before
       /*!
          Compares the two strings by their ASCII value.
