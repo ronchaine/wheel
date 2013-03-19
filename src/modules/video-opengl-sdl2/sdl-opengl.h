@@ -17,7 +17,7 @@ namespace wheel
 {
    namespace video
    {
-      class SDLRenderer : public wheel::core::Module, public wheel::video::Renderer
+      class SDLRenderer : public wheel::video::Renderer
       {
          private:
             void*    window;

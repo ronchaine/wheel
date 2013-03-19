@@ -45,8 +45,6 @@ namespace wheel
 
       uint32_t SDLRenderer::OpenWindow(const core::string& title, uint32_t w, uint32_t h, flags_t flags)
       {
-         std::cout << "inside internal function\n";
-/*
          window = (void*)SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, w, h, flags | SDL_WINDOW_SHOWN);
 
          if (window == nullptr)
@@ -60,8 +58,9 @@ namespace wheel
             return !WHEEL_OK;
 
          std::cout << "OpenGL version string: " << glGetString(GL_VERSION) << "\n";
-*/
+
          return 0;
+
       }
 
       void SDLRenderer::SwapBuffers()
