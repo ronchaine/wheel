@@ -126,7 +126,8 @@ namespace wheel
 
       //! Get pointer to internal data
       /*!
-         Returns an pointer to char32_t-array of text data.
+         \return pointer to the string data.
+         \warning The string data is not required to be null-terminated
       */
       const char32_t* string::getptr() const
       {
@@ -135,8 +136,14 @@ namespace wheel
 
       //! Generate C-style string
       /*
-         Returns data converted from internal UTF-32 format to C
-         char array in UTF-8 encoding.
+         The string's contents are converted from internal UTF-32 format to an UTF-8 encoding
+         and returned as C-style string.
+
+         \return <code>const char*</code> containing null-terminated string in UTF-8 format.
+
+         \warning DO NOT USE THIS.  Instead call string::std_str().c_str().  If you REALLY
+         want to use this instead, you must allocate and free the memory for the string
+         yourself.
       */
       const char* string::c_str() const
       {
@@ -148,8 +155,10 @@ namespace wheel
 
       //! Generate std::string
       /*
-         Returns data converted from internal UTF-32 format to
-         an UTF-8 encoded std::string.
+         The string's contents are converted from internal UTF-32 format to an UTF-8 encoding
+         and returned as C++ STL string.
+
+         \return <code>const std::string</code> containing the string in UTF-8 format.
       */
       const std::string string::std_str() const
       {
@@ -160,7 +169,7 @@ namespace wheel
 
       //! Return integer value
       /*
-         Returns integer value represented in the string.
+         \return Integer value represented in the string.
       */
       uint32_t string::to_uint32()
       {
@@ -169,7 +178,7 @@ namespace wheel
 
       //! Return floating point value
       /*
-         Returns double-precision floating point value represented in the string.
+         \return Double-precision floating point value represented in the string.
       */
       double string::to_float()
       {
@@ -178,7 +187,7 @@ namespace wheel
 
       //! Return the length of the string
       /*
-         Returns size_t length of the string
+         \return size_t length of the string
       */
       size_t string::length() const
       {
@@ -214,7 +223,7 @@ namespace wheel
       /*!
          Searches a string for a sequence specified by argument seq.
 
-         \return  true if string contains sequence.
+         \return <code>true</code> if string contains sequence.
       */
       bool string::contains(const string& seq)
       {
@@ -276,7 +285,7 @@ namespace wheel
 
             string s = s1 + s2 + " " + i + U" is a number";
 
-            std::cout << s.c_str() << "\n";
+            std::cout << s.std_str().c_str() << "\n";
          \endcode
 
          Results in
