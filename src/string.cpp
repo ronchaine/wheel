@@ -141,14 +141,14 @@ namespace wheel
 
          \return <code>const char*</code> containing null-terminated string in UTF-8 format.
 
-         \warning DO NOT USE THIS.  Instead call string::std_str().c_str().  If you REALLY
-         want to use this instead, you must allocate and free the memory for the string
-         yourself.
+         \warning Preferred method to get C-style strings out is to instead call string.std_str().c_str(),
+                  which gets you actual const char pointer instead of const pointer to const char.
       */
-      const char* string::c_str() const
+      const char* const string::c_str() const
       {
-         std::string result;
+         static std::string result;
 
+         result.resize(0);
          utf8::utf32to8(data.begin(), data.end(), std::back_inserter(result));
          return result.c_str();
       }
@@ -351,6 +351,7 @@ namespace wheel
       //! Conversion to const char*
       /*!
          Converts string to const char*  (same as using c_str())
+
       string::operator const char*()
       {
          return this->c_str();
