@@ -70,7 +70,7 @@ namespace wheel
             const char32_t* getptr() const;
 
             // Return C string
-            const char* const c_str() const;
+//            const char* const c_str() const;
 
             // Returns std string
             const std::string std_str() const;

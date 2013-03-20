@@ -142,12 +142,12 @@ namespace wheel
          \return <code>const char*</code> containing null-terminated string in UTF-8 format.
 
          \warning Preferred method to get C-style strings out is to instead call string.std_str().c_str(),
-                  which gets you actual const char pointer instead of const pointer to const char.
+                  which gets you actual const char pointer instead of const pointer to const char that
+                  points to static structures.
+         \warning This is also EXTREMELY THREAD-UNSAFE.
       */
       const char* const string::c_str() const
       {
-         static std::string result;
-
          result.resize(0);
          utf8::utf32to8(data.begin(), data.end(), std::back_inserter(result));
          return result.c_str();
