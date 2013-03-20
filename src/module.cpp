@@ -47,7 +47,7 @@ namespace wheel
       uint32_t ModuleLibrary::Add(const string& filename)
       {
          void* library = nullptr;
-         library = dlopen(filename.c_str(), RTLD_LAZY | RTLD_LOCAL);
+         library = dlopen(filename.std_str().c_str(), RTLD_LAZY | RTLD_LOCAL);
 
          if (!library)
          {

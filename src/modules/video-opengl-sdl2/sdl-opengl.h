@@ -9,6 +9,7 @@
 #include "../../../include/wheel_core_module.h"
 #include "../../../include/wheel_module_video.h"
 
+#define SDL_NO_COMPAT
 #include <SDL2/SDL.h>
 
 #define WHEEL_SDL_OPENGL_TERMINATE_SDL_AT_EXIT  0x01
@@ -30,8 +31,11 @@ namespace wheel
             void get_module_info(core::modinfo_t* info);
 
             // Renderer functions
-            uint32_t OpenWindow(const core::string& title, uint32_t width, uint32_t height, flags_t flags);
+
+            uint32_t OpenWindow(const core::string& title, uint32_t width, uint32_t height);
             void     SwapBuffers();
+
+            bool     WindowIsOpen();
 
             SDLRenderer();
             ~SDLRenderer();

@@ -32,7 +32,7 @@ namespace wheel
       */
       uint32_t ResourceManager::AddResource(const string& resource)
       {
-         if (PHYSFS_addToSearchPath(resource.c_str(), W_PHYSFS_BEGIN) != 0)
+         if (PHYSFS_addToSearchPath(resource.std_str().c_str(), W_PHYSFS_BEGIN) != 0)
             return WHEEL_OK;
 
          return WHEEL_RESOURCE_UNAVAILABLE;

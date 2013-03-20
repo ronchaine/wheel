@@ -30,8 +30,13 @@ int main(int argc, char* argv[])
 
    std::cout << "Loaded renderer from " << argv[1] << "\n";
 
-   renderer->OpenWindow("moi", 800, 600, 0);
-   renderer->SwapBuffers();
+   renderer->OpenWindow("Hello triangle", 800, 600);
+
+   while(renderer->WindowIsOpen())
+   {
+      renderer->Update();
+      renderer->SwapBuffers();
+   }
 
    testlib.Remove(argv[1]);
 

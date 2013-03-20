@@ -146,12 +146,16 @@ namespace wheel
                   points to static structures.
          \warning This is also EXTREMELY THREAD-UNSAFE.
       */
+      /*
       const char* const string::c_str() const
       {
+         static std::string result;
+
          result.resize(0);
          utf8::utf32to8(data.begin(), data.end(), std::back_inserter(result));
          return result.c_str();
       }
+      */
 
       //! Generate std::string
       /*
@@ -173,7 +177,7 @@ namespace wheel
       */
       uint32_t string::to_uint32()
       {
-         return strtoul(this->c_str(), nullptr, 0);
+         return strtoul(this->std_str().c_str(), nullptr, 0);
       }
 
       //! Return floating point value
@@ -182,7 +186,7 @@ namespace wheel
       */
       double string::to_float()
       {
-         return atof(this->c_str());
+         return atof(this->std_str().c_str());
       }
 
       //! Return the length of the string

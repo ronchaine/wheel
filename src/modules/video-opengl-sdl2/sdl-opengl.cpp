@@ -9,6 +9,7 @@
 #define GL3_PROTOTYPES 1
 #include <GL/gl3.h>
 
+// These are required for every module
 extern "C" {
    wheel::core::Module* register_module()
    {
@@ -43,9 +44,9 @@ namespace wheel
             SDL_Quit();
       }
 
-      uint32_t SDLRenderer::OpenWindow(const core::string& title, uint32_t w, uint32_t h, flags_t flags)
+      uint32_t SDLRenderer::OpenWindow(const core::string& title, uint32_t w, uint32_t h)
       {
-         window = (void*)SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, w, h, flags | SDL_WINDOW_SHOWN);
+         window = (void*)SDL_CreateWindow(title.std_str().c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, w, h, SDL_WINDOW_SHOWN|SDL_WINDOW_OPENGL);
 
          if (window == nullptr)
             return !WHEEL_OK;
@@ -61,6 +62,11 @@ namespace wheel
 
          return 0;
 
+      }
+
+      bool SDLRenderer::WindowIsOpen()
+      {
+         return true;
       }
 
       void SDLRenderer::SwapBuffers()
