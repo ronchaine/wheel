@@ -17,7 +17,7 @@ namespace wheel
       class Log
       {
          template<typename T>
-         friend wheel::core::Log& operator<<(wheel::core::Log& output, const T& stream)
+         friend inline wheel::core::Log& operator<<(wheel::core::Log& output, const T& stream)
          {
             #ifndef WHEEL_NO_DEBUG
                if (output.out_to_stdout())

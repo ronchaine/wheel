@@ -30,6 +30,21 @@ namespace wheel
          string description;
 
          string wheel_required_version;
+
+         friend inline std::ostream& operator<<(std::ostream& out, const wheel::core::modinfo_t& modinfo)
+         {
+            out << "---------------------\n";
+            out << "Module information\n" ;
+            out << "---------------------\n";
+            out << "Name:" << modinfo.name << "\n";
+            out << "Version:" << modinfo.version << "\n";
+            out << "Type:" << modinfo.type << "\n";
+            out << "Description:" << modinfo.description << "\n";
+
+            out << "Library version requirement: " << modinfo.wheel_required_version << "\n";
+
+            return out;
+         }
       };
 
       /*!
@@ -42,9 +57,6 @@ namespace wheel
 
             virtual ~Module() {}
             virtual void get_module_info(modinfo_t*) = 0;
-
-//            virtual uint32_t register_module();
-//            virtual uint32_t remove_module();
       };
 
       /*!
@@ -71,21 +83,6 @@ namespace wheel
            ~ModuleLibrary();
       };
    }
-}
-
-inline std::ostream& operator<<(std::ostream& out, const wheel::core::modinfo_t& modinfo)
-{
-   out << "---------------------\n";
-   out << "Module information\n" ;
-   out << "---------------------\n";
-   out << "Name:" << modinfo.name << "\n";
-   out << "Version:" << modinfo.version << "\n";
-   out << "Type:" << modinfo.type << "\n";
-   out << "Description:" << modinfo.description << "\n";
-
-   out << "Library version requirement: " << modinfo.wheel_required_version << "\n";
-
-   return out;
 }
 
 #endif //WHEEL_MODULE_HEADER
