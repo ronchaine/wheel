@@ -1,5 +1,7 @@
 project(WHEEL CXX)
 
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/cmake/modules)
+
 cmake_minimum_required(VERSION 2.8)
 
 set(WHEEL_VERSION_MAJOR "0")
@@ -13,7 +15,6 @@ set(WHEEL_LIB_NAME wheel)
 
 option (WHEEL_BUILD_MODULES "Build the basic modules" ON)
 option (WHEEL_BUILD_EXAMPLES "Build the example programs" ON)
-
 #--------------------------------------------------------------
 # Add subdirectories
 #--------------------------------------------------------------
