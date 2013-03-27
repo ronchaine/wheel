@@ -4,9 +4,9 @@
 
 namespace wheel
 {
-   namespace core
+   namespace internal
    {
-      extern uint32_t _internal_flags;
+      extern uint32_t flags;
    }
 }
 

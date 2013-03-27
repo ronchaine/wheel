@@ -11,101 +11,98 @@
 
 namespace wheel
 {
-   namespace core
+   void ModuleLibrary::PrintAll()
    {
-      void ModuleLibrary::PrintAll()
+      for (auto pair : modules)
+         std::cout << pair.first << " == " << pair.second << "\n";
+   }
+   ModuleLibrary::ModuleLibrary()
+   {
+   }
+   ModuleLibrary::~ModuleLibrary()
+   {
+      for (auto lib : modules)
       {
-         for (auto pair : modules)
-            std::cout << pair.first << " == " << pair.second << "\n";
+         void* lib_ptr = lib.second->library_handle;
+
+         typedef Module* (*modptr_fun_t)(Module*);
+
+         modptr_fun_t remove_module = (modptr_fun_t) dlsym(lib_ptr, "remove_module");
+
+         remove_module(lib.second);
+         dlclose(lib_ptr);
       }
-      ModuleLibrary::ModuleLibrary()
+   }
+
+   //! Adds a module file into the module library.
+   /*!
+      Loads a shared object or dynamically linked library file to be used as a module.
+
+      \param   filename The filename of the library file to be loaded as a module.
+
+      \return  <code>WHEEL_OK</code> on success, otherwise an unsigned integer depicting the error.
+   */
+   uint32_t ModuleLibrary::Add(const string& filename)
+   {
+      void* library = nullptr;
+      library = dlopen(filename.std_str().c_str(), RTLD_LAZY | RTLD_LOCAL);
+
+      if (!library)
       {
-      }
-      ModuleLibrary::~ModuleLibrary()
-      {
-         for (auto lib : modules)
-         {
-            void* lib_ptr = lib.second->library_handle;
-
-            typedef Module* (*modptr_fun_t)(Module*);
-
-            modptr_fun_t remove_module = (modptr_fun_t) dlsym(lib_ptr, "remove_module");
-
-            remove_module(lib.second);
-            dlclose(lib_ptr);
-         }
-      }
-
-      //! Adds a module file into the module library.
-      /*!
-         Loads a shared object or dynamically linked library file to be used as a module.
-
-         \param   filename The filename of the library file to be loaded as a module.
-
-         \return  <code>WHEEL_OK</code> on success, otherwise an unsigned integer depicting the error.
-      */
-      uint32_t ModuleLibrary::Add(const string& filename)
-      {
-         void* library = nullptr;
-         library = dlopen(filename.std_str().c_str(), RTLD_LAZY | RTLD_LOCAL);
-
-         if (!library)
-         {
-            std::cout << dlerror() << "\n";
-            return WHEEL_UNABLE_TO_OPEN_MODULE;
-         }
-
-         dlerror();
-
-         typedef Module* (*modptr_fun_t)();
-
-         modptr_fun_t add_module = (modptr_fun_t) dlsym(library, "register_module");
-
-         const char *dlsym_err = dlerror();
-         if (dlsym_err)
-         {
-            dlclose(library);
-            return WHEEL_UNABLE_TO_REGISTER_MODULE;
-         }
-
-         Module* module = add_module();
-
-         module->library_handle = library;
-
-         modules.insert({filename, module});
-
-         return WHEEL_OK;
-      }
-      void ModuleLibrary::Remove(const string& ident)
-      {
-         for (auto it = modules.begin(); it != modules.end(); ++it)
-         {
-            if (it->first != ident)
-               continue;
-
-            void* lib_ptr = it->second->library_handle;
-
-            typedef Module* (*modptr_fun_t)(Module*);
-
-            modptr_fun_t remove_module = (modptr_fun_t) dlsym(lib_ptr, "remove_module");
-
-            remove_module(it->second);
-            dlclose(lib_ptr);
-
-            modules.erase(it);
-            break;
-         }
+         std::cout << dlerror() << "\n";
+         return WHEEL_UNABLE_TO_OPEN_MODULE;
       }
 
-      //! Retrieves a pointer to a module from the module library.
-      /*!
-         \param   ident Identifier of the module in the library (usually filename)
+      dlerror();
 
-         \return  Pointer to the module requested.
-      */
-      Module* ModuleLibrary::operator[](const string& ident)
+      typedef Module* (*modptr_fun_t)();
+
+      modptr_fun_t add_module = (modptr_fun_t) dlsym(library, "register_module");
+
+      const char *dlsym_err = dlerror();
+      if (dlsym_err)
       {
-         return modules[ident];
+         dlclose(library);
+         return WHEEL_UNABLE_TO_REGISTER_MODULE;
       }
+
+      Module* module = add_module();
+
+      module->library_handle = library;
+
+      modules.insert({filename, module});
+
+      return WHEEL_OK;
+   }
+   void ModuleLibrary::Remove(const string& ident)
+   {
+      for (auto it = modules.begin(); it != modules.end(); ++it)
+      {
+         if (it->first != ident)
+            continue;
+
+         void* lib_ptr = it->second->library_handle;
+
+         typedef Module* (*modptr_fun_t)(Module*);
+
+         modptr_fun_t remove_module = (modptr_fun_t) dlsym(lib_ptr, "remove_module");
+
+         remove_module(it->second);
+         dlclose(lib_ptr);
+
+         modules.erase(it);
+         break;
+      }
+   }
+
+   //! Retrieves a pointer to a module from the module library.
+   /*!
+      \param   ident Identifier of the module in the library (usually filename)
+
+      \return  Pointer to the module requested.
+   */
+   Module* ModuleLibrary::operator[](const string& ident)
+   {
+      return modules[ident];
    }
 }

@@ -18,7 +18,7 @@ namespace wheel
 {
    namespace video
    {
-      class SDLRenderer : public wheel::video::Renderer
+      class SDLRenderer : public wheel::interface::Video
       {
          private:
             void*    window;
@@ -28,11 +28,11 @@ namespace wheel
 
          public:
             // Module functions
-            void get_module_info(core::modinfo_t* info);
+            void get_module_info(modinfo_t* info);
 
             // Renderer functions
 
-            uint32_t OpenWindow(const core::string& title, uint32_t width, uint32_t height);
+            uint32_t OpenWindow(const string& title, uint32_t width, uint32_t height);
             void     SwapBuffers();
 
             bool     WindowIsOpen();

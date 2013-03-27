@@ -11,12 +11,12 @@
 
 // These are required for every module
 extern "C" {
-   wheel::core::Module* register_module()
+   wheel::Module* register_module()
    {
       return new wheel::video::SDLRenderer;
    }
 
-   void remove_module(wheel::core::Module* mod)
+   void remove_module(wheel::Module* mod)
    {
       delete mod;
    }
@@ -44,7 +44,7 @@ namespace wheel
             SDL_Quit();
       }
 
-      uint32_t SDLRenderer::OpenWindow(const core::string& title, uint32_t w, uint32_t h)
+      uint32_t SDLRenderer::OpenWindow(const string& title, uint32_t w, uint32_t h)
       {
          window = (void*)SDL_CreateWindow(title.std_str().c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, w, h, SDL_WINDOW_SHOWN|SDL_WINDOW_OPENGL);
 
@@ -74,7 +74,7 @@ namespace wheel
          SDL_RenderPresent((SDL_Renderer*)renderer);
       }
 
-      void SDLRenderer::get_module_info(core::modinfo_t* info)
+      void SDLRenderer::get_module_info(modinfo_t* info)
       {
          info->type = "VIDEO";
          info->name = "SDL2_VIDEO";

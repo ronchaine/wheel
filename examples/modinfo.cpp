@@ -23,12 +23,12 @@ int main(int argc, char* argv[])
       return 1;
    }
 
-   wheel::core::modinfo_t modinfo;
+   wheel::modinfo_t modinfo;
 
    testlib[argv[1]]->get_module_info(&modinfo);
 
 //   wheel::core::log.open("out.log");
-   wheel::core::log << modinfo << "\n";
+   wheel::log << modinfo << "\n";
    //wheel::core::log.close();
 
    testlib.Remove(argv[1]);

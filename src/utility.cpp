@@ -8,12 +8,9 @@
 
 namespace wheel
 {
-   namespace core
-   {
-      //! Hash a string
-      /*!
-         If no flags are specified, this function returns the same value as std::hash would.
-         
-      */
-   }
+   //! Hash a string
+   /*!
+      If no flags are specified, this function returns the same value as std::hash would.
+      
+   */
 }

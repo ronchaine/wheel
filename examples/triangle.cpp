@@ -22,11 +22,11 @@ int main(int argc, char* argv[])
       return 1;
    }
 
-   wheel::core::modinfo_t modinfo;
+   wheel::modinfo_t modinfo;
 
-   wheel::video::Renderer* renderer;
+   wheel::interface::Video* renderer;
 
-   renderer = (wheel::video::Renderer*)testlib[argv[1]];
+   renderer = (wheel::interface::Video*)testlib[argv[1]];
 
    std::cout << "Loaded renderer from " << argv[1] << "\n";
 

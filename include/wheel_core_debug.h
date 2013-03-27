@@ -12,38 +12,35 @@
 
 namespace wheel
 {
-   namespace core
+   class Log
    {
-      class Log
+      template<typename T>
+      friend inline wheel::Log& operator<<(wheel::Log& output, const T& stream)
       {
-         template<typename T>
-         friend inline wheel::core::Log& operator<<(wheel::core::Log& output, const T& stream)
-         {
-            #ifndef WHEEL_NO_DEBUG
-               if (output.out_to_stdout())
-               {
-                  std::cout << stream;
-               } else {
-                  wheel::core::Log::out << stream;
-               }
-            #endif
-            return output;
-         }
+         #ifndef WHEEL_NO_DEBUG
+            if (output.out_to_stdout())
+            {
+               std::cout << stream;
+            } else {
+               wheel::Log::out << stream;
+            }
+         #endif
+         return output;
+      }
 
-         private:
-            static std::fstream out;
+      private:
+         static std::fstream out;
 
-         public:
-            void open(const std::string& file);
-            void close();
+      public:
+         void open(const std::string& file);
+         void close();
 
-            bool out_to_stdout() { return !out.is_open(); }
+         bool out_to_stdout() { return !out.is_open(); }
 
-           ~Log();
-      };
+        ~Log();
+   };
 
-      extern Log log;
-   }
+   extern Log log;
 }
 
 #endif

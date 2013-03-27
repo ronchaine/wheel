@@ -8,30 +8,27 @@
 
 namespace wheel
 {
-   namespace core
+   std::fstream Log::out;
+
+   Log log;
+
+   Log::~Log()
    {
-      std::fstream Log::out;
-
-      Log log;
-
-      Log::~Log()
-      {
-         #ifndef WHEEL_NO_DEBUG
-         if (out.is_open())
-            out.close();
-         #endif
-      }
-      void Log::open(const std::string& file)
-      {
-         #ifndef WHEEL_NO_DEBUG
-         out.open(file, std::fstream::out);
-         #endif
-      }
-      void Log::close()
-      {
-         #ifndef WHEEL_NO_DEBUG
+      #ifndef WHEEL_NO_DEBUG
+      if (out.is_open())
          out.close();
-         #endif
-      }
+      #endif
+   }
+   void Log::open(const std::string& file)
+   {
+      #ifndef WHEEL_NO_DEBUG
+      out.open(file, std::fstream::out);
+      #endif
+   }
+   void Log::close()
+   {
+      #ifndef WHEEL_NO_DEBUG
+      out.close();
+      #endif
    }
 }

@@ -11,31 +11,29 @@
 
 namespace wheel
 {
-   namespace core
+   class Event
    {
-      class Event
-      {
-         private:
-         public:
-      };
+      private:
+      public:
+   };
 
-      typedef void(* wheel_event_callback_t)(Event&);
+   typedef void(* wheel_event_callback_t)(Event&);
 
-      enum wheel_input_t
-      {
-         WHEEL_KEYBOARD_EVENT,
-         WHEEL_MOUSE_EVENT,
-         WHEEL_JOYSTICK_EVENT,
-         WHEEL_WINDOW_EVENT
-      };
-   }
-   namespace video
+   enum wheel_input_t
+   {
+      WHEEL_KEYBOARD_EVENT,
+      WHEEL_MOUSE_EVENT,
+      WHEEL_JOYSTICK_EVENT,
+      WHEEL_WINDOW_EVENT
+   };
+
+   namespace interface
    {
       //! Interface for renderer modules
-      class Renderer : public core::Module
+      class Video : public Module
       {
          public:
-            virtual  ~Renderer() {};
+            virtual  ~Video() {};
 
             //! \brief Set hints for the following OpenWindow call.
             /*!
@@ -119,7 +117,7 @@ namespace wheel
 
                \sa SetWindowHints
             */
-            virtual  uint32_t OpenWindow(const core::string& title, uint32_t width, uint32_t height) = 0;
+            virtual  uint32_t OpenWindow(const string& title, uint32_t width, uint32_t height) = 0;
 
             //! Swap the front and back buffers of the window.
             virtual  void     SwapBuffers() = 0;
@@ -144,7 +142,7 @@ namespace wheel
                        <code>WHEEL_UNIMPLEMENTED_FEATURE</code> if the implementation cannot be found from the module or the
                                                                 event type is unsupported.
             */
-            virtual  uint32_t SetCallback(core::wheel_input_t type, core::wheel_event_callback_t event) { return WHEEL_UNIMPLEMENTED_FEATURE; }
+            virtual  uint32_t SetCallback(wheel_input_t type, wheel_event_callback_t event) { return WHEEL_UNIMPLEMENTED_FEATURE; }
 
             //! Process events
             /*!

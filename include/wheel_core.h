@@ -16,11 +16,8 @@
 
 namespace wheel
 {
-   namespace core
-   {
-      int   initialise(int argc, char* argv[]);
-      void  terminate();
-   }
+   int   initialise(int argc, char* argv[]);
+   void  terminate();
 }
 
 #endif
