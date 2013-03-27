@@ -297,8 +297,8 @@ namespace wheel
    */
    string string::operator+(const string& other) const
    {
-      string rval(getptr());
-      for (char32_t c : other.data)
+      string rval(*this);
+      for (auto c : other.data)
          rval.data.push_back(c);
 
       return rval;
