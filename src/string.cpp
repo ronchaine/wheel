@@ -243,6 +243,26 @@ namespace wheel
       return false;
    }
 
+   //! Checks if the string is empty
+   /*!
+      \return <code>true</code> if the string is empty.
+   */
+   bool string::empty()
+   {
+      if (this->length() == 0)
+         return true;
+
+      return false;
+   }
+
+   //! Clears all data from the string
+   /*!
+   */
+   void string::clear()
+   {
+      data.clear();
+   }
+
    //! Copy assignment operator
    /*!
    */
@@ -365,7 +385,7 @@ namespace wheel
    \related string
    \brief Allows wcl strings to work with ostreams (i.e. cout)
 */
-std::ostream& operator<<(std::ostream& out, const wcl::string& str)
+std::ostream& operator<<(std::ostream& out, const wheel::string& str)
 {
    out << str.std_str();
    return out;

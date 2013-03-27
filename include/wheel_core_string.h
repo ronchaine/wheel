@@ -88,6 +88,12 @@ namespace wheel
 
         // Contains
         bool contains(const string&);
+
+        // Is empty?
+        bool empty();
+
+        // Make it empty
+        void clear();
   };
 }
 
