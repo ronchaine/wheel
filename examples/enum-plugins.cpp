@@ -2,9 +2,9 @@
 
 int main(int argc, char* argv[])
 {
-   if (argc != 2)
+   if ((argc != 2) && (argc != 3))
    {
-      std::cout << "Usage: modenum <path>\n\n";
+      std::cout << "Usage: modenum <path> [type]\n\n";
       return 0;
    }
 
@@ -12,28 +12,29 @@ int main(int argc, char* argv[])
 
    wcl::ModuleLibrary testlib;
 
-   std::cout << "searching " << argv[1] << "\n";
+   std::cout << "Searching " << argv[1] << "\n";
 
    testlib.Search(argv[1]);
-   
-//   uint32_t err = testlib.Add(argv[1]);
-/*
-   if (err)
+
+   wheel::string searchtype;
+   if (argc == 3)
+      searchtype = argv[2];
+   else
+      searchtype = "";  // Lists all modules
+
+   wheel::modulelist_t modlist = testlib.GetList(searchtype);
+
+   if (searchtype.empty())
+      std::cout << "Modules found:\n";
+   else
+      std::cout << "Modules of type \"" << searchtype << "\" found:\n";
+
+   for (auto it : modlist)
    {
-      wcl::terminate();
-      std::cout << "could not open library (error " << err << ")\n";
-      return 1;
+      std::cout << "  " << it.details.name << "  --  " 
+                << it.details.description << "  ("
+                << it.file << ")\n";
    }
-*/
-//   wheel::modinfo_t modinfo;
-
-//   testlib[argv[1]]->get_module_info(&modinfo);
-
-//   wheel::core::log.open("out.log");
-   //wheel::log << modinfo << "\n";
-   //wheel::core::log.close();
-
-//   testlib.Remove(argv[1]);
 
    wcl::terminate();
 }
