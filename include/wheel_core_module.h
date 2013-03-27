@@ -14,6 +14,7 @@
 //        This should work with MingW32 though.
 #include <dlfcn.h>
 #include <unordered_map>
+#include <set>
 
 namespace wheel
 {
@@ -66,14 +67,18 @@ namespace wheel
          std::vector<string> searchpath;
          std::unordered_map<string, Module*> modules;
 
+         std::set<modinfo_t> known_modules;
+
       public:
 
          uint32_t Add(const string& file);
          void Remove(const string& ident);
 
+         uint32_t Search(const string& path);
+
          void PrintAll();
 
-         string List(const string& type);
+//         string List(const string& type);
 
          Module* operator[](const string& ident);
 
