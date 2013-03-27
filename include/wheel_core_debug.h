@@ -10,6 +10,8 @@
 #include <iostream>
 #include <fstream>
 
+#include "wheel_core_common.h"
+
 namespace wheel
 {
    class Log
@@ -41,6 +43,27 @@ namespace wheel
    };
 
    extern Log log;
+
+   inline const char* get_error(uint32_t errorcode)
+   {
+      switch(errorcode)
+      {
+         case WHEEL_OK:
+            return "No error";
+         case WHEEL_RESOURCE_UNAVAILABLE:
+            return "Resource unavailable";
+         case WHEEL_INVALID_PATH:
+            return "Invalid path";
+         case WHEEL_UNABLE_TO_OPEN_MODULE:
+            return "Unable to open module";
+         case WHEEL_UNABLE_TO_REGISTER_MODULE:
+            return "Unable to register module";
+         case WHEEL_UNIMPLEMENTED_FEATURE:
+            return "Unimplemented feature";
+         default:
+            return "Unknown error or no error message given for the value";
+      }
+   }
 }
 
 #endif
