@@ -10,3 +10,6 @@ target_link_libraries(modinfo wheel)
 
 add_executable(triangle triangle.cpp)
 target_link_libraries(triangle wheel)
+
+add_executable(modenum enum-plugins.cpp)
+target_link_libraries(modenum wheel)

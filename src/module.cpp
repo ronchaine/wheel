@@ -9,6 +9,10 @@
 #include <iostream>
 #include <cassert>
 
+// FIXME: dirent is UNIX-specific, windows uses something different.
+//        This should work with MingW32 though.
+#include <dirent.h>
+
 namespace wheel
 {
    void ModuleLibrary::PrintAll()
@@ -93,6 +97,32 @@ namespace wheel
          modules.erase(it);
          break;
       }
+   }
+
+   uint32_t ModuleLibrary::Search(const string& path)
+   {
+      DIR* dir;
+
+      struct dirent* loc;
+
+      if ((dir = opendir(path.std_str().c_str())) == nullptr)
+         return WHEEL_INVALID_PATH;
+
+      while(loc = readdir(dir))
+      {
+         string filename(loc->d_name);
+         if ((filename != ".") && (filename != ".."))
+         {
+            if ((filename.contains(".so")) || (filename.contains(".dll")))
+               std::cout << "  " << filename << "\n";
+            else
+               Search(path + "/" + loc->d_name);
+         }
+      }
+
+      closedir(dir);
+
+      return WHEEL_OK;
    }
 
    //! Retrieves a pointer to a module from the module library.

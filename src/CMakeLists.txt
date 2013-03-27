@@ -1,3 +1,9 @@
+find_package(PhysFS REQUIRED)
+
+#set(Boost_USE_STATIC_LIBS ON)
+#add_definitions(-DBOOST_NO_EXCEPTIONS)
+#find_package(Boost COMPONENTS filesystem REQUIRED)
+
 include_directories(${WHEEL_SOURCE_DIR}/src
                     ${WHEEL_SOURCE_DIR}/include)
 
@@ -9,8 +15,6 @@ set(WHEEL_SOURCES ${COMMON_SOURCES})
 set(WHEEL_HEADERS ${COMMON_HEADERS})
 
 set(WHEEL_LIBRARIES_UNIX dl)
-
-find_package(PhysFS REQUIRED)
 
 set(WHEEL_LIBRARIES ${PHYSFS_LIBRARY} ${WHEEL_LIBRARIES_UNIX})
 
