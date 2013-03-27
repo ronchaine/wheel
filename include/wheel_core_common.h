@@ -20,6 +20,8 @@
 /// Error codes
 #define WHEEL_OK                          0x0000
 #define WHEEL_RESOURCE_UNAVAILABLE        0x0001
+#define WHEEL_INVALID_PATH                0x0002
+   
 #define WHEEL_UNABLE_TO_OPEN_MODULE       0xa000
 #define WHEEL_UNABLE_TO_REGISTER_MODULE   0xa001
 
