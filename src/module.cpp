@@ -24,7 +24,11 @@ namespace wheel
          library = dlopen(filename.std_str().c_str(), RTLD_LAZY | RTLD_LOCAL);
 
          if (!library)
+         {
+            wheel::log << dlerror() << "\n";
             return false;
+         }
+//         wheel::log << "Trying " << filename << "\n";
 
          dlerror();
 
