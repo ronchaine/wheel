@@ -46,6 +46,30 @@ namespace wheel
       }
    };
 
+   struct modset_t
+   {
+      modinfo_t   details;
+      string      file;
+
+      bool        is_loaded;
+
+      modset_t() { is_loaded = false; }
+
+      friend inline bool operator<(const modset_t& one, const modset_t& other)
+      {
+         if (one.details.type < other.details.type)
+            return true;
+         if (one.details.name < other.details.name)
+            return true;
+         if (one.details.version < other.details.version)
+            return true;
+
+         return false;
+      }
+   };
+
+   typedef std::vector<modset_t> modulelist_t;
+
    /*!
       \brief Virtual module class.  Derive this to add loadable modules
    */
@@ -67,10 +91,9 @@ namespace wheel
          std::vector<string> searchpath;
          std::unordered_map<string, Module*> modules;
 
-         std::set<modinfo_t> known_modules;
+         std::set<modset_t> known_modules;
 
       public:
-
          uint32_t Add(const string& file);
          void Remove(const string& ident);
 
@@ -78,13 +101,14 @@ namespace wheel
 
          void PrintAll();
 
-//         string List(const string& type);
+         modulelist_t GetList(const string& type = "");
 
          Module* operator[](const string& ident);
 
          ModuleLibrary();
         ~ModuleLibrary();
    };
+
 }
 
 #endif //WHEEL_MODULE_HEADER

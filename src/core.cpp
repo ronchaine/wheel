@@ -5,6 +5,7 @@
 */
 
 #include "../include/wheel_core.h"
+#include "../include/wheel_core_debug.h"
 
 #include <physfs.h>
 
@@ -19,7 +20,7 @@ namespace wheel
    {
       PHYSFS_init(NULL);
 
-      return 0;
+      return WHEEL_OK;
    }
 
    //! initialise the library.
@@ -37,7 +38,7 @@ namespace wheel
       if (*(uint8_t*)&r == 0x1e)
          internal::flags |= WHEEL_LITTLE_ENDIAN;
 
-      return 0;
+      return WHEEL_OK;
    }
 
    void terminate()

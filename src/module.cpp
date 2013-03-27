@@ -5,16 +5,66 @@
 */
 
 #include "../include/wheel_core_module.h"
+#include "../include/wheel_core_debug.h"
 
 #include <iostream>
 #include <cassert>
-
 // FIXME: dirent is UNIX-specific, windows uses something different.
 //        This should work with MingW32 though.
 #include <dirent.h>
 
 namespace wheel
 {
+   namespace internal
+   {
+      // Checks if a file is a wheel module
+      bool Module_Check_Load(const string& filename, modinfo_t* save_info = nullptr)
+      {
+         void* library = nullptr;
+         library = dlopen(filename.std_str().c_str(), RTLD_LAZY | RTLD_LOCAL);
+
+         if (!library)
+            return false;
+
+         dlerror();
+
+         typedef Module* (*modptr_fun_add_t)();
+         typedef void (*modptr_fun_del_t)(Module*);
+
+         modptr_fun_add_t add_module = (modptr_fun_add_t) dlsym(library, "register_module");
+         const char *dlsym_err = dlerror();
+         if (dlsym_err)
+         {
+            dlclose(library);
+            return false;
+         }
+
+         dlerror();
+
+         modptr_fun_del_t remove_module = (modptr_fun_del_t) dlsym(library, "remove_module");
+         const char *dlsym2_err = dlerror();
+         if (dlsym2_err)
+         {
+            dlclose(library);
+            return false;
+         }
+
+         if (save_info == nullptr)
+         {
+            dlclose(library);
+            return true;
+         }
+
+         Module* temp = add_module();
+
+         temp->get_module_info(save_info);
+
+         remove_module(temp);
+
+         return true;
+      }
+   }
+
    void ModuleLibrary::PrintAll()
    {
       for (auto pair : modules)
@@ -53,7 +103,7 @@ namespace wheel
 
       if (!library)
       {
-         std::cout << dlerror() << "\n";
+         wheel::log << dlerror() << "\n";
          return WHEEL_UNABLE_TO_OPEN_MODULE;
       }
 
@@ -108,21 +158,55 @@ namespace wheel
       if ((dir = opendir(path.std_str().c_str())) == nullptr)
          return WHEEL_INVALID_PATH;
 
-      while(loc = readdir(dir))
+      while((loc = readdir(dir)))
       {
          string filename(loc->d_name);
-         if ((filename != ".") && (filename != ".."))
+         if ((filename == ".") || (filename == ".."))
+            continue;
+
+         if ((filename.contains(".so")) || (filename.contains(".dll")))
          {
-            if ((filename.contains(".so")) || (filename.contains(".dll")))
-               std::cout << "  " << filename << "\n";
-            else
-               Search(path + "/" + loc->d_name);
-         }
+            modset_t info;
+            if (internal::Module_Check_Load(path + "/" + filename, &info.details))
+            {
+               info.file = path + "/" + filename;
+
+               auto rval = known_modules.insert(info);
+
+               if (!rval.second)
+                  wheel::log << "Warning: Found duplicate module \""
+                             << info.file
+                             << "\". (this may be caused by symlinks)\n";
+
+            }
+         } else
+            Search(path + "/" + loc->d_name);
       }
 
       closedir(dir);
 
       return WHEEL_OK;
+   }
+
+   //! Retrieves a pointer to a module from the module library.
+   /*!
+      \param   ident Identifier of the module in the library (usually filename)
+
+      \return  Pointer to the module requested.
+   */
+   modulelist_t ModuleLibrary::GetList(const string& type)
+   {
+      modulelist_t rval;
+
+      rval.clear();
+
+      for (auto info : known_modules)
+      {
+         if ((type == "") || (info.details.type == type))
+            rval.push_back(info);
+      }
+
+      return rval;
    }
 
    //! Retrieves a pointer to a module from the module library.
