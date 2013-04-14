@@ -32,15 +32,15 @@ namespace wheel
 
       friend inline std::ostream& operator<<(std::ostream& out, const wheel::modinfo_t& modinfo)
       {
-         out << "---------------------\n";
-         out << "Module information\n" ;
-         out << "---------------------\n";
-         out << "Name:" << modinfo.name << "\n";
-         out << "Version:" << modinfo.version << "\n";
-         out << "Type:" << modinfo.type << "\n";
-         out << "Description:" << modinfo.description << "\n";
+         out << (std::string)"---------------------\n";
+         out << (std::string)"Module information\n" ;
+         out << (std::string)"---------------------\n";
+         out << (std::string)"Name:" << modinfo.name << (std::string)"\n";
+         out << (std::string)"Version:" << modinfo.version << (std::string)"\n";
+         out << (std::string)"Type:" << modinfo.type << (std::string)"\n";
+         out << (std::string)"Description:" << modinfo.description << (std::string)"\n";
 
-         out << "Library version requirement: " << modinfo.wheel_required_version << "\n";
+         out << (std::string)"Library version requirement: " << modinfo.wheel_required_version << (std::string)"\n";
 
          return out;
       }
