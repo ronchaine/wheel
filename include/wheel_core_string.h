@@ -94,6 +94,16 @@ namespace wheel
 
         // Make it empty
         void clear();
+
+        // Friends
+        /*!
+           \brief Allows wcl strings to work with ostreams (i.e. cout)
+        */
+        friend inline std::ostream& operator<<(std::ostream& out, const wheel::string& str)
+        {
+           out << str.std_str();
+           return out;
+        }
   };
 }
 
@@ -110,7 +120,7 @@ namespace std {
     };
 }
 
-std::ostream& operator<<(std::ostream& out, const wheel::string& str);
+//std::ostream& operator<<(std::ostream& out, const wheel::string& str);
 
 #ifndef WHEEL_NAMESPACE_CORE_ALIASES_DEFINED
 #define WHEEL_NAMESPACE_CORE_ALIASES_DEFINED

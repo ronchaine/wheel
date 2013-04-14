@@ -380,13 +380,3 @@ namespace wheel
    }
    */
 }
-
-/*!
-   \related string
-   \brief Allows wcl strings to work with ostreams (i.e. cout)
-*/
-std::ostream& operator<<(std::ostream& out, const wheel::string& str)
-{
-   out << str.std_str();
-   return out;
-}
