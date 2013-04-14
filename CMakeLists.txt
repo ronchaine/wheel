@@ -15,9 +15,13 @@ set(WHEEL_LIB_NAME wheel)
 
 option (WHEEL_BUILD_MODULES "Build the basic modules" ON)
 option (WHEEL_BUILD_EXAMPLES "Build the example programs" ON)
+option (WHEEL_BUILD_TESTS "Build the unit tests" ON)
+
 #--------------------------------------------------------------
 # Add subdirectories
 #--------------------------------------------------------------
+
+  enable_testing()
 
 add_subdirectory(src)
 
@@ -27,3 +31,7 @@ endif()
 if (WHEEL_BUILD_EXAMPLES)
   add_subdirectory(examples)
 endif()
+if (WHEEL_BUILD_TESTS)
+  add_subdirectory(tests)
+endif()
+
