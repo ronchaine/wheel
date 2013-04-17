@@ -26,7 +26,6 @@ namespace wheel
 {
    namespace video
    {
-
       SDLRenderer::SDLRenderer()
       {
          int_flags = 0;
@@ -36,6 +35,10 @@ namespace wheel
             int_flags |= WHEEL_SDL_OPENGL_TERMINATE_SDL_AT_EXIT;
             SDL_Init(SDL_INIT_VIDEO);
          }
+
+         uint16_t r = 0xbe1e;
+         if (*(uint8_t*)&r == 0x1e)
+            int_flags |= WHEEL_LITTLE_ENDIAN;
       }
 
       SDLRenderer::~SDLRenderer()
@@ -51,8 +54,6 @@ namespace wheel
          if (window == nullptr)
             return !WHEEL_OK;
 
-         std::cout << "Got window pointer\n";
-
          renderer = (void*)SDL_CreateRenderer((SDL_Window*)window, -1, SDL_RENDERER_ACCELERATED );
 
          if (renderer == nullptr)
@@ -60,18 +61,33 @@ namespace wheel
 
          std::cout << "OpenGL version string: " << glGetString(GL_VERSION) << "\n";
 
+         window_alive = true;
+
          return 0;
 
       }
 
+      void SDLRenderer::Clear(float r, float g, float b, float a)
+      {
+         if (shadow.clearcolour != glm::vec4(r, g, b ,a))
+            glClearColor(r, g, b, a);
+
+         glClear(GL_COLOR_BUFFER_BIT);
+      }
+
       bool SDLRenderer::WindowIsOpen()
       {
-         return true;
+         return window_alive;
       }
 
       void SDLRenderer::SwapBuffers()
       {
          SDL_RenderPresent((SDL_Renderer*)renderer);
+      }
+
+      uint32_t SDLRenderer::SetWindowHints(uint32_t target, uint32_t hint)
+      {
+         return 0;
       }
 
       void SDLRenderer::get_module_info(modinfo_t* info)
@@ -82,6 +98,62 @@ namespace wheel
          info->description = "Wheel reference renderer based on SDL2.0 and OpenGL";
 
          info->wheel_required_version = "any";
+      }
+
+      uint32_t SDLRenderer::GetEvents(EventList* events)
+      {
+         SDL_Event sdlevent;
+         while(SDL_PollEvent(&sdlevent))
+         {
+            Event newevent;
+
+            if (sdlevent.type == SDL_WINDOWEVENT)
+            {
+               switch (sdlevent.window.event)
+               {
+                  case SDL_WINDOWEVENT_CLOSE:
+                     window_alive = false;
+                     continue;
+               }
+            } else if (sdlevent.type == SDL_KEYUP) {
+               newevent.data.push_back(WHEEL_KEYEVENT);
+               newevent.data.push_back(WHEEL_RELEASE);
+
+               // SDL keys need no translation, since the scancodes are
+               // from usb_hid spec, other input systems, such as GLFW
+               // require additional scancode conversion.
+
+               uint8_t* p = (uint8_t*)&sdlevent.key.keysym.scancode;
+
+               if (int_flags & WHEEL_LITTLE_ENDIAN)
+               {
+                  newevent.data.push_back(*(p+1));
+                  newevent.data.push_back(*(p+0));
+               } else {
+                  newevent.data.push_back(*(p+0));
+                  newevent.data.push_back(*(p+1));
+               }
+
+            } else if (sdlevent.type == SDL_KEYDOWN) {
+               newevent.data.push_back(WHEEL_KEYEVENT);
+               newevent.data.push_back(WHEEL_PRESS);
+
+               uint8_t* p = (uint8_t*)&sdlevent.key.keysym.scancode;
+
+               if (int_flags & WHEEL_LITTLE_ENDIAN)
+               {
+                  newevent.data.push_back(*(p+1));
+                  newevent.data.push_back(*(p+0));
+               } else {
+                  newevent.data.push_back(*(p+0));
+                  newevent.data.push_back(*(p+1));
+               }
+            }
+
+            if (events != nullptr)
+               events->push_back(newevent);
+         }
+         return WHEEL_OK;
       }
    }
 }

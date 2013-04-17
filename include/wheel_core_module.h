@@ -15,9 +15,34 @@
 #include <dlfcn.h>
 #include <unordered_map>
 #include <set>
+#include <list>
+
+#define WHEEL_EVENT_WINDOW    0x00
+
+// 0x -- input event
+#define WHEEL_KEYEVENT        0x01
+#define WHEEL_EVENT_MOUSE     0x02
+
+
+#define WHEEL_PRESS           0x00
+#define WHEEL_RELEASE         0x01
+
 
 namespace wheel
 {
+   //! Event
+   /*!
+   */
+   class Event
+   {
+      public:
+         std::vector<uint8_t> data;
+
+         uint32_t GetType();
+   };
+
+   typedef std::list<Event> EventList;
+
    /*!
       \brief Structure that holds runtime information about the module.
    */
@@ -70,6 +95,8 @@ namespace wheel
 
    typedef std::vector<modset_t> modulelist_t;
 
+//   class event_info
+
    /*!
       \brief Virtual module class.  Derive this to add loadable modules
    */
@@ -80,6 +107,8 @@ namespace wheel
 
          virtual ~Module() {}
          virtual void get_module_info(modinfo_t*) = 0;
+
+         virtual uint32_t GetEvents(EventList* events) { return WHEEL_UNIMPLEMENTED_FEATURE; }
    };
 
    /*!

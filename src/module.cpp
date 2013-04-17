@@ -69,11 +69,6 @@ namespace wheel
       }
    }
 
-   void ModuleLibrary::PrintAll()
-   {
-      for (auto pair : modules)
-         std::cout << pair.first << " == " << pair.second << "\n";
-   }
    ModuleLibrary::ModuleLibrary()
    {
    }

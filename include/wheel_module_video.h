@@ -11,22 +11,6 @@
 
 namespace wheel
 {
-   class Event
-   {
-      private:
-      public:
-   };
-
-   typedef void(* wheel_event_callback_t)(Event&);
-
-   enum wheel_input_t
-   {
-      WHEEL_KEYBOARD_EVENT,
-      WHEEL_MOUSE_EVENT,
-      WHEEL_JOYSTICK_EVENT,
-      WHEEL_WINDOW_EVENT
-   };
-
    namespace interface
    {
       //! Interface for renderer modules
@@ -47,9 +31,8 @@ namespace wheel
                        <code>WHEEL_UNIMPLEMENTED_FEATURE</code> if the implementation cannot be found from the module.
 
                Possible values for <code>hints</code> can be found in the following table,
-               they MUST be implemented in a way that they can be OR'd together to set multiple
-               values at the same call.  The implementation does not need to support all hints, but it
-               SHOULD leave a log message for each unsupported request.
+               The implementation does not need to support all hints, but it SHOULD leave
+               a log message for each unsupported request.
 
                These values MUST be given default values when the implementation class is created, the
                values themselves may vary by the implementation.
@@ -69,6 +52,10 @@ namespace wheel
                </tr>
                <tr>
                <td><code>WHEEL_WINDOW_RESIZABLE</code></td>
+               <td><code>WHEEL_TRUE</code> or <code>WHEEL_FALSE</code></td>
+               </tr>
+               <tr>
+               <td><code>WHEEL_WINDOW_DECORATED</code></td>
                <td><code>WHEEL_TRUE</code> or <code>WHEEL_FALSE</code></td>
                </tr>
                <tr><td><code>WHEEL_WINDOW_RED_BITS</code></td>
@@ -128,6 +115,19 @@ namespace wheel
             */
             virtual  bool     WindowIsOpen() = 0;
 
+            //! Clear the screen to a colour
+            /*!
+               \param r       Red value of clear colour.
+               \param g       Green value of clear colour.
+               \param b       Blue value of clear colour.
+               \param a       Alpha value of clear colour.
+
+               \warning       The function will fail silently if the renderer
+                              does not support this functionality.
+            */
+            virtual  void     Clear(float r, float g, float b, float a) = 0;
+
+
             // Input-related
 
             //! Set event callbacks
@@ -142,17 +142,15 @@ namespace wheel
                        <code>WHEEL_UNIMPLEMENTED_FEATURE</code> if the implementation cannot be found from the module or the
                                                                 event type is unsupported.
             */
-            virtual  uint32_t SetCallback(wheel_input_t type, wheel_event_callback_t event) { return WHEEL_UNIMPLEMENTED_FEATURE; }
+//            virtual  uint32_t SetCallback(wheel_input_t type, wheel_event_callback_t event) { return WHEEL_UNIMPLEMENTED_FEATURE; }
 
-            //! Process events
+            //! Get list of events
             /*!
-               Processes input events.  A renderer SHOULD implement this feature, but it is not strictly required.
+               Retrieves events.  A renderer SHOULD implement this feature, but it is not strictly required.
                
-               \return <code>WHEEL_OK</code> on success \n
+               \return <code>WHEEL_OK</code> on success\n
                        <code>WHEEL_UNIMPLEMENTED_FEATURE</code> if the implementation cannot be found from the module.
-
             */
-            virtual  uint32_t Update() { return WHEEL_UNIMPLEMENTED_FEATURE; }
       };
    }
 }
