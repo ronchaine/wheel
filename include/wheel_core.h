@@ -10,14 +10,14 @@
 #include "wheel_core_common.h"
 #include "wheel_core_string.h"
 #include "wheel_core_utility.h"
-#include "wheel_core_resourcemanager.h"
 #include "wheel_core_module.h"
 #include "wheel_core_debug.h"
 
 namespace wheel
 {
-   int   initialise(int argc, char* argv[]);
-   void  terminate();
+   // Core core
+   int         initialise(int argc, char* argv[]);
+   void        terminate();
 }
 
 #endif

@@ -8,7 +8,8 @@
 #define WHEEL_CORE_COMMON_HEADER
 
 #include <cstdint>
-
+#include <cstdlib>
+   
 #ifdef NDEBUG
    #define WHEEL_NO_DEBUG
 #endif
@@ -26,6 +27,7 @@
 #define WHEEL_UNABLE_TO_REGISTER_MODULE   0xa001
 
 #define WHEEL_UNIMPLEMENTED_FEATURE       0xff00
+                                       // 0xffffffff
 
 /// Module error codes
 #define WHEEL_MODULE_FAILED_REQUEST       0xefff
@@ -34,7 +36,23 @@
 #define WHEEL_INITIALISED                 0x0001
 #define WHEEL_LITTLE_ENDIAN               0x0002
 
-/// Typedefs
+/// Typedefs, structs & stuff
 typedef int32_t flags_t;
+
+struct buffer_t
+{
+   size_t   size;
+   size_t   pos;
+
+   uint8_t* data;
+
+   buffer_t() {
+      size = 0;
+      data = nullptr;
+      pos = 0;
+   }
+
+  ~buffer_t() {}
+};
 
 #endif

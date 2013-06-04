@@ -9,19 +9,20 @@
 #include "wheel_core_common.h"
 
 #include <cstdint>
-/*
+
 namespace wheel
 {
-   namespace core
+   //! Check for system endianness
+   /*!
+      \return <code>TRUE</code> if the system is big-endian, otherwise <code>FALSE</code>
+   */
+   inline bool IsBigEndian()
    {
-      enum hashflags_t
-      {
-         HASHFUNC_STANDARD = 0,
-         HASHFUNC_SHA256   = 1
-      };
+      static const uint16_t endian_check_value        = 0xbe1e;
+      static const uint8_t  endian_check_value_first  = *(uint8_t*)&endian_check_value;
 
-      void hash(const string&, char* target, uint8_t flags);
+      return (endian_check_value_first == 0x1e);
    }
 }
-*/
+
 #endif //WHEEL_UTILITY_HEADER
