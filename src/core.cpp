@@ -8,17 +8,30 @@
 #include "../include/wheel_core_debug.h"
 
 #include <physfs.h>
-
+   
 namespace wheel
 {
    namespace internal
    {
       uint32_t flags = 0;
+
+      int init()
+      {
+         internal::flags |= WHEEL_INITIALISED;
+
+         return 0;
+      }
+
    }
+
    //! initialise the library, should NOT be called most of the time.  Use initialise(int argc, char* argv[]) instead.
    int initialise()
    {
       PHYSFS_init(NULL);
+
+      uint32_t res = internal::init();
+      if (res != WHEEL_OK)
+         return res;
 
       return WHEEL_OK;
    }
@@ -32,11 +45,9 @@ namespace wheel
    {
       PHYSFS_init(argv[0]);
 
-      internal::flags |= WHEEL_INITIALISED;
-
-      uint16_t r = 0xbe1e;
-      if (*(uint8_t*)&r == 0x1e)
-         internal::flags |= WHEEL_LITTLE_ENDIAN;
+      uint32_t res = internal::init();
+      if (res != WHEEL_OK)
+         return res;
 
       return WHEEL_OK;
    }

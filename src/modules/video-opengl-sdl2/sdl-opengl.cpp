@@ -4,7 +4,9 @@
 */
 
 #include "sdl-opengl.h"
+
 #include <iostream>
+#include <cstdio>
 
 #define GL3_PROTOTYPES 1
 #include <GL/gl3.h>
@@ -13,6 +15,8 @@
 extern "C" {
    wheel::Module* register_module()
    {
+      wmath::vec4f v4(0.0f, 1.0f, 2.0f, 3.0f);
+
       return new wheel::video::SDLRenderer;
    }
 
@@ -22,6 +26,43 @@ extern "C" {
    }
 }
 
+static const std::string wsdlgl_vertexshader_default =
+"\n\
+   #version 140\n\
+\n\
+   in vec3 in_pos;\n\
+   in vec4 in_col;\n\
+\n\
+   out vec3 frag_col;\n\
+\n\
+   void main(void)\n\
+   {\n\
+      gl_Position = vec4(in_pos, 1.0);\n\
+      frag_col = in_col;\n\
+   }\n\
+";
+
+static const std::string wsdlgl_fragshader_default =
+"\n\
+   #version 140\n\
+   precision highp float;\n\
+\n\
+   in vec4 frag_col;\n\
+   out vec4 out_col;\n\
+\n\
+   void main(void)\n\
+   {\n\
+      out_col = frag_col;\n\
+   }\n\
+";
+
+namespace wheel
+{
+   namespace video
+   {
+
+   }
+}
 namespace wheel
 {
    namespace video
@@ -39,6 +80,8 @@ namespace wheel
          uint16_t r = 0xbe1e;
          if (*(uint8_t*)&r == 0x1e)
             int_flags |= WHEEL_LITTLE_ENDIAN;
+
+         shader_active = false;
       }
 
       SDLRenderer::~SDLRenderer()
@@ -61,6 +104,11 @@ namespace wheel
 
          std::cout << "OpenGL version string: " << glGetString(GL_VERSION) << "\n";
 
+         /* Create VAO, bind it, and forget it */
+         GLuint VertexArrayID;
+         glGenVertexArrays(1, &VertexArrayID);
+         glBindVertexArray(VertexArrayID);
+
          window_alive = true;
 
          return 0;
@@ -69,7 +117,8 @@ namespace wheel
 
       void SDLRenderer::Clear(float r, float g, float b, float a)
       {
-         if (shadow.clearcolour != glm::vec4(r, g, b ,a))
+
+         if (shadow.clearcolour != wmath::vec4f(r, g, b ,a))
             glClearColor(r, g, b, a);
 
          glClear(GL_COLOR_BUFFER_BIT);
@@ -83,6 +132,11 @@ namespace wheel
       void SDLRenderer::SwapBuffers()
       {
          SDL_RenderPresent((SDL_Renderer*)renderer);
+      }
+
+      void SDLRenderer::Draw(uint32_t count, wheel::shapes::triangle_t* triangle_ptr)
+      {
+
       }
 
       uint32_t SDLRenderer::SetWindowHints(uint32_t target, uint32_t hint)
@@ -154,6 +208,20 @@ namespace wheel
                events->push_back(newevent);
          }
          return WHEEL_OK;
+      }
+
+      uint32_t SDLRenderer::AddShader(const string& name, const string& vert, const string& frag)
+      {
+/*
+         if ((uint32_t res = load_file(name)) != WHEEL_OK)
+            return res;
+*/
+         return WHEEL_UNIMPLEMENTED_FEATURE;
+      }
+
+      uint32_t SDLRenderer::UseShader(const string& name)
+      {
+         return WHEEL_UNIMPLEMENTED_FEATURE;
       }
    }
 }

@@ -8,9 +8,16 @@
 #define WHEEL_MODULE_VIDEO_INTERFACE_H
 
 #include "wheel_core_module.h"
+#include "wheel_math_geometry.hpp"
 
 namespace wheel
 {
+   enum shadertype_t
+   {
+      VERTEX,
+      FRAGMENT
+   };
+
    namespace interface
    {
       //! Interface for renderer modules
@@ -127,8 +134,71 @@ namespace wheel
             */
             virtual  void     Clear(float r, float g, float b, float a) = 0;
 
+            //! Get native window pointer.
+            /*!
+               \return void pointer to the native window handle or nullptr.
+            */
+            virtual  void*    GetWindowPtr() { return nullptr; }
 
-            // Input-related
+            // Drawing 
+            /*!
+               \param count         Number of triangles to draw
+               \param triangle_ptr  Pointer to an array of triangles
+            */
+            virtual  void     Draw(uint32_t count, wheel::shapes::triangle_t* triangle_ptr) = 0;
+
+            // Shader-related
+
+            //! Add new shader
+            /*!
+               Compiles and links a shader program.  This function SHOULD be implemented if any
+               shaders are to be used, but it is not required.  If the function is implemented,
+               the class needs to be able to retrieve the shader program by the name given.
+               Names that start with <code>WHEEL_RSVD_</code> are reserved.
+
+               \param name    name that the shader program is identified by.
+               \param vert    file to read vertex shader from.
+               \param frag    file to read fragment shader from.
+
+               \return <code>WHEEL_OK</code> on success, or a value depicting an error.
+            */
+            virtual  uint32_t AddShader(const string& name, const string& vert, const string& frag) { return WHEEL_UNIMPLEMENTED_FEATURE; }
+
+            //! Remove a shader
+            /*!
+               Removes previously added shader.  This function SHOULD be implemented if any
+               shaders are to be used, but it is not required.
+
+               \param name    name that the shader program is identified by.
+
+               \return <code>WHEEL_OK</code> on success, or a value depicting an error.
+            */
+            virtual  uint32_t RemoveShader(const string& name) { return WHEEL_UNIMPLEMENTED_FEATURE; }
+
+
+            //! Use different shader
+            /*!
+               Choose shader program to use.  This function MUST be implemented if any shaders
+               are to be used.  Names that start with <code>WHEEL_RSVD_</code> are reserved.
+
+               <table>
+               <tr>
+               <td><b>Name value</b></td>
+               <td><b>Meaning</b></td>
+               </tr>
+               <tr>
+               <td>WHEEL_RSVD_DEFAULT</td>
+               <td>Should be used for the shader used by default by the module, if there is one.</td>
+               </tr>
+               </table>
+
+               \param name    name of the shader program to use. 
+
+               \return <code>WHEEL_OK</code> on success, or a value depicting an error.
+            */
+            virtual  uint32_t UseShader(const string& name) { return WHEEL_UNIMPLEMENTED_FEATURE; }
+
+            // Event-related
 
             //! Set event callbacks
             /*!

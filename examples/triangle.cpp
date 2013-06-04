@@ -1,5 +1,6 @@
 #include "../include/wheel_core.h"
 #include "../include/wheel_module_video.h"
+#include "../include/wheel_math_geometry.hpp"
 
 int main(int argc, char* argv[])
 {
@@ -57,7 +58,31 @@ int main(int argc, char* argv[])
    wheel::EventList eventlist;
    eventlist.clear();
 
+   wmath::vec3f r[3], p[3];
+   wmath::vec4f c[3];  
+
+   r[0] = {0.0f, 0.0f, 0.0f};          // position
+   p[0] = {0.0f, 0.0f, 0.0f};          // normal
+   c[0] = {1.0f, 0.0f, 0.0f, 1.0f};    // colour
+
+   r[1] = {0.5f, 0.5f, 0.0f};          // position
+   p[1] = {0.0f, 0.0f, 0.0f};          // normal
+   c[1] = {1.0f, 0.0f, 0.0f, 1.0f};    // colour
+
+   r[2] = {0.5f,-0.5f, 0.0f};          // position
+   p[2] = {0.0f, 0.0f, 0.0f};          // normal
+   c[2] = {1.0f, 0.0f, 0.0f, 1.0f};    // colour
+
+   wheel::shapes::triangle_t tri;
+
+   tri.point[0] = wheel::shapes::vertex_t(r[0], p[0], c[0]);
+   tri.point[0] = wheel::shapes::vertex_t(r[1], p[1], c[1]);
+   tri.point[0] = wheel::shapes::vertex_t(r[2], p[2], c[2]);
+
    renderer->OpenWindow("Hello triangle", 200, 200);
+
+   renderer->Clear(0.1f, 0.1f, 0.1f, 1.0f);
+   renderer->Draw(1, &tri);
 
    while(renderer->WindowIsOpen())
    {
