@@ -8,7 +8,7 @@ include_directories(${WHEEL_SOURCE_DIR}/src
                     ${WHEEL_SOURCE_DIR}/include)
 
 set(COMMON_HEADERS ${WHEEL_SOURCE_DIR}/include/wheel_core.h utf8.h)
-set(COMMON_SOURCES core.cpp debug.cpp module.cpp string.cpp resourcemanager.cpp
+set(COMMON_SOURCES core.cpp debug.cpp module.cpp string.cpp resource.cpp
                    utility.cpp)
 
 set(WHEEL_SOURCES ${COMMON_SOURCES})
@@ -30,4 +30,3 @@ set_target_properties(wheel_core_static PROPERTIES OUTPUT_NAME "${WHEEL_LIB_NAME
 set_target_properties(wheel_core_static PROPERTIES VERSION ${WHEEL_VERSION})
 
 target_link_libraries(wheel_core ${WHEEL_LIBRARIES})
-
