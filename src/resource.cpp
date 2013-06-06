@@ -53,7 +53,11 @@ namespace wheel
       if (IsCached(filename))
          return WHEEL_OK;
 
+      if (!PHYSFS_exists(filename.std_str().c_str()))
+         return WHEEL_RESOURCE_UNAVAILABLE;
+
       PHYSFS_file* in = PHYSFS_openRead(filename.std_str().c_str());
+
       size_t len = PHYSFS_fileLength(in);
 
       databuffer_t* data = new databuffer_t;
