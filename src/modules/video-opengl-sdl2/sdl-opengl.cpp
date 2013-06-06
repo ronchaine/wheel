@@ -82,6 +82,11 @@ namespace wheel
             int_flags |= WHEEL_LITTLE_ENDIAN;
 
          shader_active = false;
+
+         window = nullptr;
+         renderer = nullptr;
+
+         window_alive = false;
       }
 
       SDLRenderer::~SDLRenderer()

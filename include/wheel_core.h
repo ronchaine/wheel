@@ -12,6 +12,7 @@
 #include "wheel_core_utility.h"
 #include "wheel_core_module.h"
 #include "wheel_core_debug.h"
+#include "wheel_core_resource.h"
 
 namespace wheel
 {

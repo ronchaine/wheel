@@ -193,7 +193,7 @@ namespace wheel
 
       \return  Pointer to the module requested.
    */
-   modulelist_t ModuleLibrary::GetList(const string& type)
+   modulelist_t ModuleLibrary::GetList(const string& type) const
    {
       modulelist_t rval;
 

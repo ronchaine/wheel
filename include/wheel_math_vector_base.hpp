@@ -93,7 +93,7 @@ namespace wheel
                return element[i];
             }
 
-            inline void print()
+            inline void print() const
             {
                std::cout << "(";
                for (size_t i = 0; i < S-1; ++i)

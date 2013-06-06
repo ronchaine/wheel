@@ -103,7 +103,7 @@ namespace wheel
    databuffer_t* ResourceLibrary::GetBuffer(const string& filename)
    {
       if (!IsCached(filename))
-         if (Cache(filename) != WHEEL_OK);
+         if (Cache(filename) != WHEEL_OK)
             return nullptr;
 
       return cache[filename];
@@ -120,5 +120,18 @@ namespace wheel
          return WHEEL_RESOURCE_UNAVAILABLE;
 
       return WHEEL_OK;
+   }
+
+   /*!
+      Add an archive or a directory to search path
+
+      \param path    A directory or an archive to be added to the search path.
+   */
+   size_t ResourceLibrary::BufferSize(const string& filename)
+   {
+      if (!IsCached(filename))
+         return 0;
+
+      return cache[filename]->size();
    }
 }

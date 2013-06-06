@@ -29,6 +29,7 @@ namespace wheel
          void           Remove(const string& filename);
 
          databuffer_t*  GetBuffer(const string& filename);
+         size_t         BufferSize(const string& filename);
 
          uint32_t       AddToPath(const string& resource);
 

@@ -130,7 +130,7 @@ namespace wheel
 
          void PrintAll();
 
-         modulelist_t GetList(const string& type = "");
+         modulelist_t GetList(const string& type = "") const;
 
          Module* operator[](const string& ident);
 
