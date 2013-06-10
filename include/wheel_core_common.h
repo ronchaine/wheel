@@ -37,22 +37,31 @@
 #define WHEEL_LITTLE_ENDIAN               0x0002
 
 /// Typedefs, structs & stuff
-typedef int32_t flags_t;
 
-struct buffer_t
+namespace wheel
 {
-   size_t   size;
-   size_t   pos;
+   typedef int32_t flags_t;
 
-   uint8_t* data;
+   struct buffer_t
+   {
+      size_t   size;
+      size_t   pos;
 
-   buffer_t() {
-      size = 0;
-      data = nullptr;
-      pos = 0;
+      uint8_t* data;
+
+      buffer_t() {
+         size = 0;
+         data = nullptr;
+         pos = 0;
+      }
+
+     ~buffer_t() {}
+   };
+
+   constexpr bool size_t_x64()
+   {
+     return sizeof(size_t) == 8 ? true : false;
    }
-
-  ~buffer_t() {}
-};
+}
 
 #endif

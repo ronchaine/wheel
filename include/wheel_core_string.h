@@ -7,12 +7,15 @@
 #define WHEEL_STRING_HEADER
 
 #include "wheel_core_common.h"
+#include "wheel_core_algo.hpp"
 
 #include <cstdint>
 #include <vector>
 #include <string>
 #include <locale>
 #include <memory>
+
+#include <cassert>
 
 namespace wheel
 {
@@ -104,19 +107,85 @@ namespace wheel
            out << str.std_str();
            return out;
         }
+
+        inline size_t hash() const noexcept;
   };
+}
+
+//! wheel::Hash specialisation for wheel::core::string
+namespace wheel
+{
+    // This voodoo is used when hashing wheel::strings with std::hash...
+    template<typename T, bool is_x86_64 = size_t_x64()>
+    class Hash
+    {
+      public:
+          size_t operator()(const T&)
+          {
+            assert(0 && "unknown bit depth");
+          }
+    };
+
+    // 64-bit version of string hash
+    template<>
+    class Hash<string, true>
+    {
+    public:
+      size_t operator()(const string& s) const noexcept
+      {
+        size_t   hash  = 0xCBF29CE484222325;
+        const uint64_t prime = 0x100000001B3;
+
+        uint8_t* bytep = (uint8_t*)s.getptr();
+
+        for (size_t it = 0; it < s.length() * 4; ++it)
+        {
+          hash = (hash ^ *(bytep+it)) * prime;
+        }
+
+      return hash;
+      }
+   };
+
+    // 32-bit version of string hash
+    template<>
+    class Hash<string, false>
+    {
+      size_t operator()(const string& s) const noexcept
+      {
+        size_t hash = 0x811C9DC5;
+        const uint32_t prime = 0x1000193;
+
+        uint8_t* bytep = (uint8_t*)s.getptr();
+
+        for (size_t it = 0; it < s.length() * 4; ++it)
+        {
+          hash = (hash ^ *(bytep+it)) * prime;
+        }
+
+        return hash;
+      }
+    };
+
+  inline size_t string::hash() const noexcept
+  {
+    wheel::Hash<wheel::string> rval_hash;
+    return rval_hash(*this);
+  }
 }
 
 namespace std {
   //! std::hash specialisation for wheel::core::string
   template<>
     struct hash<wheel::string>
-    : public __hash_base<size_t, wheel::string>
     {
-      size_t
-      operator()(const wheel::string& __s) const noexcept
-      { return std::_Hash_impl::hash(__s.getptr(),
-                                     __s.length() * sizeof(char32_t)); }
+      size_t operator()(const wheel::string& __s) const noexcept
+      { 
+//        wheel::Hash<wheel::string> hash;
+//      
+//        return hash(__s);
+        return __s.hash();
+      }
     };
 }
 
