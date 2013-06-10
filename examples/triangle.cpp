@@ -81,7 +81,7 @@ int main(int argc, char* argv[])
 
    renderer->OpenWindow("Hello triangle", 200, 200);
 
-   renderer->Clear(0.1f, 0.1f, 0.1f, 1.0f);
+   renderer->Clear(0.1f, 0.01f, 0.1f, 1.0f);
    renderer->Draw(1, &tri);
 
    while(renderer->WindowIsOpen())
