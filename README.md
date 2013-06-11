@@ -1,3 +1,10 @@
+#### What is it?
+It is a framework library.  Or an application/game engine engine.
+
+#### Troubleshooting
+OS X requires libc++ as standard library, the stdlibc++ provided by Apple lacks required C++11 functionality.
+
+#### Licence
 Copyright (c) 2013 <year> Jari Ronkainen
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
