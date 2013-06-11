@@ -129,41 +129,42 @@ namespace wheel
   template<>
   class Hash<string, true>
   {
-  public:
-    size_t operator()(const string& s) const noexcept
-    {
-      size_t   hash  = 0xCBF29CE484222325;
-      const uint64_t prime = 0x100000001B3;
-
-      uint8_t* bytep = (uint8_t*)s.getptr();
-
-      for (size_t it = 0; it < s.length() * 4; ++it)
+    public:
+      size_t operator()(const string& s) const noexcept
       {
-        hash = (hash ^ *(bytep+it)) * prime;
-      }
+        size_t hash  = 0xCBF29CE484222325;
+        const uint64_t prime = 0x100000001B3;
 
-    return hash;
-    }
+        uint8_t* bytep = (uint8_t*)s.getptr();
+
+        for (size_t it = 0; it < s.length() * 4; ++it)
+        {
+          hash = (hash ^ *(bytep+it)) * prime;
+        }
+
+      return hash;
+      }
  };
 
   // 32-bit version of string hash
   template<>
   class Hash<string, false>
   {
-    size_t operator()(const string& s) const noexcept
-    {
-      size_t hash = 0x811C9DC5;
-      const uint32_t prime = 0x1000193;
-
-      uint8_t* bytep = (uint8_t*)s.getptr();
-
-      for (size_t it = 0; it < s.length() * 4; ++it)
+    public:
+      size_t operator()(const string& s) const noexcept
       {
-        hash = (hash ^ *(bytep+it)) * prime;
-      }
+        size_t hash = 0x811C9DC5;
+        const uint32_t prime = 0x1000193;
 
-      return hash;
-    }
+        uint8_t* bytep = (uint8_t*)s.getptr();
+
+        for (size_t it = 0; it < s.length() * 4; ++it)
+        {
+          hash = (hash ^ *(bytep+it)) * prime;
+        }
+
+        return hash;
+      }
   };
 
   /*!
