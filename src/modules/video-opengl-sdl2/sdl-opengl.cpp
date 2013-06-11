@@ -268,8 +268,8 @@ namespace wheel
 
          shader.program = glCreateProgram();
 
-         // TODO: This the place for attriblocations and stuff.  The reference renderer
-         //       doesn't yet give a method for handling this.
+         // TFIXME:  This the place for attriblocations and stuff.  The reference renderer
+         //          doesn't yet give a method for handling this.
          /*
             This was old trick that I used, it's pretty unclean, so I didn't want to do
             that here.  Maybe use a initialiser list or custom file instead?
@@ -304,7 +304,15 @@ namespace wheel
 
       uint32_t SDLRenderer::UseShader(const string& name)
       {
-         return WHEEL_UNIMPLEMENTED_FEATURE;
+         if (shaderlist.count(name) == 1)
+         {
+            glUseProgram(shaderlist[name].program);
+            return WHEEL_OK;
+         }
+
+         log << "tried to use an invalid shader \"" << name << "\"\n";
+
+         return WHEEL_RESOURCE_UNAVAILABLE;
       }
    }
 }
