@@ -8,9 +8,6 @@
 #include <iostream>
 #include <cstdio>
 
-#define GL3_PROTOTYPES 1
-#include <GL/gl3.h>
-
 // These are required for every module
 extern "C" {
    wheel::Module* register_module()
@@ -221,6 +218,14 @@ namespace wheel
          if ((uint32_t res = load_file(name)) != WHEEL_OK)
             return res;
 */
+         databuffer_t vert_shader = *library.GetBuffer(vert);
+         databuffer_t frag_shader = *library.GetBuffer(frag);
+
+         vert_shader.push_back('\0');
+         frag_shader.push_back('\0');
+
+
+
          return WHEEL_UNIMPLEMENTED_FEATURE;
       }
 

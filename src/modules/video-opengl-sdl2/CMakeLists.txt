@@ -14,7 +14,7 @@ set(MODULE_SOURCES sdl-opengl.cpp)
 
 set(SDL2FLAGS "`sdl2-config --cflags`")
 
-set(CMAKE_CXX_FLAGS "--std=c++11 -fno-exceptions -fno-rtti -O3")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --std=c++11 -fno-exceptions -fno-rtti -O3")
 
 add_library(wheel_video_opengl_sdl2 SHARED ${MODULE_SOURCES} ${MODULE_HEADERS})
 

@@ -10,6 +10,9 @@
 #include "../../../include/wheel_module_video.h"
 #include "../../../include/wheel_math_geometry.hpp"
 
+#define GL3_PROTOTYPES 1
+#include <GL/gl3.h>
+
 typedef wmath::vector<float, 4> colour4;
 
 struct shadowgl_t
@@ -36,6 +39,13 @@ namespace wheel
 {
    namespace video
    {
+      struct shader_info_t
+      {
+         GLuint   vertex;
+         GLuint   fragment;
+         GLuint   program;
+      };
+
       class SDLRenderer : public wheel::interface::Video
       {
          private:
@@ -48,6 +58,8 @@ namespace wheel
             bool        shader_active;
 
             shadowgl_t  shadow;
+
+            std::unordered_map<string, shader_info_t> shaderlist;
 
          public:
             // Module functions
