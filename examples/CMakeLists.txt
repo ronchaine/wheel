@@ -5,6 +5,9 @@ link_directories(${WHEEL_BINARY_DIR}/src)
 
 set(CMAKE_CXX_FLAGS "--std=c++11 -fno-exceptions -fno-rtti -O3 -Wall")
 
+add_executable(stringhash stringhash.cpp)
+target_link_libraries(stringhash wheel)
+
 add_executable(modinfo modinfo.cpp)
 target_link_libraries(modinfo wheel)
 
