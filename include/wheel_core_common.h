@@ -9,7 +9,7 @@
 
 #include <cstdint>
 #include <cstdlib>
-   
+
 #ifdef NDEBUG
    #define WHEEL_NO_DEBUG
 #endif

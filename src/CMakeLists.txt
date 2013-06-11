@@ -1,9 +1,5 @@
 find_package(PhysFS REQUIRED)
 
-#set(Boost_USE_STATIC_LIBS ON)
-#add_definitions(-DBOOST_NO_EXCEPTIONS)
-#find_package(Boost COMPONENTS filesystem REQUIRED)
-
 include_directories(${WHEEL_SOURCE_DIR}/src
                     ${WHEEL_SOURCE_DIR}/include)
 
@@ -16,9 +12,13 @@ set(WHEEL_HEADERS ${COMMON_HEADERS})
 
 set(WHEEL_LIBRARIES_UNIX dl)
 
+if (APPLE)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
+endif()
+
 set(WHEEL_LIBRARIES ${PHYSFS_LIBRARY} ${WHEEL_LIBRARIES_UNIX})
 
-set(CMAKE_CXX_FLAGS "--std=c++11 -fno-exceptions -fno-rtti -O0 -fPIC -g")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --std=c++11 -fno-exceptions -fno-rtti -O3 -fPIC")
 
 add_library(wheel_core SHARED ${WHEEL_SOURCES} ${WHEEL_HEADERS})
 add_library(wheel_core_static STATIC ${WHEEL_SOURCES} ${WHEEL_HEADERS})
