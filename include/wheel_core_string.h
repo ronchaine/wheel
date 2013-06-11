@@ -107,6 +107,7 @@ namespace wheel
            return out;
         }
 
+        // FVN-1a
         inline size_t hash() const noexcept;
   };
 }
@@ -114,7 +115,8 @@ namespace wheel
 //! wheel::Hash specialisation for wheel::core::string
 namespace wheel
 {
-  // This voodoo is to find out whether size_t is 8 or 4 bytes long.
+  // This voodoo is to find out whether size_t is 8 or 4 bytes long, it could be
+  // easily extended to different sizes, but for now this is enough.
   template<typename T, bool is_x86_64 = size_t_x64()>
   class Hash
   {

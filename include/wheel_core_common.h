@@ -58,10 +58,9 @@ namespace wheel
      ~buffer_t() {}
    };
 
+   // Required for hash functions
    constexpr bool size_t_x64()
-   {
-     return sizeof(size_t) == 8 ? true : false;
-   }
+   { return sizeof(size_t) == 8 ? true : false; }
 }
 
 #endif
