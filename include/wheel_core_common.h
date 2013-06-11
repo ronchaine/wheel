@@ -30,7 +30,9 @@
                                        // 0xffffffff
 
 /// Module error codes
-#define WHEEL_MODULE_FAILED_REQUEST       0xefff
+#define WHEEL_MODULE_FAILED_REQUEST       0xef00
+#define WHEEL_MODULE_SHADER_COMPILE_ERROR 0xef01
+#define WHEEL_MODULE_SHADER_LINK_ERROR    0xef02
 
 /// Flags
 #define WHEEL_INITIALISED                 0x0001

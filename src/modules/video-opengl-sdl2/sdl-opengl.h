@@ -6,6 +6,7 @@
 #ifndef WHEEL_MODULE_VIDEO_SDL_OPENGL_HEADER
 #define WHEEL_MODULE_VIDEO_SDL_OPENGL_HEADER
 
+#include "../../../include/wheel_core_debug.h"
 #include "../../../include/wheel_core_resource.h"
 #include "../../../include/wheel_module_video.h"
 #include "../../../include/wheel_math_geometry.hpp"

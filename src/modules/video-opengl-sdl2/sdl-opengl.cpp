@@ -214,19 +214,92 @@ namespace wheel
 
       uint32_t SDLRenderer::AddShader(const string& name, const string& vert, const string& frag)
       {
-/*
-         if ((uint32_t res = load_file(name)) != WHEEL_OK)
-            return res;
-*/
+
          databuffer_t vert_shader = *library.GetBuffer(vert);
          databuffer_t frag_shader = *library.GetBuffer(frag);
 
          vert_shader.push_back('\0');
          frag_shader.push_back('\0');
 
+         shader_info_t shader;
 
+         shader.vertex = glCreateShader(GL_VERTEX_SHADER);
+         glShaderSource(shader.vertex, 1, (const GLchar**)&vert_shader[0], 0);
+         glCompileShader(shader.vertex);
 
-         return WHEEL_UNIMPLEMENTED_FEATURE;
+         int status = GL_TRUE;
+
+         glGetShaderiv(shader.vertex, GL_COMPILE_STATUS, &status);
+         if (status == GL_FALSE)
+         {
+            int loglen;
+            char* infomsg;
+            glGetShaderiv(shader.vertex, GL_INFO_LOG_LENGTH, &loglen);
+            infomsg = (char*) malloc (loglen);
+            glGetShaderInfoLog(shader.vertex, loglen, &loglen, infomsg);
+            log << infomsg << "\n";
+            free(infomsg);
+
+            glDeleteShader(shader.vertex);
+
+            return WHEEL_MODULE_SHADER_COMPILE_ERROR;
+         }
+
+         shader.fragment = glCreateShader(GL_FRAGMENT_SHADER);
+         glShaderSource(shader.fragment, 1, (const GLchar**)&frag_shader[0], 0);
+         glCompileShader(shader.fragment);
+
+         glGetShaderiv(shader.fragment, GL_COMPILE_STATUS, &status);
+         if (status == GL_FALSE)
+         {
+            int loglen;
+            char* infomsg;
+            glGetShaderiv(shader.fragment, GL_INFO_LOG_LENGTH, &loglen);
+            infomsg = (char*) malloc (loglen);
+            glGetShaderInfoLog(shader.fragment, loglen, &loglen, infomsg);
+            log << infomsg << "\n";
+            free(infomsg);
+
+            glDeleteShader(shader.fragment);
+            glDeleteShader(shader.vertex);
+
+            return WHEEL_MODULE_SHADER_COMPILE_ERROR;
+         }
+
+         shader.program = glCreateProgram();
+
+         // TODO: This the place for attriblocations and stuff.  The reference renderer
+         //       doesn't yet give a method for handling this.
+         /*
+            This was old trick that I used, it's pretty unclean, so I didn't want to do
+            that here.  Maybe use a initialiser list or custom file instead?
+
+            if (prelink_ptr != nullptr)
+               prelink_ptr(shader);
+            else
+            {
+               glBindAttribLocation(shader.program, 0, "position");
+               glBindAttribLocation(shader.program, 1, "colour");
+               glBindAttribLocation(shader.program, 2, "texture");
+               glBindAttribLocation(shader.program, 3, "indices");
+            }
+         */
+
+         glLinkProgram(shader.program);
+         glGetProgramiv(shader.program, GL_LINK_STATUS, &status);
+         if (status == GL_FALSE)
+         {
+            log << "failed to link shader\n";
+            glDeleteShader(shader.fragment);
+            glDeleteShader(shader.vertex);
+            glDeleteProgram(shader.program);
+
+            return WHEEL_MODULE_SHADER_LINK_ERROR;
+         }
+
+         shaderlist[name] = shader;
+
+         return WHEEL_OK;
       }
 
       uint32_t SDLRenderer::UseShader(const string& name)
