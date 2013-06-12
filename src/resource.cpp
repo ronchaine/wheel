@@ -136,7 +136,9 @@ namespace wheel
    {
       if (!IsCached(filename))
          if (Buffer(filename) != WHEEL_OK)
+         {
             return nullptr;
+         }
 
       return internal::file_cache[filename];
    }
