@@ -23,43 +23,6 @@ extern "C" {
    }
 }
 
-static const std::string wsdlgl_vertexshader_default =
-"\n\
-   #version 140\n\
-\n\
-   in vec3 in_pos;\n\
-   in vec4 in_col;\n\
-\n\
-   out vec3 frag_col;\n\
-\n\
-   void main(void)\n\
-   {\n\
-      gl_Position = vec4(in_pos, 1.0);\n\
-      frag_col = in_col;\n\
-   }\n\
-";
-
-static const std::string wsdlgl_fragshader_default =
-"\n\
-   #version 140\n\
-   precision highp float;\n\
-\n\
-   in vec4 frag_col;\n\
-   out vec4 out_col;\n\
-\n\
-   void main(void)\n\
-   {\n\
-      out_col = frag_col;\n\
-   }\n\
-";
-
-namespace wheel
-{
-   namespace video
-   {
-
-   }
-}
 namespace wheel
 {
    namespace video
@@ -94,6 +57,12 @@ namespace wheel
 
       uint32_t SDLRenderer::OpenWindow(const string& title, uint32_t w, uint32_t h)
       {
+         SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+         SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
+         SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
+         SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
+         SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, 8);
+
          window = (void*)SDL_CreateWindow(title.std_str().c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, w, h, SDL_WINDOW_SHOWN|SDL_WINDOW_OPENGL);
 
          if (window == nullptr)
@@ -105,6 +74,8 @@ namespace wheel
             return !WHEEL_OK;
 
          std::cout << "OpenGL version string: " << glGetString(GL_VERSION) << "\n";
+
+         glViewport(0.0, 0.0, w, h);
 
          /* Create VAO, bind it, and forget it */
          GLuint VertexArrayID;
@@ -119,7 +90,6 @@ namespace wheel
 
       void SDLRenderer::Clear(float r, float g, float b, float a)
       {
-
          if (shadow.clearcolour != glm::vec4(r, g, b ,a))
             glClearColor(r, g, b, a);
 
@@ -138,6 +108,38 @@ namespace wheel
 
       void SDLRenderer::Draw(uint32_t count, wheel::shapes::triangle_t* triangle_ptr)
       {
+         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+         // An array of 3 vectors which represents 3 vertices
+         static const GLfloat g_vertex_buffer_data[] = {
+            1.0f, -1.0f, 0.0f,
+            -1.0f, -1.0f, 0.0f,
+            0.0f,  1.0f, 0.0f,
+         };
+         static GLuint vertexbuffer;
+         static bool genbuffer = false;
+
+         if (genbuffer == false)
+         {
+            glGenBuffers(1, &vertexbuffer);
+            glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
+            glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
+            genbuffer = true;
+         }
+         glEnableVertexAttribArray(0);
+         glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
+         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+
+         glDrawArrays(GL_TRIANGLES, 0, 3);
+
+         glDisableVertexAttribArray(0);
+/*
+
+         static GLuint vertexbuffer;
+         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, triangle_ptr);
+
+         glDrawArrays(GL_TRIANGLES, 0, 3 * count);
+*/
 
       }
 
@@ -214,9 +216,23 @@ namespace wheel
 
       uint32_t SDLRenderer::AddShader(const string& name, const string& vert, const string& frag)
       {
+         const buffer_t* dummy = GetBuffer(vert);
+         if (dummy == nullptr)
+         {
+            log << "ERROR: couldn't find vertex shader input file.\n";
+            return WHEEL_RESOURCE_UNAVAILABLE;
+         }
 
-         buffer_t vert_shader = *GetBuffer(vert);
-         buffer_t frag_shader = *GetBuffer(frag);
+         buffer_t vert_shader = *dummy;
+
+         dummy = GetBuffer(frag);
+         if (dummy == nullptr)
+         {
+            log << "ERROR: couldn't find fragment shader input file.\n";
+            return WHEEL_RESOURCE_UNAVAILABLE;
+         }
+
+         buffer_t frag_shader = *dummy;
 
          vert_shader.push_back('\0');
          frag_shader.push_back('\0');
@@ -224,7 +240,10 @@ namespace wheel
          shader_info_t shader;
 
          shader.vertex = glCreateShader(GL_VERTEX_SHADER);
-         glShaderSource(shader.vertex, 1, (const GLchar**)&vert_shader[0], 0);
+
+         char const* vert_ptr = (char const*)&vert_shader[0];
+
+         glShaderSource(shader.vertex, 1, &vert_ptr, 0);
          glCompileShader(shader.vertex);
 
          // No longer required, do not cache.
@@ -240,7 +259,7 @@ namespace wheel
             glGetShaderiv(shader.vertex, GL_INFO_LOG_LENGTH, &loglen);
             infomsg = (char*) malloc (loglen);
             glGetShaderInfoLog(shader.vertex, loglen, &loglen, infomsg);
-            log << infomsg << "\n";
+            log << "vert:" << infomsg << "\n";
             free(infomsg);
 
             glDeleteShader(shader.vertex);
@@ -248,8 +267,10 @@ namespace wheel
             return WHEEL_MODULE_SHADER_COMPILE_ERROR;
          }
 
+         char const* frag_ptr = (char const*)&frag_shader[0];
+
          shader.fragment = glCreateShader(GL_FRAGMENT_SHADER);
-         glShaderSource(shader.fragment, 1, (const GLchar**)&frag_shader[0], 0);
+         glShaderSource(shader.fragment, 1, &frag_ptr, 0);
          glCompileShader(shader.fragment);
 
          // No longer required, do not cache.
@@ -263,7 +284,7 @@ namespace wheel
             glGetShaderiv(shader.fragment, GL_INFO_LOG_LENGTH, &loglen);
             infomsg = (char*) malloc (loglen);
             glGetShaderInfoLog(shader.fragment, loglen, &loglen, infomsg);
-            log << infomsg << "\n";
+            log << "frag:" << infomsg << "\n";
             free(infomsg);
 
             glDeleteShader(shader.fragment);
@@ -273,23 +294,6 @@ namespace wheel
          }
 
          shader.program = glCreateProgram();
-
-         // TFIXME:  This the place for attriblocations and stuff.  The reference renderer
-         //          doesn't yet give a method for handling this.
-         /*
-            This was old trick that I used, it's pretty unclean, so I didn't want to do
-            that here.  Maybe use a initialiser list or custom file instead?
-
-            if (prelink_ptr != nullptr)
-               prelink_ptr(shader);
-            else
-            {
-               glBindAttribLocation(shader.program, 0, "position");
-               glBindAttribLocation(shader.program, 1, "colour");
-               glBindAttribLocation(shader.program, 2, "texture");
-               glBindAttribLocation(shader.program, 3, "indices");
-            }
-         */
 
          glLinkProgram(shader.program);
          glGetProgramiv(shader.program, GL_LINK_STATUS, &status);

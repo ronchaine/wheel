@@ -1,6 +1,10 @@
 #include "../include/wheel_core.h"
 #include "../include/wheel_module_video.h"
 
+#include <physfs.h>
+
+#include <GL/gl.h>
+
 int main(int argc, char* argv[])
 {
    wcl::initialise(argc, argv);
@@ -49,22 +53,47 @@ int main(int argc, char* argv[])
 
    wheel::interface::Video* renderer = (wheel::interface::Video*)modulelibrary[modlist[choice-1].file];
 
-   wheel::modinfo_t modinfo;
-
-   renderer->get_module_info(&modinfo);
-
-   wheel::log << modinfo << "\n";
-
    wheel::EventList eventlist;
    eventlist.clear();
 
-   renderer->OpenWindow("Hello triangle", 200, 200);
+   // Create triangle
+   wheel::vertex_t tripoints[3];
+   tripoints[0].x = -1.0f;
+   tripoints[0].y = -1.0f;
+   tripoints[0].z = 0.0f;
 
-   renderer->Clear(0.1f, 0.01f, 0.1f, 1.0f);
-//   renderer->Draw(1, &tri);
+   tripoints[1].x = 1.0f;
+   tripoints[1].y = -1.0f;
+   tripoints[1].z = 0.0f;
 
+   tripoints[2].x = 0.0f;
+   tripoints[2].y = 1.0f;
+   tripoints[2].z = 0.0f;
+
+   wheel::shapes::triangle_t tri;
+   tri.point[0] = tripoints[0];
+   tri.point[1] = tripoints[1];
+   tri.point[2] = tripoints[2];
+
+   renderer->OpenWindow("Hello triangle", 400, 400);
+   if (renderer->AddShader("default", "tri.vs", "tri.fs"))
+      goto clean; // Suck it, this is clean way to end this
+
+   if (renderer->UseShader("default") != WHEEL_OK)
+      goto clean;
+
+   renderer->Clear(0.1f, 0.01f, 0.8f, 1.0f);
+ 
    while(renderer->WindowIsOpen())
    {
+
+      glBegin(GL_TRIANGLES);
+         glVertex2f(-1.0f, -1.0f);
+         glVertex2f(1.0f, -1.0f);
+         glVertex2f(0.0f, 1.0f);
+      glEnd();
+
+      renderer->Draw(1, &tri);
       renderer->SwapBuffers();
       renderer->GetEvents(&eventlist);
 
@@ -81,6 +110,7 @@ int main(int argc, char* argv[])
       eventlist.clear();
    }
 
+clean:
    modulelibrary.Remove(modlist[choice-1].file);
 
    wcl::terminate();

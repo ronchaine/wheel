@@ -44,7 +44,7 @@ namespace wheel
    {
       struct triangle_t
       {
-         float point[9];
+         vertex_t point[3];
       };
    }
 

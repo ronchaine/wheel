@@ -15,7 +15,7 @@ set(MODULE_HEADERS ${WHEEL_SOURCE_DIR}/include/wheel_core_module.h
                     video-glfw.h)
 set(MODULE_SOURCES video-glfw.cpp)
 
-set(CMAKE_CXX_FLAGS "--std=c++11 -fno-exceptions -fno-rtti -O3")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --std=c++11 -fno-exceptions -fno-rtti -O3")
 
 add_library(wheel_video_glfw SHARED ${MODULE_SOURCES} ${MODULE_HEADERS})
 

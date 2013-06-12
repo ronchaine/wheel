@@ -134,6 +134,15 @@ namespace wheel
    */
    const buffer_t* GetBuffer(const string& filename)
    {
+/*
+      char **rc = PHYSFS_enumerateFiles("/");
+      char **i;
+
+      for (i = rc; *i != NULL; i++)
+        printf(" * We've got [%s].\n", *i);
+
+      PHYSFS_freeList(rc);
+*/
       if (!IsCached(filename))
          if (Buffer(filename) != WHEEL_OK)
          {
