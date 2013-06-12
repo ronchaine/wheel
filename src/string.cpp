@@ -324,6 +324,12 @@ namespace wheel
       return rval;
    }
 
+   string& string::operator+=(const string& other)
+   {
+      *this = *this + other;
+      return *this;
+   }
+
    //! Comparison
    /*!
       Compares the values of two strings together

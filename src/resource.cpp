@@ -16,6 +16,44 @@ namespace wheel
       size_t cache_memory = 0;
    }
 
+   /*!
+      \return Program base directory.
+   */
+   const char* AppPath()
+   {
+      return PHYSFS_getBaseDir();
+   }
+
+   /*!
+      Initialises the filesystem
+
+      \return <code>WHEEL_OK</code>.
+   */
+   uint32_t Filesystem_Init(int argc, char* argv[])
+   {
+      if (PHYSFS_init(argv[0]))
+      {
+         PHYSFS_addToSearchPath(PHYSFS_getBaseDir(), 0);
+         
+         return WHEEL_OK;
+      }
+
+      return WHEEL_ERROR_INIT_FILESYSTEM;
+   }
+   /*!
+      Empties cache and handles cleanup.
+   */
+   void Filesystem_Deinit()
+   {
+      EmptyCache();
+      PHYSFS_deinit();
+   }
+
+   /*!
+      Checks if the file is in the cache (has been buffered).
+
+      \return <code>true</code>If file is buffered, otherwise <code>false</code>
+   */
    bool IsCached(const string& filename)
    {
       if (internal::file_cache.count(filename) > 0)
@@ -24,6 +62,11 @@ namespace wheel
       return false;
    }
 
+   /*!
+      Cache contents of a file.
+
+      \return <code>WHEEL_OK</code> on success, or an error code depicting the error.
+   */
    uint32_t Buffer(const string& filename)
    {
       if (IsCached(filename))
@@ -57,6 +100,9 @@ namespace wheel
       return WHEEL_OK;
    }
 
+   /*!
+      Deletes all buffers from the cache and frees the memory.
+   */
    void EmptyCache()
    {
       for (auto it : internal::file_cache)
@@ -65,6 +111,9 @@ namespace wheel
       internal::cache_memory = 0;
    }
 
+   /*!
+      Deletes a buffer from the cache.
+   */
    void DeleteBuffer(const string& filename)
    {
       if (!IsCached(filename))
@@ -78,7 +127,12 @@ namespace wheel
       return;
    }
 
-   buffer_t* GetBuffer(const string& filename)
+   /*!
+      Retrieves a pointer to a buffer from the cache.
+
+      \return  pointer to the cached buffer in buffer_t -format.
+   */
+   const buffer_t* GetBuffer(const string& filename)
    {
       if (!IsCached(filename))
          if (Buffer(filename) != WHEEL_OK)
@@ -87,6 +141,11 @@ namespace wheel
       return internal::file_cache[filename];
    }
 
+   /*!
+      Adds a resource to search path
+
+      \return <code>WHEEL_OK</code> on success, otherwise an error code depicting the error.
+   */
    uint32_t AddToPath(const string& path, const string& mountpoint)
    {
       if (PHYSFS_mount(path.std_str().c_str(), mountpoint.std_str().c_str(), 1) == 0)
@@ -95,6 +154,9 @@ namespace wheel
       return WHEEL_OK;
    }
 
+   /*!
+      \return Size of a cached buffer
+   */
    size_t BufferSize(const string& filename)
    {
       if (!IsCached(filename))

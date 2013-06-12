@@ -8,7 +8,10 @@ int main(int argc, char* argv[])
 
    wcl::ModuleLibrary modulelibrary;
 
-   modulelibrary.Search(".");
+   wheel::string module_search_base = wheel::AppPath();
+   module_search_base += "../";
+
+   modulelibrary.Search(module_search_base);
 
    wheel::modulelist_t modlist = modulelibrary.GetList("VIDEO");
 
