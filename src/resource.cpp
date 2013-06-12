@@ -10,45 +10,21 @@
 
 namespace wheel
 {
-   /*!
-      Default-initialised cache that may be used however seen fit, it was originally made
-      so that different modules may have a common cache.
-   */
-   ResourceLibrary library;
-
-   ResourceLibrary::ResourceLibrary()
+   namespace internal
    {
-      used_mem = 0;
-   }
-   ResourceLibrary::~ResourceLibrary()
-   {
-      for (auto it : cache)
-         delete it.second;
+      std::unordered_map<string, buffer_t*> file_cache;
+      size_t cache_memory = 0;
    }
 
-   /*!
-      Checks if a file is already cached
-
-      \param filename      name of a file
-
-      \return  <code>true</code> if the file is in the cache, otherwise <code>false</code>
-   */
-   bool ResourceLibrary::IsCached(const string& filename)
+   bool IsCached(const string& filename)
    {
-      if (cache.count(filename) > 0)
+      if (internal::file_cache.count(filename) > 0)
          return true;
 
       return false;
    }
 
-   /*!
-      Caches a file.
-
-      \param filename      name of a file to be cached.
-
-      \return  <code>WHEEL_OK</code> on success or an error code depicting the reason for failure.
-   */
-   uint32_t ResourceLibrary::Cache(const string& filename)
+   uint32_t Buffer(const string& filename)
    {
       if (IsCached(filename))
          return WHEEL_OK;
@@ -58,84 +34,72 @@ namespace wheel
 
       PHYSFS_file* in = PHYSFS_openRead(filename.std_str().c_str());
 
+      if (in == nullptr)
+         return WHEEL_RESOURCE_UNAVAILABLE;
+
       size_t len = PHYSFS_fileLength(in);
 
-      databuffer_t* data = new databuffer_t;
-      data->resize(len + 1);
+      buffer_t* data = new buffer_t;
+      data->resize(len+1);
 
       PHYSFS_read(in, &data->at(0), 1, len);
       PHYSFS_close(in);
 
-      std::pair<string, databuffer_t*> pair;
+      std::pair<string, buffer_t*> pair;
+
       pair.first = filename;
       pair.second = data;
 
-      cache.insert(pair);
+      internal::file_cache.insert(pair);
 
-      used_mem += pair.first.length() * sizeof(char32_t) + pair.second->size();
+      internal::cache_memory += pair.first.length() * sizeof(char32_t) + pair.second->size();
 
       return WHEEL_OK;
    }
 
-   /*!
-      Removes a file from cache
+   void EmptyCache()
+   {
+      for (auto it : internal::file_cache)
+         delete it.second;
 
-      \param filename      name of a file to be removed from cache
-   */
-   void ResourceLibrary::Remove(const string& filename)
+      internal::cache_memory = 0;
+   }
+
+   void DeleteBuffer(const string& filename)
    {
       if (!IsCached(filename))
          return;
 
-      used_mem -= filename.length() * sizeof(char32_t) + cache[filename]->size();
+      internal::cache_memory -= filename.length() * sizeof(char32_t) + internal::file_cache[filename]->size();
 
-      delete cache[filename];
-
-      cache.erase(filename);
+      delete internal::file_cache[filename];
+      internal::file_cache.erase(filename);
 
       return;
    }
 
-   /*!
-      Retrieves pointer to a memory buffer with contents of the file, caches
-      the file if it isn't already cached.
-
-      \param filename      name of a file to be read into the buffer
-
-      \return Pointer pointing to a memory buffer or <code>nullptr</code>
-   */
-   databuffer_t* ResourceLibrary::GetBuffer(const string& filename)
+   buffer_t* GetBuffer(const string& filename)
    {
       if (!IsCached(filename))
-         if (Cache(filename) != WHEEL_OK)
+         if (Buffer(filename) != WHEEL_OK)
             return nullptr;
 
-      return cache[filename];
+      return internal::file_cache[filename];
    }
 
-   /*!
-      Add an archive or a directory to search path
-
-      \param path    A directory or an archive to be added to the search path.
-   */
-   uint32_t ResourceLibrary::AddToPath(const string& path)
+   uint32_t AddToPath(const string& path, const string& mountpoint)
    {
-      if (PHYSFS_addToSearchPath(path.std_str().c_str(), 1) == 0)
+      if (PHYSFS_mount(path.std_str().c_str(), mountpoint.std_str().c_str(), 1) == 0)
          return WHEEL_RESOURCE_UNAVAILABLE;
 
       return WHEEL_OK;
    }
 
-   /*!
-      Add an archive or a directory to search path
-
-      \param path    A directory or an archive to be added to the search path.
-   */
-   size_t ResourceLibrary::BufferSize(const string& filename)
+   size_t BufferSize(const string& filename)
    {
       if (!IsCached(filename))
          return 0;
 
-      return cache[filename]->size();
+      return internal::file_cache[filename]->size();
    }
 }

@@ -79,6 +79,8 @@ int main(int argc, char* argv[])
    tri.point[0] = wheel::shapes::vertex_t(r[1], p[1], c[1]);
    tri.point[0] = wheel::shapes::vertex_t(r[2], p[2], c[2]);
 
+//   wheel::library.AddToPath(".");
+
    renderer->OpenWindow("Hello triangle", 200, 200);
 
    renderer->Clear(0.1f, 0.01f, 0.1f, 1.0f);

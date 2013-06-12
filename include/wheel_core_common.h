@@ -9,6 +9,7 @@
 
 #include <cstdint>
 #include <cstdlib>
+#include <vector>
 
 #ifdef NDEBUG
    #define WHEEL_NO_DEBUG
@@ -44,21 +45,7 @@ namespace wheel
 {
    typedef int32_t flags_t;
 
-   struct buffer_t
-   {
-      size_t   size;
-      size_t   pos;
-
-      uint8_t* data;
-
-      buffer_t() {
-         size = 0;
-         data = nullptr;
-         pos = 0;
-      }
-
-     ~buffer_t() {}
-   };
+   typedef  std::vector<uint8_t> buffer_t;
 
    // Required for hash functions
    constexpr bool size_t_x64()

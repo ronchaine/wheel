@@ -54,6 +54,8 @@ namespace wheel
 
    void terminate()
    {
+      EmptyCache();
+      
       PHYSFS_deinit();
 
       internal::flags &= ~WHEEL_INITIALISED;

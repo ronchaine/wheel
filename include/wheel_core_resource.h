@@ -15,32 +15,17 @@
 
 namespace wheel
 {
-   typedef std::vector<uint8_t> databuffer_t;
+   uint32_t    AddToPath(const string& resource, const string& where);
 
-   class ResourceLibrary
-   {
-      private:
-         std::unordered_map<string, databuffer_t*> cache;
+   buffer_t*   GetBuffer(const string& filename);
+   size_t      BufferSize(const string& filename);
 
-         size_t         used_mem;
+   bool        IsCached(const string& filename);
 
-      public:
-         uint32_t       Cache(const string& filename);
-         void           Remove(const string& filename);
+   uint32_t    Buffer(const string& filename);
+   void        DeleteBuffer(const string& filename);
 
-         databuffer_t*  GetBuffer(const string& filename);
-         size_t         BufferSize(const string& filename);
-
-         uint32_t       AddToPath(const string& resource);
-
-         size_t         MemInfo();
-         bool           IsCached(const string& filename);
-
-         ResourceLibrary();
-        ~ResourceLibrary();
-   };
-
-   extern ResourceLibrary library;
+   void        EmptyCache();
 }
 
 #endif

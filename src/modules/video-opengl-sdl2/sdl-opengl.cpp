@@ -215,8 +215,8 @@ namespace wheel
       uint32_t SDLRenderer::AddShader(const string& name, const string& vert, const string& frag)
       {
 
-         databuffer_t vert_shader = *library.GetBuffer(vert);
-         databuffer_t frag_shader = *library.GetBuffer(frag);
+         buffer_t vert_shader = *GetBuffer(vert);
+         buffer_t frag_shader = *GetBuffer(frag);
 
          vert_shader.push_back('\0');
          frag_shader.push_back('\0');
@@ -226,6 +226,9 @@ namespace wheel
          shader.vertex = glCreateShader(GL_VERTEX_SHADER);
          glShaderSource(shader.vertex, 1, (const GLchar**)&vert_shader[0], 0);
          glCompileShader(shader.vertex);
+
+         // No longer required, do not cache.
+         DeleteBuffer(vert);
 
          int status = GL_TRUE;
 
@@ -248,6 +251,9 @@ namespace wheel
          shader.fragment = glCreateShader(GL_FRAGMENT_SHADER);
          glShaderSource(shader.fragment, 1, (const GLchar**)&frag_shader[0], 0);
          glCompileShader(shader.fragment);
+
+         // No longer required, do not cache.
+         DeleteBuffer(frag);
 
          glGetShaderiv(shader.fragment, GL_COMPILE_STATUS, &status);
          if (status == GL_FALSE)
