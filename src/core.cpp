@@ -41,10 +41,14 @@ namespace wheel
       return WHEEL_OK;
    }
 
+   //! Uninitialize the library
+   /*!
+      Cleans up after the library.
+   */
    void terminate()
    {
       Filesystem_Deinit();
-      
+
       internal::flags &= ~WHEEL_INITIALISED;
    }
 }

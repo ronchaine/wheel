@@ -12,7 +12,7 @@
 extern "C" {
    wheel::Module* register_module()
    {
-      wmath::vec4f v4(0.0f, 1.0f, 2.0f, 3.0f);
+      glm::vec4 v4(0.0f, 1.0f, 2.0f, 3.0f);
 
       return new wheel::video::SDLRenderer;
    }
@@ -120,7 +120,7 @@ namespace wheel
       void SDLRenderer::Clear(float r, float g, float b, float a)
       {
 
-         if (shadow.clearcolour != wmath::vec4f(r, g, b ,a))
+         if (shadow.clearcolour != glm::vec4(r, g, b ,a))
             glClearColor(r, g, b, a);
 
          glClear(GL_COLOR_BUFFER_BIT);

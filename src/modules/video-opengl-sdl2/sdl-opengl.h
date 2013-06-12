@@ -9,16 +9,15 @@
 #include "../../../include/wheel_core_debug.h"
 #include "../../../include/wheel_core_resource.h"
 #include "../../../include/wheel_module_video.h"
-#include "../../../include/wheel_math_geometry.hpp"
+//#include "../../../include/wheel_math_geometry.hpp"
+#include <glm/glm.hpp>
 
 #define GL3_PROTOTYPES 1
 #include <GL/gl3.h>
 
-typedef wmath::vector<float, 4> colour4;
-
 struct shadowgl_t
 {
-   wmath::vec4f clearcolour;
+   glm::vec4 clearcolour;
 
    bool        drawn;
 

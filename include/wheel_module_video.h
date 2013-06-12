@@ -8,7 +8,7 @@
 #define WHEEL_MODULE_VIDEO_INTERFACE_H
 
 #include "wheel_core_module.h"
-#include "wheel_math_geometry.hpp"
+//#include "wheel_math_geometry.hpp"
 
 namespace wheel
 {
@@ -17,6 +17,36 @@ namespace wheel
       VERTEX,
       FRAGMENT
    };
+/*
+   struct vertex_t
+   {
+      math::vec3f  position;
+      math::vec3f  normal;
+      math::vec4f  colour;
+
+      vertex_t() {}
+      vertex_t(math::vec3f& r, math::vec3f& n, math::vec4f& c)
+      {
+         position = r;
+         normal = n;
+         colour = c;
+      }
+   };
+*/
+   struct vertex_t
+   {
+      float x, y, z;
+      float nx, ny, nz;
+      float s0, t0;
+   };
+
+   namespace shapes
+   {
+      struct triangle_t
+      {
+         float point[9];
+      };
+   }
 
    namespace interface
    {
