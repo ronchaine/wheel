@@ -4,6 +4,10 @@ include_directories(${WHEEL_SOURCE_DIR}/src
 
 #link_directories()
 
+if (APPLE)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
+endif()
+
 set(MODULE_VERSION 0.1)
 
 set(MODULE_HEADERS ${WHEEL_SOURCE_DIR}/include/wheel_core_module.h

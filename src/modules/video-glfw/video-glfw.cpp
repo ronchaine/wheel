@@ -39,6 +39,10 @@ namespace wheel
          screen.width = w;
          screen.height = h;
 
+         GLuint VertexArrayID;
+         glGenVertexArrays(1, &VertexArrayID);
+         glBindVertexArray(VertexArrayID);
+
          return WHEEL_OK;
       }
 

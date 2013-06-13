@@ -93,7 +93,7 @@ int main(int argc, char* argv[])
          glVertex2f(0.0f, 1.0f);
       glEnd();
 
-      renderer->Draw(1, &tri);
+      //renderer->Draw(1, &tri);
       renderer->SwapBuffers();
       renderer->GetEvents(&eventlist);
 
