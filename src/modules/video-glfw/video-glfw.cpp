@@ -39,10 +39,13 @@ namespace wheel
          screen.width = w;
          screen.height = h;
 
+         glViewport(0.0, 0.0, w, h);
+
+/*
          GLuint VertexArrayID;
          glGenVertexArrays(1, &VertexArrayID);
          glBindVertexArray(VertexArrayID);
-
+*/
          return WHEEL_OK;
       }
 
@@ -64,33 +67,9 @@ namespace wheel
          glClear(GL_COLOR_BUFFER_BIT);
       }
 
-      void GLFWRenderer::Draw(uint32_t count, wheel::shapes::triangle_t* triangle_ptr)
+      void GLFWRenderer::Draw(const interface::Renderable& object)
       {
-         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-         // An array of 3 vectors which represents 3 vertices
-         static const GLfloat g_vertex_buffer_data[] = {
-            1.0f, -1.0f, 0.0f,
-            -1.0f, -1.0f, 0.0f,
-            0.0f,  1.0f, 0.0f,
-         };
-         static GLuint vertexbuffer;
-         static bool genbuffer = false;
-
-         if (genbuffer == false)
-         {
-            glGenBuffers(1, &vertexbuffer);
-            glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-            glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
-            genbuffer = true;
-         }
-         glEnableVertexAttribArray(0);
-         glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
-
-         glDrawArrays(GL_TRIANGLES, 0, 3);
-
-         glDisableVertexAttribArray(0);
+         assert(0 && "unfinished renderer");
       }
 
       uint32_t GLFWRenderer::AddShader(const string& name, const string& vert, const string& frag)

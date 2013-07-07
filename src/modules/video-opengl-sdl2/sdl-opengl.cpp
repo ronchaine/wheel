@@ -23,10 +23,41 @@ extern "C" {
    }
 }
 
+char* filetobuf(const char *file)
+{
+   FILE *fptr;
+   long length;
+   char *buf;
+ 
+   fptr = fopen(file, "rb"); /* Open file for reading */
+   if (!fptr) /* Return NULL on failure */
+      return NULL;
+   fseek(fptr, 0, SEEK_END); /* Seek to the end of the file */
+   length = ftell(fptr); /* Find out how many bytes into the file we are */
+   buf = (char*)malloc(length+1); /* Allocate a buffer for the entire length of the file and a null terminator */
+   fseek(fptr, 0, SEEK_SET); /* Go back to the beginning of the file */
+   fread(buf, length, 1, fptr); /* Read the contents of the file in to the buffer */
+   fclose(fptr); /* Close the file */
+   buf[length] = 0; /* Null terminator */
+ 
+   return buf; /* Return the buffer */
+}
+
 namespace wheel
 {
    namespace video
    {
+      SDLRenderable::SDLRenderable()
+      {
+         glGenBuffers(1, &vertexbuffer);
+      }
+
+      SDLRenderable::~SDLRenderable()
+      {
+         glDeleteBuffers(1, &vertexbuffer);
+      }
+
+
       SDLRenderer::SDLRenderer()
       {
          int_flags = 0;
@@ -35,6 +66,10 @@ namespace wheel
          {
             int_flags |= WHEEL_SDL_OPENGL_TERMINATE_SDL_AT_EXIT;
             SDL_Init(SDL_INIT_VIDEO);
+
+            SDL_version ver;
+            SDL_GetVersion(&ver);
+            log << "Using SDL version " << (uint32_t)ver.major << "." << (uint32_t)ver.minor << "." << (uint32_t)ver.patch << "\n";
          }
 
          uint16_t r = 0xbe1e;
@@ -68,9 +103,9 @@ namespace wheel
          if (window == nullptr)
             return !WHEEL_OK;
 
-         renderer = (void*)SDL_CreateRenderer((SDL_Window*)window, -1, SDL_RENDERER_ACCELERATED );
+         context = SDL_GL_CreateContext((SDL_Window*)window);
 
-         if (renderer == nullptr)
+         if (context == nullptr)
             return !WHEEL_OK;
 
          std::cout << "OpenGL version string: " << glGetString(GL_VERSION) << "\n";
@@ -82,7 +117,15 @@ namespace wheel
          glGenVertexArrays(1, &VertexArrayID);
          glBindVertexArray(VertexArrayID);
 
+         int32_t GLMaj, GLMin;
+         glGetIntegerv(GL_MAJOR_VERSION, &GLMaj);
+         glGetIntegerv(GL_MINOR_VERSION, &GLMin);
+
+         log << "OpenGL version: " << GLMaj << "." << GLMin << "\n";
+
          window_alive = true;
+
+         log << "SDL-OpenGL: Opened window\n";
 
          return 0;
 
@@ -103,19 +146,13 @@ namespace wheel
 
       void SDLRenderer::SwapBuffers()
       {
-         SDL_RenderPresent((SDL_Renderer*)renderer);
+         SDL_GL_SwapWindow((SDL_Window*)window);
       }
 
-      void SDLRenderer::Draw(uint32_t count, wheel::shapes::triangle_t* triangle_ptr)
+      void SDLRenderer::Draw(const interface::Renderable& object)
       {
-         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+/*
          // An array of 3 vectors which represents 3 vertices
-         static const GLfloat g_vertex_buffer_data[] = {
-            1.0f, -1.0f, 0.0f,
-            -1.0f, -1.0f, 0.0f,
-            0.0f,  1.0f, 0.0f,
-         };
          static GLuint vertexbuffer;
          static bool genbuffer = false;
 
@@ -126,21 +163,16 @@ namespace wheel
             glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
             genbuffer = true;
          }
+
          glEnableVertexAttribArray(0);
+
          glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
          glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
          glDrawArrays(GL_TRIANGLES, 0, 3);
 
          glDisableVertexAttribArray(0);
-/*
-
-         static GLuint vertexbuffer;
-         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, triangle_ptr);
-
-         glDrawArrays(GL_TRIANGLES, 0, 3 * count);
 */
-
       }
 
       uint32_t SDLRenderer::SetWindowHints(uint32_t target, uint32_t hint)
@@ -214,8 +246,59 @@ namespace wheel
          return WHEEL_OK;
       }
 
+      uint32_t p = 0;
       uint32_t SDLRenderer::AddShader(const string& name, const string& vert, const string& frag)
       {
+         GLuint vertexshader, fragmentshader, program;
+
+         int vertexcompiled, fragmentcompiled;
+         int linked;
+
+         const wheel::buffer_t* raw_vs = wheel::GetBuffer(vert);
+         const wheel::buffer_t* raw_fs = wheel::GetBuffer(frag);
+
+         wheel::buffer_t vs_buf = *raw_vs;
+         vs_buf.push_back('\0');
+
+         wheel::buffer_t fs_buf = *raw_fs;
+         fs_buf.push_back('\0');
+
+         const char* vert_ptr = (const char*)&vs_buf[0];
+         const char* frag_ptr = (const char*)&fs_buf[0];
+
+         vertexshader = glCreateShader(GL_VERTEX_SHADER);
+         glShaderSource(vertexshader, 1, (const GLchar**) &vert_ptr, 0);
+
+         glCompileShader(vertexshader);
+         glGetShaderiv(vertexshader, GL_COMPILE_STATUS, &vertexcompiled);
+
+         if(!vertexcompiled)
+            return WHEEL_MODULE_SHADER_COMPILE_ERROR;
+
+         fragmentshader = glCreateShader(GL_FRAGMENT_SHADER);
+         glShaderSource(fragmentshader, 1, (const GLchar**) &frag_ptr, 0);
+
+         glCompileShader(fragmentshader);
+         glGetShaderiv(fragmentshader, GL_COMPILE_STATUS, &fragmentcompiled);
+
+         if(!fragmentcompiled)
+            return WHEEL_MODULE_SHADER_COMPILE_ERROR;
+
+         program = glCreateProgram();
+
+         glAttachShader(program, vertexshader);
+         glAttachShader(program, fragmentshader);
+
+         glLinkProgram(program);
+
+         glGetProgramiv(program, GL_LINK_STATUS, (int*)&linked);
+         if (!linked)
+            return WHEEL_MODULE_SHADER_COMPILE_ERROR;
+
+         shaderlist[name] = program;
+
+         return 0;
+/*
          const buffer_t* dummy = GetBuffer(vert);
          if (dummy == nullptr)
          {
@@ -307,21 +390,26 @@ namespace wheel
             return WHEEL_MODULE_SHADER_LINK_ERROR;
          }
 
+         std::cout << "compiled program:" << shader.program << "\n";
+
+         if (glIsProgram(shader.program) != GL_TRUE)
+            std::cout << "but it isn't really a program!\n";
+
          shaderlist[name] = shader;
 
          return WHEEL_OK;
+*/
       }
 
       uint32_t SDLRenderer::UseShader(const string& name)
       {
          if (shaderlist.count(name) == 1)
          {
-            glUseProgram(shaderlist[name].program);
+            glUseProgram(shaderlist[name]);
             return WHEEL_OK;
          }
 
          log << "tried to use an invalid shader \"" << name << "\"\n";
-
          return WHEEL_RESOURCE_UNAVAILABLE;
       }
    }

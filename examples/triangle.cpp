@@ -2,8 +2,10 @@
 #include "../include/wheel_module_video.h"
 
 #include <physfs.h>
+#include <cstring>
 
-#include <GL/gl.h>
+#define GL3_PROTOTYPES 1
+#include <GL/gl3.h>
 
 int main(int argc, char* argv[])
 {
@@ -76,24 +78,14 @@ int main(int argc, char* argv[])
    tri.point[2] = tripoints[2];
 
    renderer->OpenWindow("Hello triangle", 400, 400);
-   if (renderer->AddShader("default", "tri.vs", "tri.fs"))
-      goto clean; // Suck it, this is clean way to end this
 
-   if (renderer->UseShader("default") != WHEEL_OK)
-      goto clean;
+   renderer->AddShader("default", "tri.vs", "tri.fs");
+   renderer->UseShader("default");
 
-   renderer->Clear(0.1f, 0.01f, 0.8f, 1.0f);
- 
+   renderer->Clear(0.1f, 0.01f, 0.01f, 1.0f);
+
    while(renderer->WindowIsOpen())
    {
-
-      glBegin(GL_TRIANGLES);
-         glVertex2f(-1.0f, -1.0f);
-         glVertex2f(1.0f, -1.0f);
-         glVertex2f(0.0f, 1.0f);
-      glEnd();
-
-      //renderer->Draw(1, &tri);
       renderer->SwapBuffers();
       renderer->GetEvents(&eventlist);
 
@@ -110,7 +102,6 @@ int main(int argc, char* argv[])
       eventlist.clear();
    }
 
-clean:
    modulelibrary.Remove(modlist[choice-1].file);
 
    wcl::terminate();

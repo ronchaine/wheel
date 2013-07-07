@@ -46,11 +46,24 @@ namespace wheel
          GLuint   program;
       };
 
+      class SDLRenderable : public wheel::interface::Renderable
+      {
+         private:
+            GLuint   vertexbuffer;
+            GLuint   colourbuffer;
+            GLuint   texcoordbuffer;
+
+         public:
+            SDLRenderable();
+           ~SDLRenderable();
+      };
+
       class SDLRenderer : public wheel::interface::Video
       {
          private:
             void*       window;
             void*       renderer;
+            void*       context;
 
             uint32_t    int_flags;
 
@@ -59,7 +72,7 @@ namespace wheel
 
             shadowgl_t  shadow;
 
-            std::unordered_map<string, shader_info_t> shaderlist;
+            std::unordered_map<string, int32_t> shaderlist;
 
          public:
             // Module functions
@@ -79,7 +92,7 @@ namespace wheel
             uint32_t    SetWindowHints(uint32_t target, uint32_t hint);
 
             void        Batch();
-            void        Draw(uint32_t count, wheel::shapes::triangle_t* triangle_ptr);
+            void        Draw(const interface::Renderable& object);
 
             // Shader stuff
 

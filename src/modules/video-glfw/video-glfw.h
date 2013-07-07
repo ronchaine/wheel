@@ -66,7 +66,7 @@ namespace wheel
 
             void Clear(float r, float g, float b, float a);
 
-            void Draw(uint32_t count, wheel::shapes::triangle_t* triangle_ptr);
+            void Draw(const interface::Renderable& object);
 
             // Shader stuff
 

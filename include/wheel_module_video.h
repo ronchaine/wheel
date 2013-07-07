@@ -50,6 +50,13 @@ namespace wheel
 
    namespace interface
    {
+      //! Base class for everything that can be rendered
+      class Renderable
+      {
+         public:
+            virtual ~Renderable() {}
+      };
+
       //! Interface for renderer modules
       class Video : public Module
       {
@@ -175,7 +182,7 @@ namespace wheel
                \param count         Number of triangles to draw
                \param triangle_ptr  Pointer to an array of triangles
             */
-            virtual  void     Draw(uint32_t count, wheel::shapes::triangle_t* triangle_ptr) = 0;
+            virtual  void     Draw(const Renderable& object) = 0;
 
             // Shader-related
 
