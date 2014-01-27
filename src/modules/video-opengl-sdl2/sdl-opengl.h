@@ -94,6 +94,9 @@ namespace wheel
             void        Batch();
             void        Draw(const interface::Renderable& object);
 
+            void        DrawRect();
+            void        DrawText();
+
             // Shader stuff
 
             uint32_t    AddShader(const string& name, const string& vert, const string& frag);

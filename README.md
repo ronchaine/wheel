@@ -1,5 +1,8 @@
 #### What is it?
-It is a framework library.  Or an application/game engine engine.
+It is a framework library.  Or an application/game engine engine.  A newer take on my old Wheel library.  It is still very much a
+work in progress, but it is usable enough for me not to focus on it too much at the moment.  Some other projects that I am fighting with
+use this, so if there are any decent improvements on the way, they will be added to this repository as well.  Texture atlasing and image loading
+should be on their way at some point.
 
 #### Troubleshooting
 OS X requires libc++ as standard library, the stdlibc++ provided by Apple lacks required C++11 functionality.

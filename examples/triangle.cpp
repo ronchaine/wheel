@@ -59,23 +59,7 @@ int main(int argc, char* argv[])
    eventlist.clear();
 
    // Create triangle
-   wheel::vertex_t tripoints[3];
-   tripoints[0].x = -1.0f;
-   tripoints[0].y = -1.0f;
-   tripoints[0].z = 0.0f;
-
-   tripoints[1].x = 1.0f;
-   tripoints[1].y = -1.0f;
-   tripoints[1].z = 0.0f;
-
-   tripoints[2].x = 0.0f;
-   tripoints[2].y = 1.0f;
-   tripoints[2].z = 0.0f;
-
    wheel::shapes::triangle_t tri;
-   tri.point[0] = tripoints[0];
-   tri.point[1] = tripoints[1];
-   tri.point[2] = tripoints[2];
 
    renderer->OpenWindow("Hello triangle", 400, 400);
 

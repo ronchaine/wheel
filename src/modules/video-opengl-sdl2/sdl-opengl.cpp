@@ -50,11 +50,15 @@ namespace wheel
       SDLRenderable::SDLRenderable()
       {
          glGenBuffers(1, &vertexbuffer);
+         glGenBuffers(1, &colourbuffer);
+         glGenBuffers(1, &texcoordbuffer);
       }
 
       SDLRenderable::~SDLRenderable()
       {
          glDeleteBuffers(1, &vertexbuffer);
+         glDeleteBuffers(1, &colourbuffer);
+         glDeleteBuffers(1, &texcoordbuffer);
       }
 
 
