@@ -101,6 +101,22 @@ namespace wheel
       utf8::utf8to32(result.begin(), result.end(), back_inserter(data));
    }
 
+   //! Create from character array, with
+   /*!
+      Creates wcl string instance from data provided in character array.
+      It is presumed that the character array data is encoded in either
+      UTF-8 or ASCII format.
+   */
+   string::string(const char* in, size_t length)
+   {
+      data.clear();
+
+      std::string result;
+
+      utf8::replace_invalid(in, in + length, back_inserter(result));
+      utf8::utf8to32(result.begin(), result.end(), back_inserter(data));
+   }
+
    //! Copy construct from STL string
    /*!
       Creates wcl string instance from data provided in std::string.
@@ -194,6 +210,57 @@ namespace wheel
    size_t string::length() const
    {
       return data.size();
+   }
+
+   //! Split a string by a delim
+   /*!
+      Returns a vector of string objects that are substrings cut at given deliminators.
+
+      \param   delim A string of characters that are to be used as deliminators.
+
+      \return  A vector of string objects computed by splitting the string around given deliminator.
+   */
+   std::vector<string> string::split(const string& delim)
+   {
+      std::vector<string> rval;
+
+      size_t first_pos = 0;
+
+      for (size_t i = 0; i < data.size(); ++i)
+         for (char32_t c : delim)
+            if (data[i] == c)
+            {
+               string temp = this->substr(first_pos, i - first_pos);
+
+               if (temp.length() != 0)
+               {
+                  for (char32_t t_c : temp)
+                     for (char32_t d_c : delim)
+                        if (t_c == d_c)
+                           goto wheel_string_breakout_one; // Multi-level break to five lines down.
+
+                  std::cout << temp << ", " << temp.length() << "\n";
+                  rval.push_back(this->substr(first_pos, i - first_pos));
+
+                  wheel_string_breakout_one:;
+               }
+
+               first_pos = ++i;
+               break;
+            }
+
+      string temp = this->substr(first_pos, data.size() - first_pos);
+      if (temp.length() != 0)
+      {
+         for (char32_t t_c : temp)
+            for (char32_t d_c : delim)
+               if (t_c == d_c)
+                  return rval;
+
+         rval.push_back(this->substr(first_pos, data.size() - first_pos));
+      }
+
+      return rval;
    }
 
    //! Generate substring

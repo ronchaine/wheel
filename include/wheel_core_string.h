@@ -24,8 +24,8 @@ namespace wheel
      The string class stores series of char32_t characters in an
      array.  The class can be used in similar manner as the std::string class.
 
-     Strings stored in the class are UTF-32 -encoded.  They are not null-terminated, so it
-     is not recommended to use raw pointers obtained with getptr().
+     Strings stored in the class are UTF-32 -encoded.  They are not guaranteed to be
+     null-terminated, so it is not recommended to use raw pointers obtained with getptr().
   */
   class string
   {
@@ -48,12 +48,19 @@ namespace wheel
         string(const char*);
         string(const std::string&);
         string(const char32_t*);
+        string(const char*, size_t length);
 
         string(double);
         string(int64_t);
 
         // Destuctor
         ~string();
+
+        // C++ stl compatibility
+        std::vector<char32_t>::iterator begin() { return data.begin(); }
+        std::vector<char32_t>::const_iterator begin() const { return data.begin(); }
+        std::vector<char32_t>::iterator end() { return data.end(); }
+        std::vector<char32_t>::const_iterator end() const { return data.end(); }
 
         // Operator overloads
         string& operator=(string&& other);
@@ -77,6 +84,9 @@ namespace wheel
 
         // Returns std string
         const std::string std_str() const;
+
+        // Returns array of strings
+        std::vector<string> split(const string& delim = " \n\t");
 
         // Return unsigned integer
         uint32_t to_uint32();
