@@ -23,10 +23,27 @@
 #define WHEEL_KEYEVENT        0x01
 #define WHEEL_EVENT_MOUSE     0x02
 
-
 #define WHEEL_PRESS           0x00
 #define WHEEL_RELEASE         0x01
 
+//! Macro to make writing modules a bit cleaner
+/*!
+   This is used to in module files to provide needed functions for modules.
+   Use name of the module class as an argument or just write the needed functions
+   yourself if you need more detailed options.
+*/
+#define WHEEL_MODULE_REGISTER(x)             \
+   extern "C" {                              \
+      wheel::Module* register_module()       \
+      {                                      \
+         return new x;                       \
+      }                                      \
+                                             \
+      void remove_module(wheel::Module* mod) \
+      {                                      \
+         delete mod;                         \
+      }                                      \
+   }
 
 namespace wheel
 {
@@ -53,6 +70,9 @@ namespace wheel
       string version;
       string description;
 
+      string depends;
+      string provides;
+
       string wheel_required_version;
 
       friend inline std::ostream& operator<<(std::ostream& out, const wheel::modinfo_t& modinfo)
@@ -64,6 +84,9 @@ namespace wheel
          out << (std::string)"Version:" << modinfo.version << (std::string)"\n";
          out << (std::string)"Type:" << modinfo.type << (std::string)"\n";
          out << (std::string)"Description:" << modinfo.description << (std::string)"\n";
+
+         out << (std::string)"Depends on:" << modinfo.depends << (std::string)"\n";
+         out << (std::string)"Provides:" << modinfo.provides << (std::string)"\n";
 
          out << (std::string)"Library version requirement: " << modinfo.wheel_required_version << (std::string)"\n";
 
@@ -102,9 +125,13 @@ namespace wheel
    */
    class Module
    {
+      private:
+//         virtual int check_depends();
+
       public:
          void* library_handle;
 
+         Module();
          virtual ~Module() {}
          virtual void get_module_info(modinfo_t*) = 0;
 
@@ -137,7 +164,6 @@ namespace wheel
          ModuleLibrary();
         ~ModuleLibrary();
    };
-
 }
 
 #endif //WHEEL_MODULE_HEADER

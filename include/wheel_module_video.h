@@ -33,21 +33,6 @@ namespace wheel
       }
    };
 */
-   struct vertex_t
-   {
-      float x, y, z;
-      float nx, ny, nz;
-      float s0, t0;
-   };
-
-   namespace shapes
-   {
-      struct triangle_t
-      {
-         vertex_t point[3];
-      };
-   }
-
    namespace interface
    {
       //! Base class for everything that can be rendered

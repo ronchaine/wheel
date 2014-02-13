@@ -19,6 +19,8 @@ namespace wheel
    // Core core
    int         initialise(int argc, char* argv[]);
    void        terminate();
+
+   bool        big_endian();
 }
 
 #endif

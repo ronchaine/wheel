@@ -16,6 +16,11 @@
 namespace wheel
 {
    const char*       AppPath();
+   const char*       UserPath();
+
+   uint32_t          CreateDirectory(const char* dir);
+
+   uint32_t          SetWritePath(const char* newpath);
 
    uint32_t          Filesystem_Init(int argc, char* argv[]);
    void              Filesystem_Deinit();

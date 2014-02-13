@@ -23,6 +23,13 @@ namespace wheel
 
       return (endian_check_value_first == 0x1e);
    }
+
+   //! Calculate crc32
+   /*!
+      \return CRC32 value of the buffer given
+   */
+   uint32_t crc32(uint8_t* buffer, size_t len);
+   uint32_t update_crc(uint32_t crc, uint8_t* buf, size_t len);
 }
 
 #endif //WHEEL_UTILITY_HEADER
