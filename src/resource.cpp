@@ -5,6 +5,7 @@
 */
 
 #include "../include/wheel_core_resource.h"
+#include "../include/wheel_core_debug.h"
 
 #include <physfs.h>
 
@@ -14,6 +15,56 @@ namespace wheel
    {
       std::unordered_map<string, buffer_t*> file_cache;
       size_t cache_memory = 0;
+   }
+
+   /*!
+      DEBUG__ShowPaths
+
+      \return nothing
+   */
+   void DEBUG__ShowPaths()
+   {
+      #ifndef NDEBUG
+
+      log << "=== Search paths ===\n";
+      char **i;
+
+      for (i = PHYSFS_getSearchPath(); *i != NULL; i++)
+         log << *i << "\n";
+
+      #endif
+   }
+
+   /*!
+      Creates a directory
+   */
+   uint32_t CreateDirectory(const char* dir)
+   {
+      if (PHYSFS_mkdir(dir))
+         return WHEEL_OK;
+      
+      return WHEEL_RESOURCE_UNAVAILABLE;
+   }
+
+   /*!
+      Set write path
+
+      \return <code>WHEEL_OK</code> on success, otherwise code depicting an error.
+   */
+   uint32_t SetWritePath(const char* wdir)
+   {
+      if (PHYSFS_setWriteDir(wdir))
+         return WHEEL_OK;
+
+      return WHEEL_RESOURCE_UNAVAILABLE;
+   }
+
+   /*!
+      \return System user directory.
+   */
+   const char* UserPath()
+   {
+      return PHYSFS_getUserDir();
    }
 
    /*!

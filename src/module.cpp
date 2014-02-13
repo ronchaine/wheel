@@ -69,6 +69,16 @@ namespace wheel
       }
    }
 
+   //! Main module constructor
+   /*!
+      Module main class constructor, checks if dependencies are met and there are no conflicts before loading the module.
+   */
+   Module::Module()
+   {
+      // 
+   }
+
+
    ModuleLibrary::ModuleLibrary()
    {
    }
