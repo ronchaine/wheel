@@ -59,7 +59,7 @@ int main(int argc, char* argv[])
    eventlist.clear();
 
    // Create triangle
-   wheel::shapes::triangle_t tri;
+//   wheel::shapes::triangle_t tri;
 
    renderer->OpenWindow("Hello triangle", 400, 400);
 

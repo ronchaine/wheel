@@ -131,7 +131,6 @@ namespace wheel
       public:
          void* library_handle;
 
-         Module();
          virtual ~Module() {}
          virtual void get_module_info(modinfo_t*) = 0;
 
@@ -148,6 +147,8 @@ namespace wheel
          std::unordered_map<string, Module*> modules;
 
          std::set<modset_t> known_modules;
+
+         std::vector<string> provided;
 
       public:
          uint32_t Add(const string& file);

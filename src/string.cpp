@@ -239,7 +239,6 @@ namespace wheel
                         if (t_c == d_c)
                            goto wheel_string_breakout_one; // Multi-level break to five lines down.
 
-                  std::cout << temp << ", " << temp.length() << "\n";
                   rval.push_back(this->substr(first_pos, i - first_pos));
 
                   wheel_string_breakout_one:;

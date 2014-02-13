@@ -6,15 +6,16 @@ cmake_minimum_required(VERSION 2.8)
 
 set(WHEEL_VERSION_MAJOR "0")
 set(WHEEL_VERSION_MINOR "1")
-set(WHEEL_VERSION_PATCH "0")
+set(WHEEL_VERSION_PATCH "1")
 set(WHEEL_VERSION_EXTRA "")
 
 set(WHEEL_VERSION "${WHEEL_VERSION_MAJOR}.${WHEEL_VERSION_MINOR}.${WHEEL_VERSION_PATCH}${WHEEL_VERSION_EXTRA}")
 
 set(WHEEL_LIB_NAME wheel)
 
+option (WHEEL_INCLUDE_IMAGELIBRARY "Include image loading functionality" ON)
+
 option (WHEEL_BUILD_MODULES "Build the basic modules" ON)
-option (WHEEL_BUILD_EXAMPLES "Build the example programs" ON)
 option (WHEEL_BUILD_TESTS "Build the unit tests" ON)
 
 #--------------------------------------------------------------
@@ -25,11 +26,10 @@ option (WHEEL_BUILD_TESTS "Build the unit tests" ON)
 
 add_subdirectory(src)
 
+add_subdirectory(examples)
+
 if (WHEEL_BUILD_MODULES)
   add_subdirectory(src/modules)
-endif()
-if (WHEEL_BUILD_EXAMPLES)
-  add_subdirectory(examples)
 endif()
 if (WHEEL_BUILD_TESTS)
   add_subdirectory(tests)

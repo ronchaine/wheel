@@ -69,16 +69,6 @@ namespace wheel
       }
    }
 
-   //! Main module constructor
-   /*!
-      Module main class constructor, checks if dependencies are met and there are no conflicts before loading the module.
-   */
-   Module::Module()
-   {
-      // 
-   }
-
-
    ModuleLibrary::ModuleLibrary()
    {
    }
@@ -132,6 +122,54 @@ namespace wheel
       Module* module = add_module();
 
       module->library_handle = library;
+
+      modinfo_t info;
+      module->get_module_info(&info);
+
+      std::vector<string> moddeps, modprovs;
+      moddeps = info.depends.split(",");
+      modprovs = info.provides.split(",");
+
+      // Check if equivalent system already exists.
+      for (string s : modprovs)
+         for (string s2 : provided)
+         {
+            if (s == s2)
+            {
+               typedef Module* (*modptr_r_fun_t)(Module*);
+               modptr_r_fun_t remove_module = (modptr_r_fun_t) dlsym(library, "remove_module");
+
+               remove_module(module);
+
+               dlclose(library);
+               log << "conflicted " << s << " modules\n";
+
+               return WHEEL_CONFLICTING_MODULE;
+            }
+         }
+
+      // Check for dependencies
+      for (string s : provided)
+         for (auto it = moddeps.begin(); it != moddeps.end(); ++it)
+            if (s == *it)
+            {
+               moddeps.erase(it);
+            }
+
+      if (moddeps.size() > 0)
+      {
+         for (string s : moddeps)
+            log << "missing deps:" << s << "\n";
+
+         typedef Module* (*modptr_r_fun_t)(Module*);
+         modptr_r_fun_t remove_module = (modptr_r_fun_t) dlsym(library, "remove_module");
+
+         remove_module(module);
+
+         dlclose(library);
+
+         return WHEEL_MISSING_DEPENDENCIES;
+      }
 
       modules.insert({filename, module});
 

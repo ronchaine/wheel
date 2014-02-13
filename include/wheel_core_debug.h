@@ -54,12 +54,35 @@ namespace wheel
             return "Resource unavailable";
          case WHEEL_INVALID_PATH:
             return "Invalid path";
+         case WHEEL_UNKNOWN_FORMAT:
+            return "Unknown format";
+         case WHEEL_INVALID_VALUE:
+            return "Invalid value";
+         case WHEEL_UNEXPECTED_END_OF_FILE:
+            return "Unexpected end of file";
+
+         case WHEEL_ERROR_INIT_FILESYSTEM:
+            return "Error in filesystem init";
+
          case WHEEL_UNABLE_TO_OPEN_MODULE:
             return "Unable to open module";
          case WHEEL_UNABLE_TO_REGISTER_MODULE:
             return "Unable to register module";
+         case WHEEL_CONFLICTING_MODULE:
+            return "Module is conflicting";
+         case WHEEL_MISSING_DEPENDENCIES:
+            return "Missing module dependencies";
+
          case WHEEL_UNIMPLEMENTED_FEATURE:
             return "Unimplemented feature";
+
+         case WHEEL_MODULE_FAILED_REQUEST:
+            return "Failed request";
+         case WHEEL_MODULE_SHADER_COMPILE_ERROR:
+            return "Failed to compile shader";
+         case WHEEL_MODULE_SHADER_LINK_ERROR:
+            return "Failed to link shader";
+
          default:
             return "Unknown error or no error message given for the value";
       }
