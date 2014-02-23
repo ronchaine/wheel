@@ -16,6 +16,7 @@ set(WHEEL_LIB_NAME wheel)
 option (WHEEL_INCLUDE_IMAGELIBRARY "Include image loading functionality" ON)
 
 option (WHEEL_BUILD_MODULES "Build the basic modules" ON)
+option (WHEEL_BUILD_EXAMPLES "Build the examples (needs basic modules)" ON)
 option (WHEEL_BUILD_TESTS "Build the unit tests" ON)
 
 #--------------------------------------------------------------
@@ -26,8 +27,9 @@ option (WHEEL_BUILD_TESTS "Build the unit tests" ON)
 
 add_subdirectory(src)
 
-add_subdirectory(examples)
-
+if (WHEEL_BUILD_EXAMPLES)
+   add_subdirectory(examples)
+endif()
 if (WHEEL_BUILD_MODULES)
   add_subdirectory(src/modules)
 endif()
