@@ -16,6 +16,11 @@ namespace wheel
 {
    namespace image
    {
+      /*!
+         \brief  Checks file format of an image.
+
+         \return WHEEL_IMAGEFORMAT_X, where X is either UNKNOWN or a known format.
+      */
       uint32_t CheckFileFormat(const buffer_t& buffer)
       {
          if (buffer.size() > 8)
@@ -44,6 +49,12 @@ namespace wheel
          }
       }
 
+      //! Add an image stored in a memory buffer to the texture library
+      /*!
+         \param name    Name used to later retrieve the buffer.
+         \param 
+         \returns <code>WHEEL_OK</code> on success, otherwise an unsigned integer describing the error.
+      */
       uint32_t Library::AddBuffer(const string& name, const buffer_t* buffer)
       {
          if (buffer == nullptr)
@@ -57,6 +68,9 @@ namespace wheel
             img->Load(*buffer);
             img->DisplayInfo();
          }
+
+         if (format == WHEEL_IMAGEFORMAT_UNKNOWN)
+            return WHEEL_UNKNOWN_FORMAT;
 
          return WHEEL_OK;
       }

@@ -8,6 +8,7 @@
 
 #include "wheel_core_common.h"
 #include "wheel_core_debug.h"
+#include "wheel_module_video.h"
 
 #define WHEEL_IMAGEFORMAT_UNKNOWN   0x00
 #define WHEEL_IMAGEFORMAT_PNG       0x01
