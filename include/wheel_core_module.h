@@ -60,8 +60,10 @@ namespace wheel
 
    typedef std::list<Event> EventList;
 
+   //! \brief Structure that holds runtime information about the module.
    /*!
-      \brief Structure that holds runtime information about the module.
+      Holds runtime info about the module.  A module must have a function get_module_info(modinfo_t*)
+      that fills this kind of struct with correct information about the module.
    */
    struct modinfo_t
    {
@@ -120,8 +122,12 @@ namespace wheel
 
 //   class event_info
 
+   //! \brief Virtual module class.  Derive this to add loadable modules.
    /*!
-      \brief Virtual module class.  Derive this to add loadable modules
+      Loadable modules must provide get_module_info that fills modinfo_t* -type
+      struct with information about the module itself.
+
+      \sa modinfo_t
    */
    class Module
    {

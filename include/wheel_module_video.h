@@ -35,12 +35,8 @@ namespace wheel
 */
    namespace interface
    {
-      //! Base class for everything that can be rendered
-      class Renderable
-      {
-         public:
-            virtual ~Renderable() {}
-      };
+      // Forward declaration
+      class Renderable;
 
       //! Interface for renderer modules
       class Video : public Module
@@ -164,8 +160,7 @@ namespace wheel
 
             // Drawing 
             /*!
-               \param count         Number of triangles to draw
-               \param triangle_ptr  Pointer to an array of triangles
+               \param Renderable Object of type renderable to be drawn.
             */
             virtual  void     Draw(const Renderable& object) = 0;
 
@@ -243,6 +238,19 @@ namespace wheel
                \return <code>WHEEL_OK</code> on success\n
                        <code>WHEEL_UNIMPLEMENTED_FEATURE</code> if the implementation cannot be found from the module.
             */
+      };
+
+      //! Base class for everything that can be rendered
+      class Renderable
+      {
+         private:
+            string format;
+
+         public:
+            Renderable() {}
+            virtual ~Renderable() {}
+
+            inline void Draw(Video* renderer) { return renderer->Draw(*this); }
       };
    }
 }

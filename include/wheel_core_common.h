@@ -47,6 +47,14 @@
 #define WHEEL_INITIALISED                 0x0001
 #define WHEEL_LITTLE_ENDIAN               0x0002
 
+// TODO: Keyboard scancodes, follow USB HID, seperate names for different layouts
+// Fill according to http://www.freebsddiary.org/APC/usb_hid_usages.php and https://wiki.libsdl.org/SDLScancodeLookup
+enum class scancode_t
+{
+   WHEEL_SCANCODE_US_A = 0x0004,
+   WHEEL_SCANCODE_FI_A = 0x0004
+};
+
 /// Typedefs, structs & stuff
 
 namespace wheel

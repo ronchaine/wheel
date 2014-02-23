@@ -11,6 +11,8 @@
 #include "../../include/wheel_image_png.h"
 
 #include <cstring>
+
+#warning Currently still using zlib for inflate/deflate, will switch to miniz later on.
 #include <zlib.h> // TODO: Switch to miniz.
 
 #define ZLIB_CHUNK 262144
