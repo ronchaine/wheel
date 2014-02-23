@@ -1,6 +1,8 @@
 #### What is it?
 It is _not working_.  Most parts won't work yet -- use at your own caution.
-Stable branches will be made after they are ready for it.
+Stable branches will be made after they are ready for it.  That being said, if you want to take a look, use doxygen to create documentation, most of the stuff should be pretty well-explained.  If they aren't - leave me an issue.
+
+On the other note, while this repository doesn't get standard updates, it doesn't mean that I have stopped working on it, just that the work is done mostly in projects that use this library, then "backported" here.
 
 #### No really, what is it?
 It is a framework library.  Or an application/game engine engine.  A newer take on my old Wheel library.  It is still very much a
