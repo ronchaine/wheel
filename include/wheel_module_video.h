@@ -17,22 +17,7 @@ namespace wheel
       VERTEX,
       FRAGMENT
    };
-/*
-   struct vertex_t
-   {
-      math::vec3f  position;
-      math::vec3f  normal;
-      math::vec4f  colour;
 
-      vertex_t() {}
-      vertex_t(math::vec3f& r, math::vec3f& n, math::vec4f& c)
-      {
-         position = r;
-         normal = n;
-         colour = c;
-      }
-   };
-*/
    namespace interface
    {
       // Forward declaration
@@ -215,6 +200,14 @@ namespace wheel
             */
             virtual  uint32_t UseShader(const string& name) { return WHEEL_UNIMPLEMENTED_FEATURE; }
 
+            // Renderer objects
+
+            //! Create new renderable object of proper type
+            /*!
+               This should probably just be <code>return new renderable_class</code> for most objects.
+            */
+            virtual  Renderable* CreateObject() = 0;
+
             // Event-related
 
             //! Set event callbacks
@@ -240,16 +233,19 @@ namespace wheel
             */
       };
 
-      //! Base class for everything that can be rendered
+      //! Base class for everything that can be rendered, derive from this.
       class Renderable
       {
          private:
-            string format;
+            string vertex_format;
 
          public:
             Renderable() {}
             virtual ~Renderable() {}
 
+            virtual uint32_t SetVertexFormat(string) = 0;
+
+            inline string GetVertexFormat() { return vertex_format; }
             inline void Draw(Video* renderer) { return renderer->Draw(*this); }
       };
    }
