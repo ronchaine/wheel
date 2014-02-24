@@ -12,7 +12,7 @@
 
 #include <cstring>
 
-#include "../../include/miniz.c"
+#include "../../include/3rdparty/miniz.c"
 
 #define ZLIB_CHUNK 262144
 

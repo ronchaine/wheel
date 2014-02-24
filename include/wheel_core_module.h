@@ -4,6 +4,8 @@
    \author Jari Ronkainen
 */
 
+// .so .dll .dylib
+
 #ifndef WHEEL_MODULE_HEADER
 #define WHEEL_MODULE_HEADER
 
