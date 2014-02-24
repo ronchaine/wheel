@@ -1,8 +1,9 @@
 find_package(PhysFS REQUIRED)
 
-if (WHEEL_INCLUDE_IMAGELIBRARY)
-  find_package(ZLIB REQUIRED)
-endif()
+# Replaced my miniz
+#if (WHEEL_INCLUDE_IMAGELIBRARY)
+#  find_package(ZLIB REQUIRED)
+#endif()
 
 include_directories(${WHEEL_SOURCE_DIR}/src
                     ${WHEEL_SOURCE_DIR}/include)

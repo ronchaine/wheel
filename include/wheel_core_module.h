@@ -120,8 +120,6 @@ namespace wheel
 
    typedef std::vector<modset_t> modulelist_t;
 
-//   class event_info
-
    //! \brief Virtual module class.  Derive this to add loadable modules.
    /*!
       Loadable modules must provide get_module_info that fills modinfo_t* -type

@@ -12,8 +12,7 @@
 
 #include <cstring>
 
-#warning Currently still using zlib for inflate/deflate, will switch to miniz later on.
-#include <zlib.h> // TODO: Switch to miniz.
+#include "../../include/miniz.c"
 
 #define ZLIB_CHUNK 262144
 
