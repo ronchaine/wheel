@@ -1,6 +1,6 @@
 /*!
    @file
-   \brief Image atlasing and loading
+   \brief Common image declarations
 */
 
 #ifndef WHEEL_IMAGE_COMMON_HEADER

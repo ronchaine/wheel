@@ -18,21 +18,6 @@ namespace wheel
       FRAGMENT
    };
 
-   enum vertexformat_t
-   {
-      WHEEL_VERTEXFORMAT_CUSTOM  =  0b001,
-      WHEEL_VERTEXFORMAT_VT      =  0b010,
-      WHEEL_VERTEXFORMAT_VNT     =  0b100
-   };
-
-   struct vertex_vt_t
-   {
-   };
-
-   struct vertex_vnt_t
-   {
-   };
-
    namespace interface
    {
       // Forward declaration
@@ -252,18 +237,10 @@ namespace wheel
       class Renderable
       {
          protected:
-            string            custom_vertex_format;
-            flags_t           vertex_format;
 
          public:
             Renderable() {}
             virtual ~Renderable() {}
-
-            virtual uint32_t SetCustomVertexFormatString(string newformat) = 0;
-            inline string GetCustomVertexFormatString() { return custom_vertex_format; }
-
-            inline void SetVertexFormat(vertexformat_t format) { vertex_format = format; }
-            inline flags_t GetVertexFormat() { return vertex_format; }
 
             inline void Draw(Video* renderer) { return renderer->Draw(*this); }
       };
