@@ -13,27 +13,22 @@ namespace wheel
 {
    namespace geometry
    {
-/*
-      template<flags_t T>
-      class Triangle : public Renderable
-      {
-      };
-
-      template<>
-      class Triangle<VERTEX_POSITION | VERTEX_TEXTURE> : public Renderable
-      {
-      };
-
-      class Rectangle : public Renderable
-      {
-      };
-*/
-      class Triangle : public interface::Renderable
+      class Triangle : public internal::BasicShape
       {
          private:
          protected: 
          public:
       };
+
+      class Rectangle : public internal::BasicShape
+      {
+         private:
+         protected:
+         public:
+            Rectangle(float*);
+            Rectangle();
+      };
+
    }
 }
 

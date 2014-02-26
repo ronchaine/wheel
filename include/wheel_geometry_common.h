@@ -8,11 +8,21 @@
 
 #include "wheel_core_common.h"
 #include "wheel_core_debug.h"
+#include "wheel_module_video.h"
 
 namespace wheel
 {
    namespace geometry
    {
+      namespace internal
+      {
+         class BasicShape : public interface::Renderable
+         {
+            private:
+            protected:
+            public:
+         };
+      }
    }
 }
 
