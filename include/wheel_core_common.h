@@ -38,6 +38,8 @@
 
 #define WHEEL_UNIMPLEMENTED_FEATURE       0xff00
 
+#define WHEEL_OUT_OF_MEMORY               0x5500
+
 /// Module error codes
 #define WHEEL_MODULE_FAILED_REQUEST       0xef00
 #define WHEEL_MODULE_SHADER_COMPILE_ERROR 0xef01

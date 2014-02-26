@@ -8,7 +8,6 @@
 #define WHEEL_MODULE_VIDEO_INTERFACE_H
 
 #include "wheel_core_module.h"
-//#include "wheel_math_geometry.hpp"
 
 namespace wheel
 {
@@ -208,39 +207,72 @@ namespace wheel
             */
             virtual  Renderable* CreateObject() = 0;
 
-            // Event-related
-
-            //! Set event callbacks
-            /*!
-               Sets callback functions for events.  The function MUST be implemented so that it returns
-               <code>WHEEL_UNIMPLEMENTED_FEATURE</code> in case of unsupported event type.
-
-               \param type Event type of the event
-               \param func Pointer to the callback function for the chosen type of an event.
-
-               \return <code>WHEEL_OK</code> on success \n
-                       <code>WHEEL_UNIMPLEMENTED_FEATURE</code> if the implementation cannot be found from the module or the
-                                                                event type is unsupported.
-            */
-//            virtual  uint32_t SetCallback(wheel_input_t type, wheel_event_callback_t event) { return WHEEL_UNIMPLEMENTED_FEATURE; }
-
-            //! Get list of events
-            /*!
-               Retrieves events.  A renderer SHOULD implement this feature, but it is not strictly required.
-               
-               \return <code>WHEEL_OK</code> on success\n
-                       <code>WHEEL_UNIMPLEMENTED_FEATURE</code> if the implementation cannot be found from the module.
-            */
+            //!
+            virtual uint32_t Compose(Renderable* object) = 0;
       };
+
+      enum vertex_type_t
+      {
+         WHEEL_VERTEX_TYPE_UNSPECIFIED,
+         WHEEL_VERTEX_TYPE_POSITION,
+         WHEEL_VERTEX_TYPE_TEXCOORD,
+         WHEEL_VERTEX_TYPE_NORMAL,
+      };
+
+      /*!
+         \internal
+         struct used in vertex composition.
+      */
+      struct vertex_spec_t
+      {
+         vertex_type_t     datatype;
+         string            datafile;
+
+         float*            fdata;
+
+         vertex_spec_t()
+         {
+            datatype = WHEEL_VERTEX_TYPE_UNSPECIFIED;
+            fdata = nullptr;
+         }
+
+        ~vertex_spec_t()
+         {
+            if (fdata == nullptr)
+               free(fdata);
+         }
+      };
+      /*!
+         \endinternal
+      */
 
       //! Base class for everything that can be rendered, derive from this.
       class Renderable
       {
          protected:
+            std::vector<vertex_spec_t> vertexdata;
+
+            void*    composed_data;
+            size_t   data_size;
 
          public:
-            Renderable() {}
-            virtual ~Renderable() {}
+            inline uint32_t UploadData(void* data, size_t size)
+            {
+               if (composed_data != nullptr)
+                  free(composed_data);
+
+               data_size = size;
+               if ((composed_data = malloc(data_size)) == nullptr)
+                  return WHEEL_OUT_OF_MEMORY;
+
+               return UpdateData(data);
+            }
+            inline uint32_t UpdateData(void* data) {
+               return WHEEL_UNIMPLEMENTED_FEATURE;
+            }
+
+            Renderable() { composed_data = nullptr; data_size = 0; }
+            virtual ~Renderable() { if (composed_data != nullptr) free(composed_data); }
 
             inline void Draw(Video* renderer) { return renderer->Draw(*this); }
       };
