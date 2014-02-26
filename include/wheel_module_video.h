@@ -9,6 +9,8 @@
 
 #include "wheel_core_module.h"
 
+#include <cstring>
+
 namespace wheel
 {
    enum shadertype_t
@@ -267,7 +269,9 @@ namespace wheel
 
                return UpdateData(data);
             }
-            inline uint32_t UpdateData(void* data) {
+            inline uint32_t UpdateData(void* data)
+            {
+               memcpy(composed_data, data, data_size);
                return WHEEL_UNIMPLEMENTED_FEATURE;
             }
 
