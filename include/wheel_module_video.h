@@ -209,8 +209,6 @@ namespace wheel
             */
             virtual  Renderable* CreateObject() = 0;
 
-            //!
-            virtual uint32_t Compose(Renderable* object) = 0;
       };
 
       enum vertex_type_t
@@ -254,29 +252,9 @@ namespace wheel
          protected:
             std::vector<vertex_spec_t> vertexdata;
 
-            void*    composed_data;
-            size_t   data_size;
-
          public:
-            inline uint32_t UploadData(void* data, size_t size)
-            {
-               if (composed_data != nullptr)
-                  free(composed_data);
-
-               data_size = size;
-               if ((composed_data = malloc(data_size)) == nullptr)
-                  return WHEEL_OUT_OF_MEMORY;
-
-               return UpdateData(data);
-            }
-            inline uint32_t UpdateData(void* data)
-            {
-               memcpy(composed_data, data, data_size);
-               return WHEEL_UNIMPLEMENTED_FEATURE;
-            }
-
-            Renderable() { composed_data = nullptr; data_size = 0; }
-            virtual ~Renderable() { if (composed_data != nullptr) free(composed_data); }
+            Renderable() {}
+            virtual ~Renderable() {}
 
             inline void Draw(Video* renderer) { return renderer->Draw(*this); }
       };
