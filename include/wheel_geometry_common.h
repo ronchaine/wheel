@@ -21,6 +21,7 @@ namespace wheel
             private:
             protected:
             public:
+               BasicShape(string& name) : interface::Renderable(name) {}
          };
       }
    }

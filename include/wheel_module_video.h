@@ -225,21 +225,20 @@ namespace wheel
       */
       struct vertex_spec_t
       {
-         vertex_type_t     datatype;
-         string            datafile;
+         vertex_type_t        datatype;
+         string               datafile;
 
-         float*            fdata;
+         uint32_t             vertex_elem_count;
+
+         std::vector<float>   fdata;
 
          vertex_spec_t()
          {
             datatype = WHEEL_VERTEX_TYPE_UNSPECIFIED;
-            fdata = nullptr;
          }
 
         ~vertex_spec_t()
          {
-            if (fdata == nullptr)
-               free(fdata);
          }
       };
       /*!
@@ -251,9 +250,10 @@ namespace wheel
       {
          protected:
             std::vector<vertex_spec_t> vertexdata;
+            string name;
 
          public:
-            Renderable() {}
+            Renderable(string& name) : name(name) {}
             virtual ~Renderable() {}
 
             inline void Draw(Video* renderer) { return renderer->Draw(*this); }
