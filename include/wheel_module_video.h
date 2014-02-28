@@ -27,11 +27,10 @@ namespace wheel
       VERTEX_TYPE_NORMAL,
    };
 
+   class Renderable;
+
    namespace interface
    {
-      // Forward declaration
-      class Renderable;
-
       //! Interface for renderer modules
       class Video : public Module
       {
@@ -210,49 +209,50 @@ namespace wheel
             virtual  uint32_t UseShader(const string& name) { return WHEEL_UNIMPLEMENTED_FEATURE; }
       };
 
-      /*!
-         \internal
-         struct used in vertex composition.
-      */
-      struct vertex_spec_t
-      {
-         vertex_type_t        datatype;
-         string               datafile;
-
-         size_t               vertex_elem_count;
-
-         std::vector<float>   fdata;
-
-         vertex_spec_t()
-         {
-            datatype = VERTEX_TYPE_UNSPECIFIED;
-         }
-
-        ~vertex_spec_t()
-         {
-         }
-      };
-      /*!
-         \endinternal
-      */
-
-      //! Base class for everything that can be rendered, derive from this.
-      class Renderable
-      {
-         protected:
-            std::vector<vertex_spec_t> vertexdata;
-            string name;
-
-         public:
-            Renderable(const string& name) : name(name) {}
-            virtual ~Renderable() {}
-
-            uint32_t AddSpec(vertex_type_t d_type, float* in_data, size_t data_size, size_t elemcount);
-            uint32_t AddSpec(vertex_type_t d_type, const string& data_src);
-
-            inline void Draw(Video* renderer) { return renderer->Draw(*this); }
-      };
    }
+
+   /*!
+      \internal
+      struct used in vertex composition.
+   */
+   struct vertex_spec_t
+   {
+      vertex_type_t        datatype;
+      string               datafile;
+
+      size_t               vertex_elem_count;
+
+      std::vector<float>   fdata;
+
+      vertex_spec_t()
+      {
+         datatype = VERTEX_TYPE_UNSPECIFIED;
+      }
+
+     ~vertex_spec_t()
+      {
+      }
+   };
+   /*!
+      \endinternal
+   */
+
+   //! Base class for everything that can be rendered, derive from this.
+   class Renderable
+   {
+      protected:
+         std::vector<vertex_spec_t> vertexdata;
+         string name;
+
+      public:
+         Renderable(const string& name);
+         virtual ~Renderable() {}
+
+         uint32_t AddSpec(vertex_type_t d_type, float* in_data, size_t data_size, size_t elemcount);
+         uint32_t AddSpec(vertex_type_t d_type, const string& data_src);
+
+         inline void Draw(interface::Video* renderer) { return renderer->Draw(*this); }
+   };
 }
 
 #endif

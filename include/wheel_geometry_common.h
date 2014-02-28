@@ -16,12 +16,12 @@ namespace wheel
    {
       namespace internal
       {
-         class BasicShape : public interface::Renderable
+         class BasicShape : public Renderable
          {
             private:
             protected:
             public:
-               BasicShape(const string& name) : interface::Renderable(name) {}
+               BasicShape(const string& name) : Renderable(name) {}
          };
       }
    }
