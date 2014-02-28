@@ -10,6 +10,7 @@
 #include "wheel_core_module.h"
 
 #include <cstring>
+#include <unordered_map>
 
 namespace wheel
 {
@@ -23,8 +24,17 @@ namespace wheel
    {
       VERTEX_TYPE_UNSPECIFIED,
       VERTEX_TYPE_POSITION,
-      VERTEX_TYPE_TEXCOORD,
       VERTEX_TYPE_NORMAL,
+      VERTEX_TYPE_TEXCOORD0      =  0xff00,
+      VERTEX_TYPE_TEXCOORD1      =  0xff01,
+      VERTEX_TYPE_TEXCOORD2      =  0xff02,
+      VERTEX_TYPE_TEXCOORD3      =  0xff03,
+      VERTEX_TYPE_TEXCOORD4      =  0xff04,
+      VERTEX_TYPE_TEXCOORD5      =  0xff05,
+      VERTEX_TYPE_TEXCOORD6      =  0xff06,
+      VERTEX_TYPE_TEXCOORD7      =  0xff07,
+      VERTEX_TYPE_TEXCOORD8      =  0xff08,
+      VERTEX_TYPE_TEXCOORD9      =  0xff09,
    };
 
    class Renderable;
@@ -207,6 +217,11 @@ namespace wheel
                \return <code>WHEEL_OK</code> on success, or a value depicting an error.
             */
             virtual  uint32_t UseShader(const string& name) { return WHEEL_UNIMPLEMENTED_FEATURE; }
+
+            //! Update the framebuffer
+            /*!
+            */
+            virtual  void Update() = 0;
       };
 
    }
@@ -237,11 +252,14 @@ namespace wheel
       \endinternal
    */
 
+   typedef std::unordered_map<vertex_type_t, vertex_spec_t, std::hash<int>> vertextable_t;
+
    //! Base class for everything that can be rendered, derive from this.
    class Renderable
    {
       protected:
-         std::vector<vertex_spec_t> vertexdata;
+//         std::unordered_map<vertex_type_t, vertex_spec_t> vertexdata;
+         vertextable_t vertexdata;
          string name;
 
       public:
@@ -251,8 +269,22 @@ namespace wheel
          uint32_t AddSpec(vertex_type_t d_type, float* in_data, size_t data_size, size_t elemcount);
          uint32_t AddSpec(vertex_type_t d_type, const string& data_src);
 
+//         const std::unordered_map<vertex_type_t, vertex_spec_t>* data_ptr() const { return &vertexdata; }
+         const vertextable_t* data_ptr() const { return &vertexdata; }
+
          inline void Draw(interface::Video* renderer) { return renderer->Draw(*this); }
    };
 }
-
+/*
+namespace std {
+  template<>
+    struct hash<wheel::vertex_type_t>
+    {
+      size_t operator()(const wheel::vertex_type_t& __v) const noexcept
+      { 
+        return __v;
+      }
+    };
+}
+*/
 #endif
