@@ -25,8 +25,8 @@ namespace wheel
          private:
          protected:
          public:
-            Rectangle(string& name, float*);
-            Rectangle(string& name);
+            Rectangle(const string& name, float*);
+            Rectangle(const string& name);
       };
 
    }

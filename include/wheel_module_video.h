@@ -200,15 +200,6 @@ namespace wheel
                \return <code>WHEEL_OK</code> on success, or a value depicting an error.
             */
             virtual  uint32_t UseShader(const string& name) { return WHEEL_UNIMPLEMENTED_FEATURE; }
-
-            // Renderer objects
-
-            //! Create new renderable object of proper type
-            /*!
-               This should probably just be <code>return new renderable_class</code> for most objects.
-            */
-            virtual  Renderable* CreateObject() = 0;
-
       };
 
       enum vertex_type_t
@@ -253,7 +244,7 @@ namespace wheel
             string name;
 
          public:
-            Renderable(string& name) : name(name) {}
+            Renderable(const string& name) : name(name) {}
             virtual ~Renderable() {}
 
             inline void Draw(Video* renderer) { return renderer->Draw(*this); }
