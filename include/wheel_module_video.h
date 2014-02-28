@@ -19,6 +19,14 @@ namespace wheel
       FRAGMENT
    };
 
+   enum vertex_type_t
+   {
+      VERTEX_TYPE_UNSPECIFIED,
+      VERTEX_TYPE_POSITION,
+      VERTEX_TYPE_TEXCOORD,
+      VERTEX_TYPE_NORMAL,
+   };
+
    namespace interface
    {
       // Forward declaration
@@ -202,14 +210,6 @@ namespace wheel
             virtual  uint32_t UseShader(const string& name) { return WHEEL_UNIMPLEMENTED_FEATURE; }
       };
 
-      enum vertex_type_t
-      {
-         WHEEL_VERTEX_TYPE_UNSPECIFIED,
-         WHEEL_VERTEX_TYPE_POSITION,
-         WHEEL_VERTEX_TYPE_TEXCOORD,
-         WHEEL_VERTEX_TYPE_NORMAL,
-      };
-
       /*!
          \internal
          struct used in vertex composition.
@@ -219,13 +219,13 @@ namespace wheel
          vertex_type_t        datatype;
          string               datafile;
 
-         uint32_t             vertex_elem_count;
+         size_t               vertex_elem_count;
 
          std::vector<float>   fdata;
 
          vertex_spec_t()
          {
-            datatype = WHEEL_VERTEX_TYPE_UNSPECIFIED;
+            datatype = VERTEX_TYPE_UNSPECIFIED;
          }
 
         ~vertex_spec_t()
@@ -246,6 +246,9 @@ namespace wheel
          public:
             Renderable(const string& name) : name(name) {}
             virtual ~Renderable() {}
+
+            uint32_t AddSpec(vertex_type_t d_type, float* in_data, size_t data_size, size_t elemcount);
+            uint32_t AddSpec(vertex_type_t d_type, const string& data_src);
 
             inline void Draw(Video* renderer) { return renderer->Draw(*this); }
       };
