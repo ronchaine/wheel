@@ -25,6 +25,7 @@ namespace wheel
       VERTEX_TYPE_UNSPECIFIED,
       VERTEX_TYPE_POSITION,
       VERTEX_TYPE_NORMAL,
+      VERTEX_TYPE_COLOUR,
       VERTEX_TYPE_TEXCOORD0      =  0xff00,
       VERTEX_TYPE_TEXCOORD1      =  0xff01,
       VERTEX_TYPE_TEXCOORD2      =  0xff02,
@@ -165,7 +166,7 @@ namespace wheel
             /*!
                \param Renderable Object of type renderable to be drawn.
             */
-            virtual  void     Draw(const Renderable& object) = 0;
+            virtual  uint32_t    Draw(const Renderable& object) = 0;
 
             // Shader-related
 
@@ -235,7 +236,7 @@ namespace wheel
       vertex_type_t        datatype;
       string               datafile;
 
-      size_t               vertex_elem_count;
+      size_t               elem_count;
 
       std::vector<float>   fdata;
 
@@ -258,21 +259,21 @@ namespace wheel
    class Renderable
    {
       protected:
-//         std::unordered_map<vertex_type_t, vertex_spec_t> vertexdata;
          vertextable_t vertexdata;
          string name;
 
       public:
+         uint32_t z_order; // Used for 2D rendering
+
          Renderable(const string& name);
          virtual ~Renderable() {}
 
          uint32_t AddSpec(vertex_type_t d_type, float* in_data, size_t data_size, size_t elemcount);
          uint32_t AddSpec(vertex_type_t d_type, const string& data_src);
 
-//         const std::unordered_map<vertex_type_t, vertex_spec_t>* data_ptr() const { return &vertexdata; }
          const vertextable_t* data_ptr() const { return &vertexdata; }
 
-         inline void Draw(interface::Video* renderer) { return renderer->Draw(*this); }
+         inline uint32_t Draw(interface::Video* renderer) { return renderer->Draw(*this); }
    };
 }
 /*
