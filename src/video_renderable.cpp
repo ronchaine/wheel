@@ -7,12 +7,14 @@
 
 namespace wheel
 {
-   Renderable::Renderable(const string& name) : name(name)
+   Renderable::Renderable(const string& name) : name(name), needs_update(true)
    {
    }
 
    uint32_t Renderable::AddSpec(vertex_type_t d_type, float* in_data, size_t data_size, size_t elemcount)
    {
+      needs_update = true;
+
       // TODO: what to do when resending coordinates?
       if (vertexdata.count(d_type) != 0)
          return WHEEL_UNIMPLEMENTED_FEATURE;
@@ -28,6 +30,7 @@ namespace wheel
 
    uint32_t Renderable::AddSpec(vertex_type_t d_type, const string& data_src)
    {
+      needs_update = true;
       return WHEEL_UNIMPLEMENTED_FEATURE;
    }
 

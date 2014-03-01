@@ -166,7 +166,7 @@ namespace wheel
             /*!
                \param Renderable Object of type renderable to be drawn.
             */
-            virtual  uint32_t    Draw(const Renderable& object) = 0;
+            virtual  uint32_t    Draw(Renderable& object) = 0;
 
             // Shader-related
 
@@ -262,6 +262,8 @@ namespace wheel
          vertextable_t vertexdata;
          string name;
 
+         bool  needs_update;
+
       public:
          uint32_t z_order; // Used for 2D rendering
 
@@ -272,6 +274,9 @@ namespace wheel
          uint32_t AddSpec(vertex_type_t d_type, const string& data_src);
 
          const vertextable_t* data_ptr() const { return &vertexdata; }
+
+         bool RequiresUpdate() { return needs_update; }
+         void Drawn() { needs_update = false; }
 
          inline uint32_t Draw(interface::Video* renderer) { return renderer->Draw(*this); }
    };
