@@ -7,11 +7,11 @@
 
 namespace wheel
 {
-   Renderable::Renderable(const string& name) : name(name), needs_update(true)
-   {
-   }
 
-   uint32_t Renderable::AddSpec(vertex_type_t d_type, float* in_data, size_t data_size, size_t elemcount)
+   Renderable::Renderable(const string& name) : name(name), needs_update(true), z_order(0)
+   {}
+
+   uint32_t Renderable::AddVertexData(vertex_type_t d_type, float* in_data, size_t data_size, size_t elemcount)
    {
       needs_update = true;
 

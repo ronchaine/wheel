@@ -25,7 +25,7 @@ namespace wheel
          public:
             const uint8_t* GetRawData();
 
-            uint32_t       AddBuffer(const string& name, const buffer_t* buffer);
+            uint32_t       AddBuffer(const string& name, uint32_t fmt, const buffer_t* buffer);
             uint32_t       Add(const string& filename);
 
             uint32_t       Savetofile(const string& filename);

@@ -55,22 +55,25 @@ namespace wheel
          \param 
          \returns <code>WHEEL_OK</code> on success, otherwise an unsigned integer describing the error.
       */
-      uint32_t Library::AddBuffer(const string& name, const buffer_t* buffer)
+      uint32_t Library::AddBuffer(const string& name, uint32_t fmt, const buffer_t* buffer)
       {
          if (buffer == nullptr)
             return WHEEL_INVALID_VALUE;
 
-         uint32_t format = CheckFileFormat(*buffer);
-
-         if (format == WHEEL_IMAGEFORMAT_PNG)
+         if (fmt == WHEEL_PIXEL_FMT_READ_FILE)
          {
-            PNG* img = new PNG();
-            img->Load(*buffer);
-            img->DisplayInfo();
-         }
+            uint32_t format = CheckFileFormat(*buffer);
 
-         if (format == WHEEL_IMAGEFORMAT_UNKNOWN)
-            return WHEEL_UNKNOWN_FORMAT;
+            if (format == WHEEL_IMAGEFORMAT_PNG)
+            {
+               PNG* img = new PNG();
+               img->Load(*buffer);
+               img->DisplayInfo();
+            }
+
+            if (format == WHEEL_IMAGEFORMAT_UNKNOWN)
+               return WHEEL_UNKNOWN_FORMAT;
+         }
 
          return WHEEL_OK;
       }
@@ -78,7 +81,7 @@ namespace wheel
       uint32_t Library::Add(const string& file)
       {
          const wheel::buffer_t* buf = wheel::GetBuffer(file);
-         return AddBuffer(file, buf);
+         return AddBuffer(file, WHEEL_PIXEL_FMT_NONE, buf);
       }
    }
 }

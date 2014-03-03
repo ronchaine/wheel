@@ -223,6 +223,11 @@ namespace wheel
             /*!
             */
             virtual  void Update() = 0;
+
+            //! Render a quad
+            /*!
+            */
+            virtual  uint32_t DrawRect(uint32_t x, uint32_t y, uint32_t w, uint32_t h, int32_t z, const string& image = "") = 0;
       };
 
    }
@@ -265,12 +270,12 @@ namespace wheel
          bool  needs_update;
 
       public:
-         uint32_t z_order; // Used for 2D rendering
+         int32_t z_order; // Used for 2D rendering
 
          Renderable(const string& name);
          virtual ~Renderable() {}
 
-         uint32_t AddSpec(vertex_type_t d_type, float* in_data, size_t data_size, size_t elemcount);
+         uint32_t AddVertexData(vertex_type_t d_type, float* in_data, size_t data_size, size_t elemcount);
          uint32_t AddSpec(vertex_type_t d_type, const string& data_src);
 
          const vertextable_t* data_ptr() const { return &vertexdata; }
@@ -278,19 +283,10 @@ namespace wheel
          bool RequiresUpdate() { return needs_update; }
          void Drawn() { needs_update = false; }
 
+         inline string get_name() { return name; }
+
          inline uint32_t Draw(interface::Video* renderer) { return renderer->Draw(*this); }
    };
 }
-/*
-namespace std {
-  template<>
-    struct hash<wheel::vertex_type_t>
-    {
-      size_t operator()(const wheel::vertex_type_t& __v) const noexcept
-      { 
-        return __v;
-      }
-    };
-}
-*/
+
 #endif
