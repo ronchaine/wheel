@@ -38,8 +38,6 @@ namespace wheel
       VERTEX_TYPE_TEXCOORD9      =  0xff09,
    };
 
-   class Renderable;
-
    namespace interface
    {
       //! Interface for renderer modules
@@ -162,12 +160,6 @@ namespace wheel
             */
             virtual  void*    GetWindowPtr() { return nullptr; }
 
-            // Drawing 
-            /*!
-               \param Renderable Object of type renderable to be drawn.
-            */
-            virtual  uint32_t    Draw(Renderable& object) = 0;
-
             // Shader-related
 
             //! Add new shader
@@ -231,62 +223,6 @@ namespace wheel
       };
 
    }
-
-   /*!
-      \internal
-      struct used in vertex composition.
-   */
-   struct vertex_spec_t
-   {
-      vertex_type_t        datatype;
-      string               datafile;
-
-      size_t               elem_count;
-
-      std::vector<float>   fdata;
-
-      vertex_spec_t()
-      {
-         datatype = VERTEX_TYPE_UNSPECIFIED;
-      }
-
-     ~vertex_spec_t()
-      {
-      }
-   };
-   /*!
-      \endinternal
-   */
-
-   typedef std::unordered_map<vertex_type_t, vertex_spec_t, std::hash<int>> vertextable_t;
-
-   //! Base class for everything that can be rendered, derive from this.
-   class Renderable
-   {
-      protected:
-         vertextable_t vertexdata;
-         string name;
-
-         bool  needs_update;
-
-      public:
-         int32_t z_order; // Used for 2D rendering
-
-         Renderable(const string& name);
-         virtual ~Renderable() {}
-
-         uint32_t AddVertexData(vertex_type_t d_type, float* in_data, size_t data_size, size_t elemcount);
-         uint32_t AddSpec(vertex_type_t d_type, const string& data_src);
-
-         const vertextable_t* data_ptr() const { return &vertexdata; }
-
-         bool RequiresUpdate() { return needs_update; }
-         void Drawn() { needs_update = false; }
-
-         inline string get_name() { return name; }
-
-         inline uint32_t Draw(interface::Video* renderer) { return renderer->Draw(*this); }
-   };
 }
 
 #endif
