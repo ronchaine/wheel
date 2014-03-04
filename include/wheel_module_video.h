@@ -20,24 +20,6 @@ namespace wheel
       FRAGMENT
    };
 
-   enum vertex_type_t
-   {
-      VERTEX_TYPE_UNSPECIFIED,
-      VERTEX_TYPE_POSITION,
-      VERTEX_TYPE_NORMAL,
-      VERTEX_TYPE_COLOUR,
-      VERTEX_TYPE_TEXCOORD0      =  0xff00,
-      VERTEX_TYPE_TEXCOORD1      =  0xff01,
-      VERTEX_TYPE_TEXCOORD2      =  0xff02,
-      VERTEX_TYPE_TEXCOORD3      =  0xff03,
-      VERTEX_TYPE_TEXCOORD4      =  0xff04,
-      VERTEX_TYPE_TEXCOORD5      =  0xff05,
-      VERTEX_TYPE_TEXCOORD6      =  0xff06,
-      VERTEX_TYPE_TEXCOORD7      =  0xff07,
-      VERTEX_TYPE_TEXCOORD8      =  0xff08,
-      VERTEX_TYPE_TEXCOORD9      =  0xff09,
-   };
-
    namespace interface
    {
       //! Interface for renderer modules
@@ -216,10 +198,21 @@ namespace wheel
             */
             virtual  void Update() = 0;
 
-            //! Render a quad
+            // Rendering
+
+            //! Rendering stuff
             /*!
             */
-            virtual  uint32_t DrawRect(uint32_t x, uint32_t y, uint32_t w, uint32_t h, int32_t z, const string& image = "") = 0;
+            virtual  uint32_t DrawRect(int32_t x, int32_t y, uint32_t w, uint32_t h) = 0;
+
+            virtual  uint32_t AddTexture(const string& name, uint32_t w, uint32_t h, uint32_t fmt) { return WHEEL_UNIMPLEMENTED_FEATURE; }
+
+            virtual  uint32_t Rotate(float x, float y, float z, float w) { return WHEEL_UNIMPLEMENTED_FEATURE; }
+            
+            virtual  uint32_t Rotate2D(int32_t x_pivot, int32_t y_pivot, float w) { return WHEEL_UNIMPLEMENTED_FEATURE; }
+
+            virtual  uint32_t Translate(float x, float y, float z) { return WHEEL_UNIMPLEMENTED_FEATURE; }
+            virtual  uint32_t Translatei(int32_t x, int32_t y, int32_t z) { return WHEEL_UNIMPLEMENTED_FEATURE; }
       };
 
    }
