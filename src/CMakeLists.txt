@@ -1,10 +1,5 @@
 find_package(PhysFS REQUIRED)
 
-# Replaced my miniz
-#if (WHEEL_INCLUDE_IMAGELIBRARY)
-#  find_package(ZLIB REQUIRED)
-#endif()
-
 include_directories(${WHEEL_SOURCE_DIR}/src
                     ${WHEEL_SOURCE_DIR}/include)
 
@@ -14,6 +9,9 @@ set(COMMON_SOURCES core.cpp debug.cpp module.cpp string.cpp resource.cpp
 
 set(IMAGE_SOURCES image/image.cpp image/png.cpp image/library.cpp image/atlas.cpp)
 set(IMAGE_HEADERS ${WHEEL_SOURCE_DIR}/include/wheel_image.h)
+
+set(SOUND_SOURCES sound/sound.cpp)
+set(SOUND_HEADERS ${WHEEL_SOURCE_DIR}/include/wheel_sound.h)
 
 set(WHEEL_SOURCES ${COMMON_SOURCES})
 set(WHEEL_HEADERS ${COMMON_HEADERS})
@@ -30,6 +28,12 @@ set(WHEEL_LIBRARIES ${PHYSFS_LIBRARY} ${WHEEL_LIBRARIES_UNIX})
 if (WHEEL_INCLUDE_IMAGELIBRARY)
   set(WHEEL_SOURCES ${WHEEL_SOURCES} ${IMAGE_SOURCES})
   set(WHEEL_HEADERS ${WHEEL_HEADERS} ${IMAGE_HEADERS})
+endif()
+
+# Image library
+if (WHEEL_INCLUDE_SOUNDLIBRARY)
+  set(WHEEL_SOURCES ${WHEEL_SOURCES} ${SOUND_SOURCES})
+  set(WHEEL_HEADERS ${WHEEL_HEADERS} ${SOUND_HEADERS})
 endif()
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --std=c++11 -fno-exceptions -fno-rtti -O3 -fPIC")
