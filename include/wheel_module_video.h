@@ -170,6 +170,9 @@ namespace wheel
             */
             virtual  uint32_t RemoveShader(const string& name) { return WHEEL_UNIMPLEMENTED_FEATURE; }
 
+            //! Return shader ID
+            virtual  int32_t getProgram() { return WHEEL_UNIMPLEMENTED_FEATURE; }
+
 
             //! Use different shader
             /*!
