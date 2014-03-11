@@ -7,5 +7,6 @@
 #define WHEEL_SOUND_HEADER
 
 #include "wheel_sound_common.h"
+#include "wheel_sound_library.h"
 
 #endif

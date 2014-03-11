@@ -12,6 +12,7 @@
 
 #define WHEEL_SOUNDFORMAT_UNKNOWN   0x00
 #define WHEEL_SOUNDFORMAT_OGG       0x01
+#define WHEEL_SOUNDFORMAT_WAV       0x02
 
 namespace wheel
 {
@@ -21,6 +22,18 @@ namespace wheel
       {
          uint32_t format;
          buffer_t data;
+      };
+
+      struct sound_info_t
+      {
+         uint32_t    len_µs;
+         uint32_t    bitrate;
+         float       freqrate;
+         uint32_t    size;
+         uint32_t    channels;
+
+         sound_info_t(uint32_t l, uint32_t btr, float freqrate, uint32_t siz, uint32_t cha) :
+            len_µs(l), bitrate(btr), freqrate(freqrate), size(siz), channels(cha) {}
       };
 
       /*!
@@ -48,6 +61,7 @@ namespace wheel
             virtual uint32_t  Load(const buffer_t& buffer);
 
             virtual buffer_t* GetBuffer() { return &sound.data; }
+            sound_info_t GetInfo() { return sound_info_t(len_µs, bitrate, freqrate, size, channels); }
       };
    }
 }
