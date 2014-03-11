@@ -14,7 +14,6 @@
 #define WHEEL_IMAGEFORMAT_PNG       0x01
 
 #define WHEEL_PIXEL_FMT_NONE        ~0
-#define WHEEL_PIXEL_FMT_READ_FILE   ~0
 #define WHEEL_PIXEL_FMT_BGR         0x80e0
 #define WHEEL_PIXEL_FMT_BGRA        0x80e1
 #define WHEEL_PIXEL_FMT_RGBA        0x1908
