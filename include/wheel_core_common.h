@@ -21,6 +21,8 @@
 
 #define WHEEL_EOF                         0xf100
 
+#define WHEEL_READ_FILE                   ~0
+
 /// Error codes
 #define WHEEL_OK                          0x0000
 #define WHEEL_RESOURCE_UNAVAILABLE        0x0001
@@ -47,6 +49,7 @@
 #define WHEEL_MODULE_UNSUPPORTED_FEATURE  0xef03
 #define WHEEL_MODULE_DEVICE_UNAVAILABLE   0xef04
 #define WHEEL_MODULE_CONTEXT_CREATION_ERROR 0xef05
+
 /// Flags
 #define WHEEL_INITIALISED                 0x0001
 #define WHEEL_LITTLE_ENDIAN               0x0002
@@ -83,6 +86,47 @@ namespace wheel
 
       return true;
    }
+
+   /*!
+      Read a big-endian stored uint32_t value independent of endianness
+   */
+   inline uint32_t read_nod_uint32(const buffer_t& buffer, size_t& bufptr)
+   {
+      uint32_t rval = *(uint32_t*)(&buffer[0] + bufptr);
+
+      bufptr += sizeof(uint32_t);
+
+      if (big_endian())
+         return rval;
+
+      rval = (rval & 0xff000000) >> 24
+           | (rval & 0x00ff0000) >> 8
+           | (rval & 0x0000ff00) << 8
+           | (rval & 0x000000ff) << 24;
+
+      return rval;
+   }
+
+   /*!
+      Read a little-endian uint32_t value independent of endianness
+   */
+   inline uint32_t read_nod_uint32_le(const buffer_t& buffer, size_t& bufptr)
+   {
+      uint32_t rval = *(uint32_t*)(&buffer[0] + bufptr);
+
+      bufptr += sizeof(uint32_t);
+
+      if (!big_endian())
+         return rval;
+
+      rval = (rval & 0xff000000) >> 24
+           | (rval & 0x00ff0000) >> 8
+           | (rval & 0x0000ff00) << 8
+           | (rval & 0x000000ff) << 24;
+
+      return rval;
+   }
+
 }
 
 #endif
