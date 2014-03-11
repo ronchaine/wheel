@@ -60,7 +60,7 @@ namespace wheel
          if (buffer == nullptr)
             return WHEEL_INVALID_VALUE;
 
-         if (fmt == WHEEL_PIXEL_FMT_READ_FILE)
+         if (fmt == WHEEL_READ_FILE)
          {
             uint32_t format = CheckFileFormat(*buffer);
 
@@ -81,7 +81,8 @@ namespace wheel
       uint32_t Library::Add(const string& file)
       {
          const wheel::buffer_t* buf = wheel::GetBuffer(file);
-         return AddBuffer(file, WHEEL_PIXEL_FMT_NONE, buf);
+         return AddBuffer(file, WHEEL_READ_FILE, buf);
       }
+
    }
 }

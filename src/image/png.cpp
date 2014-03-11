@@ -7,7 +7,6 @@
 #include "../../include/wheel_core_debug.h"
 #include "../../include/wheel_core_string.h"
 #include "../../include/wheel_core_utility.h"
-
 #include "../../include/wheel_image_png.h"
 
 #include <cstring>
@@ -159,26 +158,6 @@ namespace wheel
          log << "source:" << source.size() << "\n";
 
          return z_uncompress(&source[0], source.size()-1, destination);
-      }
-
-      /*!
-         Internal command to read a uint32_t value independent of endianness
-      */
-      uint32_t read_nod_uint32(const buffer_t& buffer, size_t& bufptr)
-      {
-         uint32_t rval = *(uint32_t*)(&buffer[0] + bufptr);
-
-         bufptr += sizeof(uint32_t);
-
-         if (big_endian())
-            return rval;
-
-         rval = (rval & 0xff000000) >> 24
-              | (rval & 0x00ff0000) >> 8
-              | (rval & 0x0000ff00) << 8
-              | (rval & 0x000000ff) << 24;
-
-         return rval;
       }
 
       /*!
