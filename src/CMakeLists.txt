@@ -10,7 +10,7 @@ set(COMMON_SOURCES core.cpp debug.cpp module.cpp string.cpp resource.cpp
 set(IMAGE_SOURCES image/image.cpp image/png.cpp image/library.cpp image/atlas.cpp)
 set(IMAGE_HEADERS ${WHEEL_SOURCE_DIR}/include/wheel_image.h)
 
-set(SOUND_SOURCES sound/sound.cpp)
+set(SOUND_SOURCES sound/sound.cpp sound/library.cpp sound/wav.cpp)
 set(SOUND_HEADERS ${WHEEL_SOURCE_DIR}/include/wheel_sound.h)
 
 set(WHEEL_SOURCES ${COMMON_SOURCES})
