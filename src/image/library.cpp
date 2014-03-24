@@ -45,9 +45,11 @@ namespace wheel
 
             if (format == WHEEL_FILE_FORMAT_PNG)
             {
+               log << "\n";
                PNG* img = new PNG();
                img->Load(*buffer);
                img->DisplayInfo();
+               log << "\n";
             }
 
             if (format == WHEEL_FILE_FORMAT_UNKNOWN)

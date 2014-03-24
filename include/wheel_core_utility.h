@@ -31,7 +31,7 @@ namespace wheel
 
       location += sizeof(T);
 
-      if (IsBigEndian())
+      if (!IsBigEndian())
          return rval;
 
       if (sizeof(T) == 2)
@@ -69,6 +69,50 @@ namespace wheel
       return rval;
    }
 
+   template <typename T>
+   T buffer_read_le(const buffer_t& buffer, size_t& location)
+   {
+      T rval = *(T*)(&buffer[0] + location);
+
+      location += sizeof(T);
+
+      if (IsBigEndian())
+         return rval;
+
+      if (sizeof(T) == 2)
+      {
+         uint16_t tmpval = *(uint16_t*)(&rval);
+
+         tmpval = (tmpval & 0xff00) >> 8
+                | (tmpval & 0x00ff) << 8;
+
+         rval = *(T*)(&tmpval);
+      }
+      else if (sizeof(T) == 4)
+      {
+         uint32_t tmpval = *(uint32_t*)(&rval);
+
+         tmpval = (tmpval & 0xff000000) >> 24
+                | (tmpval & 0x00ff0000) >> 8
+                | (tmpval & 0x0000ff00) << 8
+                | (tmpval & 0x000000ff) << 24;
+
+         rval = *(T*)(&tmpval);
+      }
+      else if (sizeof(T) == 8)
+      {
+         rval = (rval & 0xff00000000000000) >> 56
+              | (rval & 0x00ff000000000000) >> 40
+              | (rval & 0x0000ff0000000000) >> 24
+              | (rval & 0x000000ff00000000) >> 8
+              | (rval & 0x00000000ff000000) << 8
+              | (rval & 0x0000000000ff0000) << 24
+              | (rval & 0x000000000000ff00) << 40
+              | (rval & 0x00000000000000ff) << 56;
+      }
+
+      return rval;
+   }
 
    //! Calculate crc32
    /*!

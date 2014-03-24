@@ -445,7 +445,6 @@ namespace wheel
             memcpy(chunk->data, (&buffer[0] + bufptr), chunk->len);
             bufptr += chunk->len;
 
-//            chunk->crc = read_nod_uint32(buffer, bufptr);
             chunk->crc = buffer_read<uint32_t>(buffer, bufptr);
 
             uint32_t crc_check = 0xffffffff;
