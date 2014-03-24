@@ -54,6 +54,12 @@
 #define WHEEL_INITIALISED                 0x0001
 #define WHEEL_LITTLE_ENDIAN               0x0002
 
+// File formats
+#define WHEEL_FILE_FORMAT_UNKNOWN   0x00
+#define WHEEL_FILE_FORMAT_PNG       0x01
+#define WHEEL_FILE_FORMAT_OGG       0x02
+#define WHEEL_FILE_FORMAT_WAV       0x03
+
 // TODO: Keyboard scancodes, follow USB HID, seperate names for different layouts
 // Fill according to http://www.freebsddiary.org/APC/usb_hid_usages.php and https://wiki.libsdl.org/SDLScancodeLookup
 enum class scancode_t
@@ -87,45 +93,46 @@ namespace wheel
       return true;
    }
 
-   /*!
-      Read a big-endian stored uint32_t value independent of endianness
+    /*!
+      \brief  Checks file format of a file.
+
+      \return WHEEL_FILE_FORMAT_X, where X is either UNKNOWN or a known format.
    */
-   inline uint32_t read_nod_uint32(const buffer_t& buffer, size_t& bufptr)
-   {
-      uint32_t rval = *(uint32_t*)(&buffer[0] + bufptr);
+   inline uint32_t CheckFileFormat(const buffer_t& buffer)
+      {
+         if (buffer.size() > 8)
+            if ((buffer[0] == 137)
+            && (buffer[1] == 80)
+            && (buffer[2] == 78)
+            && (buffer[3] == 71)
+            && (buffer[4] == 13)
+            && (buffer[5] == 10)
+            && (buffer[6] == 26)
+            && (buffer[7] == 10))
+               return WHEEL_FILE_FORMAT_PNG;
 
-      bufptr += sizeof(uint32_t);
+         if (buffer.size() > 25)
+            if ((buffer[0] == 'O')
+            && (buffer[1] == 'g')
+            && (buffer[2] == 'g')
+            && (buffer[3] == 'S'))
+               return WHEEL_FILE_FORMAT_OGG;
 
-      if (big_endian())
-         return rval;
+         if (buffer.size() > 44)
+            if ((buffer[0] == 'R')
+            && (buffer[1] == 'I')
+            && (buffer[2] == 'F')
+            && (buffer[3] == 'F')
 
-      rval = (rval & 0xff000000) >> 24
-           | (rval & 0x00ff0000) >> 8
-           | (rval & 0x0000ff00) << 8
-           | (rval & 0x000000ff) << 24;
+            && (buffer[8] == 'W')
+            && (buffer[9] == 'A')
+            && (buffer[10] == 'V')
+            && (buffer[11] == 'E'))
+               return WHEEL_FILE_FORMAT_WAV;
 
-      return rval;
-   }
+         return WHEEL_FILE_FORMAT_UNKNOWN;
+      }
 
-   /*!
-      Read a little-endian uint32_t value independent of endianness
-   */
-   inline uint32_t read_nod_uint32_le(const buffer_t& buffer, size_t& bufptr)
-   {
-      uint32_t rval = *(uint32_t*)(&buffer[0] + bufptr);
-
-      bufptr += sizeof(uint32_t);
-
-      if (!big_endian())
-         return rval;
-
-      rval = (rval & 0xff000000) >> 24
-           | (rval & 0x00ff0000) >> 8
-           | (rval & 0x0000ff00) << 8
-           | (rval & 0x000000ff) << 24;
-
-      return rval;
-   }
 
 }
 

@@ -11,9 +11,10 @@ namespace wheel
 {
    namespace audio
    {
-      uint32_t  Load(const buffer_t& buffer)
+      uint32_t Sound::Load(const buffer_t& buffer)
       {
          return WHEEL_UNIMPLEMENTED_FEATURE;
       }
+
    }
 }

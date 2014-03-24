@@ -10,10 +10,6 @@
 #include "wheel_core_debug.h"
 #include "wheel_module_audio.h"
 
-#define WHEEL_SOUNDFORMAT_UNKNOWN   0x00
-#define WHEEL_SOUNDFORMAT_OGG       0x01
-#define WHEEL_SOUNDFORMAT_WAV       0x02
-
 namespace wheel
 {
    namespace audio
@@ -54,7 +50,7 @@ namespace wheel
          public:
             Sound() : len_µs(0), bitrate(0), freqrate(0), size(0), channels(0)
             {
-               sound.format = WHEEL_SOUNDFORMAT_UNKNOWN;
+               sound.format = WHEEL_FILE_FORMAT_UNKNOWN;
             }
             virtual ~Sound() {}
             

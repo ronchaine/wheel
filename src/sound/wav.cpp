@@ -33,6 +33,8 @@ namespace wheel
 
       uint32_t WAV::Load(const buffer_t& buffer)
       {
+         size_t bufptr;
+
          return WHEEL_UNIMPLEMENTED_FEATURE;
       }
    }

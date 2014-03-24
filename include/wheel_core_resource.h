@@ -36,6 +36,12 @@ namespace wheel
    void              DeleteBuffer(const string& filename);
 
    void              EmptyCache();
+
+//   template 
+/*
+   uint32_t          buffer_read_xint32(const buffer_t buffer, size_t& location);
+   uint32_t          buffer_read_xint32_le(const buffer_t buffer, size_t& location);
+*/
 }
 
 #endif

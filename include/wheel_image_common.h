@@ -10,9 +10,6 @@
 #include "wheel_core_debug.h"
 #include "wheel_module_video.h"
 
-#define WHEEL_IMAGEFORMAT_UNKNOWN   0x00
-#define WHEEL_IMAGEFORMAT_PNG       0x01
-
 #define WHEEL_PIXEL_FMT_NONE        ~0
 #define WHEEL_PIXEL_FMT_BGR         0x80e0
 #define WHEEL_PIXEL_FMT_BGRA        0x80e1
@@ -36,7 +33,7 @@ namespace wheel
          public:
             Image()
             {
-               format = WHEEL_IMAGEFORMAT_UNKNOWN;
+               format = WHEEL_FILE_FORMAT_UNKNOWN;
             }
 
             virtual ~Image() {}

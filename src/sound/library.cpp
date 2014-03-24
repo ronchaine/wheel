@@ -16,36 +16,6 @@ namespace wheel
 {
    namespace audio
    {
-      /*!
-         \brief  Checks file format of an sound.
-
-         \return WHEEL_SOUNDFORMAT_X, where X is either UNKNOWN or a known format.
-      */
-      uint32_t CheckFileFormat(const buffer_t& buffer)
-      {
-         if (buffer.size() > 25)
-            if ((buffer[0] == 'O')
-            && (buffer[1] == 'g')
-            && (buffer[2] == 'g')
-            && (buffer[3] == 'S'))
-               return WHEEL_SOUNDFORMAT_OGG;
-
-         if (buffer.size() > 12)
-            if ((buffer[0] == 'R')
-            && (buffer[1] == 'I')
-            && (buffer[2] == 'F')
-            && (buffer[3] == 'F')
-
-            && (buffer[8] == 'W')
-            && (buffer[9] == 'A')
-            && (buffer[10] == 'V')
-            && (buffer[11] == 'E'))
-
-               return WHEEL_SOUNDFORMAT_WAV;
-
-         return WHEEL_SOUNDFORMAT_UNKNOWN;
-      }
-
       Library::Library()
       {}
 
@@ -73,16 +43,16 @@ namespace wheel
          {
             uint32_t format = CheckFileFormat(*buffer);
 
-            if (format == WHEEL_SOUNDFORMAT_WAV)
+            if (format == WHEEL_FILE_FORMAT_WAV)
             {
-
+               log << "Trying to load wav file\n";
             }
-            if (format == WHEEL_SOUNDFORMAT_OGG)
+            if (format == WHEEL_FILE_FORMAT_OGG)
             {
                log << "Trying to load ogg file\n";
             }
 
-            if (format == WHEEL_SOUNDFORMAT_UNKNOWN)
+            if (format == WHEEL_FILE_FORMAT_UNKNOWN)
                return WHEEL_UNKNOWN_FORMAT;
          }
 

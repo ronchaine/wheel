@@ -427,7 +427,7 @@ namespace wheel
             if (buffer.size() < bufptr + sizeof(uint32_t))
                return WHEEL_UNEXPECTED_END_OF_FILE;
 
-            chunk->len = read_nod_uint32(buffer, bufptr);
+            chunk->len = buffer_read<uint32_t>(buffer, bufptr);
             log << "length: " << chunk->len << "\n";
 
             if (buffer.size() < bufptr + sizeof(char) * 4)
@@ -445,7 +445,8 @@ namespace wheel
             memcpy(chunk->data, (&buffer[0] + bufptr), chunk->len);
             bufptr += chunk->len;
 
-            chunk->crc = read_nod_uint32(buffer, bufptr);
+//            chunk->crc = read_nod_uint32(buffer, bufptr);
+            chunk->crc = buffer_read<uint32_t>(buffer, bufptr);
 
             uint32_t crc_check = 0xffffffff;
 
@@ -463,7 +464,7 @@ namespace wheel
 
             if (s == "IEND")
             {
-               format = WHEEL_IMAGEFORMAT_PNG;
+               format = WHEEL_FILE_FORMAT_PNG;
 
                log << "Decoding IDAT chunks...\n";
                decode_idat_data();
