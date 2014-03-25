@@ -425,13 +425,19 @@ namespace wheel
             PNGChunk* chunk = new PNGChunk;
 
             if (buffer.size() < bufptr + sizeof(uint32_t))
+            {
+               delete chunk;
                return WHEEL_UNEXPECTED_END_OF_FILE;
+            }
 
             chunk->len = buffer_read<uint32_t>(buffer, bufptr);
             log << "length: " << chunk->len << "\n";
 
             if (buffer.size() < bufptr + sizeof(char) * 4)
+            {
+               delete chunk;
                return WHEEL_UNEXPECTED_END_OF_FILE;
+            }
             
             strncpy(chunk->type, (const char*)(&buffer[0] + bufptr), 4);
             string s(chunk->type, 4);
@@ -439,7 +445,10 @@ namespace wheel
             bufptr += sizeof(char) * 4;
 
             if (buffer.size() < bufptr + chunk->len)
+            {
+               delete chunk;
                return WHEEL_UNEXPECTED_END_OF_FILE;
+            }
 
             chunk->data = (uint8_t*)malloc(chunk->len);
             memcpy(chunk->data, (&buffer[0] + bufptr), chunk->len);
