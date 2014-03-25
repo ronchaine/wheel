@@ -10,6 +10,7 @@
 #include "../../include/wheel_core_resource.h"
 
 #include "../../include/wheel_sound.h"
+#include "../../include/wheel_sound_wav.h"
 #include "../../include/wheel_sound_library.h"
 
 namespace wheel
@@ -45,7 +46,9 @@ namespace wheel
 
             if (format == WHEEL_FILE_FORMAT_WAV)
             {
-               log << "Trying to load wav file\n";
+               WAV* snd = new WAV();
+               snd->Load(*buffer);
+               snd->DisplayInfo();
             }
             if (format == WHEEL_FILE_FORMAT_OGG)
             {

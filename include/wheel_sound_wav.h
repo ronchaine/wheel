@@ -20,9 +20,11 @@ namespace wheel
             std::vector<WAVChunk*> chunks;
 
          public:
+            uint32_t Load(const buffer_t& buffer);
+            void     DisplayInfo();
+
             WAV();
            ~WAV();
-            uint32_t Load(const buffer_t& buffer);
       };
    }
 }

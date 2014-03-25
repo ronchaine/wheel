@@ -24,6 +24,13 @@ namespace wheel
       return (endian_check_value_first == 0x1e);
    }
 
+   //! Reads a big-endian value from a buffer and increments pointer.
+   /*!
+      \param buffer     Buffer to be read
+      \param location   Pointer to the data inside the buffer
+
+      \return Data in system native endian format.
+   */
    template <typename T>
    T buffer_read(const buffer_t& buffer, size_t& location)
    {
@@ -69,6 +76,13 @@ namespace wheel
       return rval;
    }
 
+   //! Reads a little-endian value from a buffer and increments pointer.
+   /*!
+      \param buffer     Buffer to be read
+      \param location   Pointer to the data inside the buffer
+
+      \return Data in system native endian format.
+   */
    template <typename T>
    T buffer_read_le(const buffer_t& buffer, size_t& location)
    {
