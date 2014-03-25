@@ -431,7 +431,6 @@ namespace wheel
             }
 
             chunk->len = buffer_read<uint32_t>(buffer, bufptr);
-            log << "length: " << chunk->len << "\n";
 
             if (buffer.size() < bufptr + sizeof(char) * 4)
             {
@@ -441,7 +440,6 @@ namespace wheel
             
             strncpy(chunk->type, (const char*)(&buffer[0] + bufptr), 4);
             string s(chunk->type, 4);
-            log << "type: " << s << "\n";
             bufptr += sizeof(char) * 4;
 
             if (buffer.size() < bufptr + chunk->len)
@@ -464,10 +462,9 @@ namespace wheel
 
             if (chunk->crc == crc_check)
             {
-               log << "crc OK\n";
                chunks.push_back(chunk);
             } else {
-               log << "crc mismatch, skipping...\n";
+               log << "PNG loading: crc mismatch, skipping chunk...\n";
             }
 
             if (s == "IEND")
