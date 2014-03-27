@@ -56,6 +56,9 @@ namespace wheel
         // Destuctor
         ~string();
 
+        // Convenience (stupid) constructors
+        string(const char32_t c) { data.push_back(c); }
+
         // C++ stl compatibility
         std::vector<char32_t>::iterator begin() { return data.begin(); }
         std::vector<char32_t>::const_iterator begin() const { return data.begin(); }
