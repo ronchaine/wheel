@@ -126,7 +126,7 @@ namespace wheel
       modinfo_t info;
       module->get_module_info(&info);
 
-      std::vector<string> moddeps, modprovs;
+      std::vector<string> moddeps, modprovs;     
       moddeps = info.depends.split(",");
       modprovs = info.provides.split(",");
 

@@ -223,6 +223,8 @@ namespace wheel
    std::vector<string> string::split(const string& delim)
    {
       std::vector<string> rval;
+      if (data.size() == 0)
+         return rval;
 
       size_t pos = 0;
 
