@@ -224,40 +224,32 @@ namespace wheel
    {
       std::vector<string> rval;
 
-      size_t first_pos = 0;
+      size_t pos = 0;
 
       for (size_t i = 0; i < data.size(); ++i)
-         for (char32_t c : delim)
-            if (data[i] == c)
-            {
-               string temp = this->substr(first_pos, i - first_pos);
-
-               if (temp.length() != 0)
-               {
-                  for (char32_t t_c : temp)
-                     for (char32_t d_c : delim)
-                        if (t_c == d_c)
-                           goto wheel_string_breakout_one; // Multi-level break to five lines down.
-
-                  rval.push_back(this->substr(first_pos, i - first_pos));
-
-                  wheel_string_breakout_one:;
-               }
-
-               first_pos = ++i;
-               break;
-            }
-
-      string temp = this->substr(first_pos, data.size() - first_pos);
-      if (temp.length() != 0)
       {
-         for (char32_t t_c : temp)
-            for (char32_t d_c : delim)
-               if (t_c == d_c)
-                  return rval;
+         if (match_char32(data[i], delim))
+         {
+            while(match_char32(data[pos], delim))
+               pos++;
 
-         rval.push_back(this->substr(first_pos, data.size() - first_pos));
+            string temp = this->substr(pos, i - pos);
+
+            if (temp.length() != 0)
+            {
+               rval.push_back(temp);
+               pos = i;
+            }
+         }
       }
+
+      while(match_char32(data[pos], delim))
+         pos++;
+
+      string temp = this->substr(pos, data.size() - pos);
+      if (temp.length() != 0)
+         rval.push_back(temp);
+
 
       return rval;
    }

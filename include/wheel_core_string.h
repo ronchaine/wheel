@@ -196,6 +196,23 @@ namespace wheel
   }
 }
 
+namespace wheel {
+  /*!
+    compares a character to number of other characters
+
+    \param string string of characters to compare to.
+  */
+  inline bool match_char32(char32_t c, const string& chrs)
+  {
+    for (char32_t c_c : chrs)
+    {
+      if (c == c_c)
+        return true;
+    }
+    return false;
+  }  
+}
+
 namespace std {
   //! std::hash specialisation for wheel::core::string
   template<>
