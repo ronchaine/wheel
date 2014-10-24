@@ -14,8 +14,6 @@
 #include <locale>
 #include <memory>
 
-#include <cassert>
-
 namespace wheel
 {
   /*!
@@ -130,18 +128,6 @@ namespace wheel
 //! wheel::Hash specialisation for wheel::core::string
 namespace wheel
 {
-  // This voodoo is to find out whether size_t is 8 or 4 bytes long, it could be
-  // easily extended to different sizes, but for now this is enough.
-  template<typename T, bool is_x86_64 = size_t_x64()>
-  class Hash
-  {
-    public:
-        size_t operator()(const T&)
-        {
-          assert(0 && "unknown bit depth");
-        }
-  };
-
   // 64-bit version of string hash
   template<>
   class Hash<string, true>

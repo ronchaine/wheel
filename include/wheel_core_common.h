@@ -9,6 +9,7 @@
 
 #include <cstdint>
 #include <cstdlib>
+#include <cassert>
 #include <vector>
 
 #ifdef NDEBUG
@@ -106,10 +107,12 @@ namespace wheel
          inline 
    };
 */
+
    class buffer_t : public std::vector<uint8_t>
    {
       public:
-         inline const uint8_t* data_ptr() const { return &this->at(0); }
+         inline const uint8_t* getptr() const { return &this->at(0); }
+         inline size_t hash() const noexcept;
    };
 
    // Required for hash functions
@@ -170,6 +173,74 @@ namespace wheel
       }
 }
 
+
+namespace wheel
+{
+   // This voodoo is to find out whether size_t is 8 or 4 bytes long, it could be
+   // easily extended to different sizes, but for now this is enough.
+   template<typename T, bool is_x86_64 = size_t_x64()>
+   class Hash
+   {
+      public:
+         size_t operator()(const T&)
+         {
+            assert(0 && "unknown bit depth");
+         }
+   };
+
+   // 64-bit buffer hash
+   template<>
+   class Hash<buffer_t, true>
+   {
+      public:
+         size_t operator()(const buffer_t& s) const noexcept
+         {
+            size_t hash  = 0xCBF29CE484222325;
+            const uint64_t prime = 0x100000001B3;
+
+            uint8_t* bytep = (uint8_t*)s.getptr();
+
+            for (size_t it = 0; it < s.size(); ++it)
+            {
+               hash = (hash ^ *(bytep+it)) * prime;
+            }
+
+            return hash;
+         }
+   };
+
+   // 32-bit buffer hash
+   template<>
+   class Hash<buffer_t, false>
+   {
+      public:
+         size_t operator()(const buffer_t& s) const noexcept
+         {
+            size_t hash = 0x811C9DC5;
+            const uint32_t prime = 0x1000193;
+
+            uint8_t* bytep = (uint8_t*)s.getptr();
+
+            for (size_t it = 0; it < s.size(); ++it)
+            {
+               hash = (hash ^ *(bytep+it)) * prime;
+            }
+
+            return hash;
+         }
+   };
+
+   /*!
+      Return hash of the string, note that the hash is not currently cached.
+
+      \return FNV-1a hash.
+   */
+   inline size_t buffer_t::hash() const noexcept
+   {
+      wheel::Hash<wheel::buffer_t> rval_hash;
+      return rval_hash(*this);
+   }
+}
 
 namespace std
 {
