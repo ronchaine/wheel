@@ -132,8 +132,20 @@ namespace wheel
 
          return WHEEL_FILE_FORMAT_UNKNOWN;
       }
-
-
 }
+
+/*
+namespace std
+{
+   template<>
+   struct hash<wheel::buffer_t>
+   {
+      size_t operator()(const wheel::buffer_t& __s) const noexcept
+      {
+         return __s.hash();
+      }
+   };
+}
+*/
 
 #endif
