@@ -75,7 +75,7 @@ namespace wheel
    typedef int32_t flags_t;
 
 //   typedef  std::vector<uint8_t> buffer_t;
-
+/*
    class buffer_t
    {
       class _buf_proxy
@@ -101,7 +101,15 @@ namespace wheel
 
          inline size_t hash() const { return 0; }
 
-//         inline uint8_t at(int index) { return data.at(index); }
+         inline uint8_t at(int index) { return data.at(index); }
+
+         inline 
+   };
+*/
+   class buffer_t : public std::vector<uint8_t>
+   {
+      public:
+         inline const uint8_t* data_ptr() const { return &this->at(0); }
    };
 
    // Required for hash functions
