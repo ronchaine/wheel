@@ -74,7 +74,35 @@ namespace wheel
 {
    typedef int32_t flags_t;
 
-   typedef  std::vector<uint8_t> buffer_t;
+//   typedef  std::vector<uint8_t> buffer_t;
+
+   class buffer_t
+   {
+      class _buf_proxy
+      {
+         private:
+            buffer_t&   buf;
+            int         idx;
+         public:
+            _buf_proxy(buffer_t& buf, int idx) : buf(buf), idx(idx) {}
+            uint8_t& operator=(uint8_t x) { buf.data[idx] = x; return buf.data[x]; }
+      };
+
+      private:
+         std::vector<uint8_t> data;
+      public:
+         _buf_proxy operator[](int index) { return _buf_proxy(*this, index); }
+         uint8_t operator[](int index) const { return data[index]; }
+
+         inline const uint8_t* data_ptr() const { return &data[0]; }
+
+         inline size_t size() const { return data.size(); }
+         inline void resize(size_t size) { data.resize(size); }
+
+         inline size_t hash() const { return 0; }
+
+//         inline uint8_t at(int index) { return data.at(index); }
+   };
 
    // Required for hash functions
    constexpr bool size_t_x64()
@@ -134,7 +162,7 @@ namespace wheel
       }
 }
 
-/*
+
 namespace std
 {
    template<>
@@ -146,6 +174,5 @@ namespace std
       }
    };
 }
-*/
 
 #endif

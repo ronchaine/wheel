@@ -136,7 +136,7 @@ namespace wheel
       buffer_t* data = new buffer_t;
       data->resize(len+1);
 
-      PHYSFS_read(in, &data->at(0), 1, len);
+      PHYSFS_read(in, (void*)data->data_ptr(), 1, len);
       PHYSFS_close(in);
 
       std::pair<string, buffer_t*> pair;

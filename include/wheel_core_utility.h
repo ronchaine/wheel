@@ -34,8 +34,8 @@ namespace wheel
    template <typename T>
    T buffer_read(const buffer_t& buffer, size_t& location)
    {
-      T rval = *(T*)(&buffer[0] + location);
-
+      //T rval = *(T*)(&buffer[0] + location);
+      T rval = *(T*)(buffer.data_ptr() + location);
       location += sizeof(T);
 
       if (!IsBigEndian())
@@ -86,7 +86,8 @@ namespace wheel
    template <typename T>
    T buffer_read_le(const buffer_t& buffer, size_t& location)
    {
-      T rval = *(T*)(&buffer[0] + location);
+//      T rval = *(T*)(&buffer[0] + location);
+      T rval = *(T*)(buffer.data_ptr() + location);
 
       location += sizeof(T);
 
