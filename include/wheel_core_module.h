@@ -60,7 +60,7 @@ namespace wheel
    class Event
    {
       public:
-         std::vector<uint8_t> data;
+         buffer_t data;
 
          uint32_t GetType();
    };

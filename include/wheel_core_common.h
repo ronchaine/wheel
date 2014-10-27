@@ -12,6 +12,8 @@
 #include <cassert>
 #include <vector>
 
+#include <iostream>
+
 #ifdef NDEBUG
    #define WHEEL_NO_DEBUG
 #endif
@@ -195,6 +197,9 @@ namespace wheel
       public:
          size_t operator()(const buffer_t& s) const noexcept
          {
+            if (s.size() == 0)
+               return 0;
+
             size_t hash  = 0xCBF29CE484222325;
             const uint64_t prime = 0x100000001B3;
 
@@ -216,6 +221,9 @@ namespace wheel
       public:
          size_t operator()(const buffer_t& s) const noexcept
          {
+            if (s.size() == 0)
+               return 0;
+
             size_t hash = 0x811C9DC5;
             const uint32_t prime = 0x1000193;
 
