@@ -63,6 +63,23 @@
 #define WHEEL_FILE_FORMAT_OGG       0x02
 #define WHEEL_FILE_FORMAT_WAV       0x03
 
+// Events
+   #define WHEEL_EVENT_WINDOW       0x00
+
+// 0x -- input event
+#define WHEEL_KEYEVENT           0x01
+#define WHEEL_EVENT_MOUSE        0x02
+#define WHEEL_EVENT_CONTROLLER   0x03
+#define WHEEL_EVENT_TOUCH        0x04
+
+#define WHEEL_PRESS              0x00
+#define WHEEL_RELEASE            0x01
+#define WHEEL_AXIS_POSITION      0x02
+#define WHEEL_HAT_POSITION       0x03
+#define WHEEL_MOUSE_POSITION     0x04
+
+#define WHEEL_ANY                0xfe
+
 // TODO: Keyboard scancodes, follow USB HID, seperate names for different layouts
 // Fill according to http://www.freebsddiary.org/APC/usb_hid_usages.php and https://wiki.libsdl.org/SDLScancodeLookup
 enum class scancode_t
