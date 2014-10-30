@@ -11,6 +11,7 @@
 #include <cstdlib>
 #include <cassert>
 #include <vector>
+#include <list>
 
 #include <iostream>
 
@@ -64,10 +65,10 @@
 #define WHEEL_FILE_FORMAT_WAV       0x03
 
 // Events
-   #define WHEEL_EVENT_WINDOW       0x00
+#define WHEEL_EVENT_WINDOW       0x00
 
 // 0x -- input event
-#define WHEEL_KEYEVENT           0x01
+#define WHEEL_EVENT_KEYBOARD     0x01
 #define WHEEL_EVENT_MOUSE        0x02
 #define WHEEL_EVENT_CONTROLLER   0x03
 #define WHEEL_EVENT_TOUCH        0x04
@@ -94,45 +95,40 @@ namespace wheel
 {
    typedef int32_t flags_t;
 
-//   typedef  std::vector<uint8_t> buffer_t;
-/*
-   class buffer_t
-   {
-      class _buf_proxy
-      {
-         private:
-            buffer_t&   buf;
-            int         idx;
-         public:
-            _buf_proxy(buffer_t& buf, int idx) : buf(buf), idx(idx) {}
-            uint8_t& operator=(uint8_t x) { buf.data[idx] = x; return buf.data[x]; }
-      };
-
-      private:
-         std::vector<uint8_t> data;
-      public:
-         _buf_proxy operator[](int index) { return _buf_proxy(*this, index); }
-         uint8_t operator[](int index) const { return data[index]; }
-
-         inline const uint8_t* data_ptr() const { return &data[0]; }
-
-         inline size_t size() const { return data.size(); }
-         inline void resize(size_t size) { data.resize(size); }
-
-         inline size_t hash() const { return 0; }
-
-         inline uint8_t at(int index) { return data.at(index); }
-
-         inline 
-   };
-*/
-
    class buffer_t : public std::vector<uint8_t>
    {
       public:
+         size_t read_ptr;
          inline const uint8_t* getptr() const { return &this->at(0); }
          inline size_t hash() const noexcept;
    };
+
+   //! Event
+   /*!
+   */
+   class Event
+   {
+      public:
+         buffer_t data;
+
+         uint32_t GetType();
+   };
+
+   typedef std::list<Event> EventList;
+
+   template<typename ...Args>
+   inline wheel::Event describe_event(Args ... codes)
+   {
+      wheel::Event rval;
+      uint8_t args[] { (uint8_t)codes ... };
+
+      for (uint8_t c : args)
+      {
+         rval.data.push_back(c);
+      }
+
+      return rval;
+   }
 
    // Required for hash functions
    constexpr bool size_t_x64()

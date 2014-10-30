@@ -40,19 +40,6 @@
 
 namespace wheel
 {
-   //! Event
-   /*!
-   */
-   class Event
-   {
-      public:
-         buffer_t data;
-
-         uint32_t GetType();
-   };
-
-   typedef std::list<Event> EventList;
-
    //! \brief Structure that holds runtime information about the module.
    /*!
       Holds runtime info about the module.  A module must have a function get_module_info(modinfo_t*)
