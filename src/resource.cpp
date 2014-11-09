@@ -53,7 +53,7 @@ namespace wheel
    */
    uint32_t SetWritePath(const char* wdir)
    {
-      if (PHYSFS_setWriteDir(wdir))
+      if (PHYSFS_setWriteDir(wdir) != 0)
          return WHEEL_OK;
 
       return WHEEL_RESOURCE_UNAVAILABLE;
