@@ -35,7 +35,7 @@
 #define WHEEL_INVALID_VALUE               0x0004
 #define WHEEL_UNEXPECTED_END_OF_FILE      0x0005
 #define WHEEL_RESOURCE_BUSY               0x0006
-   
+
 #define WHEEL_ERROR_INIT_FILESYSTEM       0x0100
 
 #define WHEEL_UNABLE_TO_OPEN_MODULE       0xa000
@@ -144,6 +144,17 @@ namespace wheel
          size_t read_ptr;
          inline const uint8_t* getptr() const { return &this->at(0); }
          inline size_t hash() const noexcept;
+
+         inline std::string to_stl_string()
+         {
+            return std::string(this->begin(), this->end());
+         }
+
+         inline void from_stl_string(const std::string& s)
+         {
+            this->clear();
+            std::copy(s.begin(), s.end(), back_inserter(*this));
+         }
 
          template <typename T>
          inline T read()
