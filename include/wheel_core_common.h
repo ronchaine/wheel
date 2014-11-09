@@ -34,7 +34,8 @@
 #define WHEEL_UNKNOWN_FORMAT              0x0003
 #define WHEEL_INVALID_VALUE               0x0004
 #define WHEEL_UNEXPECTED_END_OF_FILE      0x0005
-
+#define WHEEL_RESOURCE_BUSY               0x0006
+   
 #define WHEEL_ERROR_INIT_FILESYSTEM       0x0100
 
 #define WHEEL_UNABLE_TO_OPEN_MODULE       0xa000
@@ -95,12 +96,97 @@ namespace wheel
 {
    typedef int32_t flags_t;
 
+   // Required for hash functions
+   constexpr bool size_t_x64()
+   { return sizeof(size_t) == 8 ? true : false; }
+
+   //! Checks if the system is big-endian
+   /*!
+      Performs fast check if the system is big-endian
+   */
+   inline bool big_endian()
+   {
+      uint16_t t = 0xbe1e;
+      if ((uint8_t) *(&t) == 0x1e)
+         return false;
+
+      return true;
+   }
+   //! Swaps endianness of an value
+   /*!
+       Swaps endianness of an value
+   */
+   template <typename T>
+   T endian_swap(T value)
+   {
+      union
+      {
+         T value;
+         uint8_t value_u8[sizeof(T)];
+      } src, dst;
+
+      src.value = value;
+
+      for (size_t i = 0; i < sizeof(T); ++i)
+         dst.value_u8[i] = src.value_u8[sizeof(T)-1-i];
+
+      return dst.value;
+   }
+
    class buffer_t : public std::vector<uint8_t>
    {
       public:
+         buffer_t()
+         {
+            read_ptr = 0;
+         }
+
          size_t read_ptr;
          inline const uint8_t* getptr() const { return &this->at(0); }
          inline size_t hash() const noexcept;
+
+         template <typename T>
+         inline T read()
+         {
+            T rval = *(T*)&(this->at(read_ptr));
+
+            if (big_endian())
+               rval = endian_swap(rval);
+
+            read_ptr += sizeof(T);
+
+            return rval;
+         }
+
+         template <typename T>
+         inline void write(const T& data)
+         {
+            this->reserve(this->size() + sizeof(T));
+
+            uint8_t* dataptr = nullptr;
+            T t_val;
+
+            if (big_endian())
+            {
+               t_val = endian_swap(data);
+               dataptr = (uint8_t*)&t_val;
+            } else {
+               dataptr = (uint8_t*)&data;
+            }
+
+            for (size_t it = 0; it < sizeof(T); ++it)
+               this->push_back(*(dataptr+it));
+         }
+
+         inline size_t pos()
+         {
+            return read_ptr;
+         }
+
+         inline void seek(size_t target)
+         {
+            if (target < size()) read_ptr = target;
+         }
    };
 
    //! Event
@@ -130,22 +216,6 @@ namespace wheel
       return rval;
    }
 
-   // Required for hash functions
-   constexpr bool size_t_x64()
-   { return sizeof(size_t) == 8 ? true : false; }
-
-   //! Checks if the system is big-endian
-   /*!
-      Performs fast check if the system is big-endian
-   */
-   inline bool big_endian()
-   {
-      uint16_t t = 0xbe1e;
-      if ((uint8_t) *(&t) == 0x1e)
-         return false;
-
-      return true;
-   }
 
     /*!
       \brief  Checks file format of a file.
@@ -186,6 +256,7 @@ namespace wheel
 
          return WHEEL_FILE_FORMAT_UNKNOWN;
       }
+
 }
 
 

@@ -185,15 +185,6 @@ namespace wheel
    */
    const buffer_t* GetBuffer(const string& filename)
    {
-/*
-      char **rc = PHYSFS_enumerateFiles("/");
-      char **i;
-
-      for (i = rc; *i != NULL; i++)
-        printf(" * We've got [%s].\n", *i);
-
-      PHYSFS_freeList(rc);
-*/
       if (!IsCached(filename))
          if (Buffer(filename) != WHEEL_OK)
          {
@@ -201,6 +192,28 @@ namespace wheel
          }
 
       return internal::file_cache[filename];
+   }
+
+   /*!
+      Writes a buffer to a file in user directory.
+   */
+   uint32_t WriteBuffer(const string& file, const buffer_t& buffer)
+   {
+      PHYSFS_File* handle;
+
+      if((handle = PHYSFS_openWrite(file.std_str().c_str())) == NULL)
+      {
+         std::cout << "res unavail :: " << PHYSFS_getLastError() << "\n";
+         return WHEEL_RESOURCE_UNAVAILABLE;
+      }
+
+      // FIXME: After physfs 2.1 goes live, this probably should use writeBytes instead.
+      PHYSFS_write(handle, (void*)&buffer[0], buffer.size(), 1);
+
+      if(PHYSFS_close(handle) == 0)
+         return WHEEL_RESOURCE_BUSY;
+
+      return WHEEL_OK;
    }
 
    /*!

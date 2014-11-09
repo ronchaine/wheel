@@ -37,6 +37,8 @@ namespace wheel
 
    void              EmptyCache();
 
+   uint32_t          WriteBuffer(const string& file, const buffer_t& buffer);
+
 //   template 
 /*
    uint32_t          buffer_read_xint32(const buffer_t buffer, size_t& location);
