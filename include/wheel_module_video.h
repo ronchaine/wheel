@@ -20,6 +20,20 @@ namespace wheel
       FRAGMENT
    };
 
+   struct vertex_t
+   {
+      float    x0, y0, z0;    // position
+      uint16_t s0, t0;        // diffuse     (normalised, from 0 to 0xffff)
+      uint16_t s1, t1;        // normal      (normalised, from 0 to 0xffff)
+      uint16_t s2, t2;        // palette     (normalised, from 0 to 0xffff)
+   /*
+      uint16_t s3, t3;        // padding 1
+      uint16_t s4, t4;        // more padding
+   */
+      vertex_t() {}
+      vertex_t(float x, float y, float z) : x0(x), y0(y), z0(z) {}
+   };
+
    namespace interface
    {
       //! Interface for renderer modules
@@ -206,12 +220,13 @@ namespace wheel
             //! Rendering stuff
             /*!
             */
+            virtual  void     AddVertex(vertex_t v);
+            virtual  void     Flush() {}
             virtual  uint32_t DrawRect(int32_t x, int32_t y, uint32_t w, uint32_t h) = 0;
 
             virtual  uint32_t AddTexture(const string& name, uint32_t w, uint32_t h, uint32_t fmt) { return WHEEL_UNIMPLEMENTED_FEATURE; }
 
-            virtual  uint32_t Rotate(float x, float y, float z, float w) { return WHEEL_UNIMPLEMENTED_FEATURE; }
-            
+            virtual  uint32_t Rotate(float x, float y, float z, float w) { return WHEEL_UNIMPLEMENTED_FEATURE; }            
             virtual  uint32_t Rotate2D(int32_t x_pivot, int32_t y_pivot, float w) { return WHEEL_UNIMPLEMENTED_FEATURE; }
 
             virtual  uint32_t Translate(float x, float y, float z) { return WHEEL_UNIMPLEMENTED_FEATURE; }
