@@ -50,6 +50,7 @@ namespace wheel
 
         string(double);
         string(int64_t);
+        string(uint32_t);
 
         // Destuctor
         ~string();

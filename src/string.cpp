@@ -52,6 +52,21 @@ namespace wheel
       utf8::utf8to32(result.begin(), result.end(), back_inserter(data));
    }
 
+   //! Create from integer value
+   /*!
+      Creates a wcl string from an integer.
+   */
+   string::string(uint32_t in)
+   {
+      char integer[32];
+
+      snprintf(integer, 15, "%d", in);
+      std::string result;
+
+      utf8::replace_invalid(integer, integer + strlen(integer), back_inserter(result));
+      utf8::utf8to32(result.begin(), result.end(), back_inserter(data));
+   }
+
    //! Create from floating point value
    /*!
       Creates a wcl string from an double-precision float.
