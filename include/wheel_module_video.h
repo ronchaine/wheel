@@ -220,14 +220,14 @@ namespace wheel
             //! Rendering stuff
             /*!
             */
-            virtual  void     AddVertex(vertex_t v);
+            virtual  void     AddVertex(vertex_t v, buffer_t* buf = nullptr);
             virtual  void     Flush() {}
-            virtual  uint32_t DrawRect(int32_t x, int32_t y, uint32_t w, uint32_t h) = 0;
+
+            virtual  uint32_t DrawRect(int32_t x, int32_t y, uint32_t w, uint32_t h, float rot = 0.0f, int32_t x_pivot = 0, int32_t y_pivot = 0) = 0;
 
             virtual  uint32_t AddTexture(const string& name, uint32_t w, uint32_t h, uint32_t fmt) { return WHEEL_UNIMPLEMENTED_FEATURE; }
 
             virtual  uint32_t Rotate(float x, float y, float z, float w) { return WHEEL_UNIMPLEMENTED_FEATURE; }            
-            virtual  uint32_t Rotate2D(int32_t x_pivot, int32_t y_pivot, float w) { return WHEEL_UNIMPLEMENTED_FEATURE; }
 
             virtual  uint32_t Translate(float x, float y, float z) { return WHEEL_UNIMPLEMENTED_FEATURE; }
             virtual  uint32_t Translatei(int32_t x, int32_t y, int32_t z) { return WHEEL_UNIMPLEMENTED_FEATURE; }
