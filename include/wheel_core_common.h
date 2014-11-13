@@ -68,12 +68,13 @@
 // Events
 #define WHEEL_EVENT_WINDOW       0x00
 
-// 0x -- input event
+// 0x0y -- input event
 #define WHEEL_EVENT_KEYBOARD     0x01
 #define WHEEL_EVENT_MOUSE        0x02
 #define WHEEL_EVENT_CONTROLLER   0x03
 #define WHEEL_EVENT_TOUCH        0x04
 
+// specifiers
 #define WHEEL_PRESS              0x00
 #define WHEEL_RELEASE            0x01
 #define WHEEL_AXIS_POSITION      0x02
@@ -82,12 +83,19 @@
 
 #define WHEEL_ANY                0xfe
 
+// 0x1y timer event
+#define WHEEL_EVENT_TIMER        0x10
+
 // TODO: Keyboard scancodes, follow USB HID, seperate names for different layouts
 // Fill according to http://www.freebsddiary.org/APC/usb_hid_usages.php and https://wiki.libsdl.org/SDLScancodeLookup
-enum class scancode_t
+enum scancode_t
 {
-   WHEEL_SCANCODE_US_A = 0x0004,
-   WHEEL_SCANCODE_FI_A = 0x0004
+   WHEEL_SCANCODE_US_A        = 0x0004,
+   WHEEL_SCANCODE_FI_A        = 0x0004,
+   WHEEL_SCANCODE_LEFTARROW   = 0x0050,
+   WHEEL_SCANCODE_RIGHTARROW  = 0x004f,
+   WHEEL_SCANCODE_UPARROW     = 0x0052,
+   WHEEL_SCANCODE_DOWNARROW   = 0x0051,
 };
 
 /// Typedefs, structs & stuff
@@ -213,6 +221,7 @@ namespace wheel
 
    typedef std::list<Event> EventList;
 
+   // FIXME:  unimplemented: describe_event()
    template<typename ...Args>
    inline wheel::Event describe_event(Args ... codes)
    {
