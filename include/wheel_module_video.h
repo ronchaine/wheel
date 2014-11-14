@@ -7,25 +7,6 @@
 #ifndef WHEEL_MODULE_VIDEO_INTERFACE_H
 #define WHEEL_MODULE_VIDEO_INTERFACE_H
 
-// These values correspond to OpenGL numbers
-
-#define WHEEL_PIXEL_FMT_NONE        ~0
-#define WHEEL_PIXEL_FMT_BGR         0x80e0
-#define WHEEL_PIXEL_FMT_BGRA        0x80e1
-#define WHEEL_PIXEL_FMT_RGBA        0x1908
-#define WHEEL_PIXEL_FMT_RGB         0x1907
-#define WHEEL_PIXEL_FMT_MONO        0x1903
-#define WHEEL_PIXEL_FMT_RG          0x8227
-
-#define WHEEL_BYTE                  0x1400
-#define WHEEL_UNSIGNED_BYTE         0x1401
-#define WHEEL_SHORT                 0x1402
-#define WHEEL_UNSIGNED_SHORT        0x1403
-#define WHEEL_INT                   0x1404
-#define WHEEL_UNSIGNED_INT          0x1405
-#define WHEEL_FLOAT                 0x1406
-#define WHEEL_DOUBLE                0x140A
-
 #include "wheel_core_module.h"
 
 #include <cstring>
