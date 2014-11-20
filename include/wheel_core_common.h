@@ -102,7 +102,7 @@
 #define WHEEL_SHORT                 0x1402
 #define WHEEL_UNSIGNED_SHORT        0x1403
 #define WHEEL_INT                   0x1404
-#define WHEEL_UNSIGNED_INT          0x1405
+#define WHEEL_UNSIGNED_INT          0x8035
 #define WHEEL_FLOAT                 0x1406
 #define WHEEL_DOUBLE                0x140A
 
