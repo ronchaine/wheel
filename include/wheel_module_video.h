@@ -230,8 +230,10 @@ namespace wheel
             virtual  uint32_t Translate(float x, float y, float z) { return WHEEL_UNIMPLEMENTED_FEATURE; }
             virtual  uint32_t Translatei(int32_t x, int32_t y, int32_t z) { return WHEEL_UNIMPLEMENTED_FEATURE; }
 
-            // Atlasing / Texturing
-            virtual  void     CreateAtlas(const wcl::string& name, uint32_t size, uint32_t components);
+            // Atlasing
+            virtual  void     CreateAtlas(const wcl::string& texture) {}
+
+            // Texturing
             virtual  void     CreateTexture(const wcl::string& name, uint32_t w, uint32_t h, uint32_t components, uint32_t format);
             virtual  void     DeleteTexture(const wcl::string& name);
             virtual  void     UpdateTextureData(const wcl::string& name, int32_t x_off, int32_t y_off, size_t w, size_t h, void* pixel_data);
