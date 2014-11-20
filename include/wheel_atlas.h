@@ -28,50 +28,42 @@ namespace wheel
       }
    };
 
-   namespace image
+   /*!
+      \brief Class for atlasing textures
+
+      The Atlas class packs images in a single GPU texture.  A single Atlas
+      can contain only images of the same format.
+   */
+   class Atlas
    {
-      /*!
-         \brief Class for atlasing textures
+      private:
+         uint32_t    tex_id; 
+         uint32_t    internalformat;
 
-         The Atlas class packs images in a single GPU texture.  A single Atlas
-         can contain only images of the same format.
-      */
-      class Atlas
-      {
-         private:
-            uint32_t    tex_id; 
-            uint32_t    internalformat;
+         float       tex_w, tex_h;
 
-            float       tex_w, tex_h;
+         uint32_t    flags;
 
-            uint32_t    flags;
+         int32_t     minsize;
 
-            int32_t     minsize;
-/*
-            rect_t      Fit(uint32_t w, uint32_t h);
+         std::list<rect_t> unused, mapped;
 
-            void        Split(const rect_t& r);
-            void        Prune(const rect_t& r);
-*/
-            std::list<rect_t> unused, mapped;
+         uint32_t    offset_x, offset_y, width, height;
 
-            uint32_t    offset_x, offset_y, width, height;
+      public:
+         uint32_t    usrflags;
 
-         public:
-            uint32_t    usrflags;
+         Atlas();
+        ~Atlas();
 
-            Atlas();
-           ~Atlas();
+         rect_t Fit(uint32_t w, uint32_t h);
 
-            rect_t Fit(uint32_t w, uint32_t h);
+         void SetFormat(uint32_t format);
 
-            void SetFormat(uint32_t format);
-
-            void Split(const rect_t& r);
-            void Prune(const rect_t& r);
-            void Reset();
-      };
-   }
+         void Split(const rect_t& r);
+         void Prune(const rect_t& r);
+         void Reset();
+   };
 }
 
 #endif
