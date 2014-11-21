@@ -35,21 +35,7 @@ namespace wheel
    //! Default constructor
    Atlas::Atlas()
    {
-      tex_id = 0;
-      offset_x = 0;
-      offset_y = 0;
-      width = 0;
-      height = 0;
-      flags = 0;
       minsize = 4;
-
-      internalformat = WHEEL_PIXEL_FMT_NONE;
-   }
-
-   //! Changes 
-   void Atlas::SetFormat(uint32_t format)
-   {
-      internalformat = format;
    }
 
    //! Splits the atlas to smaller parts
@@ -153,22 +139,8 @@ namespace wheel
       r.y = 0;
       r.w = width;
       r.h = height;
-      usrflags = 0;
 
       unused.push_back(r);
-
-      #warning TODO: Unimplemented feature -- needs to create a texture.
-/*
-      glBindTexture( GL_TEXTURE_2D, texid );
-
-      glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
-      glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
-
-      glPixelStorei(GL_PACK_ALIGNMENT, 1);
-      glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-
-      glTexImage2D( GL_TEXTURE_2D, 0, internalformat, tex_w, tex_h, 0, internalformat, GL_UNSIGNED_BYTE, 0 );
-*/
    }
 
    //! Removes overlapping and useless rectangles.
@@ -206,7 +178,6 @@ namespace wheel
    //! Basic destructor
    Atlas::~Atlas()
    {
-      #warning FIXME: Textures need to be destroyed here
    }
 }
 

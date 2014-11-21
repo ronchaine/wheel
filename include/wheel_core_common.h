@@ -47,6 +47,8 @@
 
 #define WHEEL_OUT_OF_MEMORY               0x5500
 
+#define WHEEL_ATLAS_FULL                  0xb000
+
 /// Module error codes
 #define WHEEL_MODULE_FAILED_REQUEST       0xef00
 #define WHEEL_MODULE_SHADER_COMPILE_ERROR 0xef01
@@ -123,6 +125,24 @@ enum scancode_t
 namespace wheel
 {
    typedef int32_t flags_t;
+
+   /*!
+      Rectangles, used for packing.
+   */
+   struct rect_t
+   {
+      int32_t w, h, x, y;
+
+      // Required for sorting
+      bool operator<(const rect_t& r)
+      {
+         return w*h < r.w * r.h;
+      }
+      bool operator==(const rect_t& r)
+      {
+         return ((w == r.w) && (h == r.h) && (x == r.x) && (y == r.y));
+      }
+   };
 
    // Required for hash functions
    constexpr bool size_t_x64()

@@ -231,14 +231,23 @@ namespace wheel
             virtual  uint32_t Translatei(int32_t x, int32_t y, int32_t z) { return WHEEL_UNIMPLEMENTED_FEATURE; }
 
             // Atlasing
-            virtual  void     CreateAtlas(const wcl::string& texture) {}
+            virtual  uint32_t CreateAtlas(const wcl::string& atlas, const wcl::string& texture) { return WHEEL_UNIMPLEMENTED_FEATURE; }
+            virtual  uint32_t AtlasBuffer(const wcl::string& atlasname, const wcl::string& name, uint32_t w, uint32_t h, void* data) { return WHEEL_UNIMPLEMENTED_FEATURE; }
+            virtual  uint32_t GetAtlasPos(const wcl::string& atlasname, const wcl::string& buffername, rect_t* result);
 
             // Texturing
             virtual  void     CreateTexture(const wcl::string& name, uint32_t w, uint32_t h, uint32_t components, uint32_t format);
             virtual  void     DeleteTexture(const wcl::string& name);
-            virtual  void     UpdateTextureData(const wcl::string& name, int32_t x_off, int32_t y_off, size_t w, size_t h, void* pixel_data);
+            virtual  uint32_t UpdateTextureData(const wcl::string& name, int32_t x_off, int32_t y_off, size_t w, size_t h, void* pixel_data);
 
             virtual  void     SetTexture(uint32_t tu, const wcl::string& name);
+            virtual  void     SetTexture(const wcl::string& uniform, uint32_t tu, const wcl::string& name);
+
+            // Surfaces
+            virtual  uint32_t CreateSurface(const wcl::string& name, uint32_t type = 0) { return WHEEL_UNIMPLEMENTED_FEATURE; }
+            virtual  uint32_t AttachToSurface(const wcl::string& surface, const wcl::string& texture) { return WHEEL_UNIMPLEMENTED_FEATURE; }
+
+            virtual  void     SetSurface(const wcl::string& name);
       };
 
    }

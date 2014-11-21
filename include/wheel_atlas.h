@@ -11,24 +11,6 @@
 namespace wheel
 {
    /*!
-      Rectangles, used for packing.
-   */
-   struct rect_t
-   {
-      int32_t w, h, x, y;
-
-      // Required for sorting
-      bool operator<(const rect_t& r)
-      {
-         return w*h < r.w * r.h;
-      }
-      bool operator==(const rect_t& r)
-      {
-         return ((w == r.w) && (h == r.h) && (x == r.x) && (y == r.y));
-      }
-   };
-
-   /*!
       \brief Class for atlasing textures
 
       The Atlas class packs images in a single GPU texture.  A single Atlas
@@ -37,21 +19,11 @@ namespace wheel
    class Atlas
    {
       private:
-         uint32_t    tex_id; 
-         uint32_t    internalformat;
-
-         float       tex_w, tex_h;
-
-         uint32_t    flags;
-
-         int32_t     minsize;
-
-         std::list<rect_t> unused, mapped;
-
-         uint32_t    offset_x, offset_y, width, height;
-
       public:
-         uint32_t    usrflags;
+         uint32_t    flags;
+         int32_t     minsize;
+         std::list<rect_t> unused, mapped;
+         uint32_t    offset_x, offset_y, width, height;
 
          Atlas();
         ~Atlas();
