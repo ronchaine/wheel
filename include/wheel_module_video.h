@@ -32,6 +32,7 @@ namespace wheel
    */
       vertex_t() {}
       vertex_t(float x, float y, float z) : x0(x), y0(y), z0(z) {}
+      vertex_t(float x, float y, float z, uint16_t s, uint16_t t) : x0(x), y0(y), z0(z), s0(s), t0(t) {}
    };
 
    namespace interface
@@ -214,6 +215,10 @@ namespace wheel
             /*!
             */
             virtual  void Update() = 0;
+
+            // Retrieve stuff
+            virtual  uint32_t getScrWidth() = 0;
+            virtual  uint32_t getScrHeight() = 0;
 
             // Rendering
 

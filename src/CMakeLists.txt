@@ -22,6 +22,9 @@ if (APPLE)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
 endif()
 
+# glibc bug may cause this to be required
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D__extern_always_inline=inline")
+
 set(WHEEL_LIBRARIES ${PHYSFS_LIBRARY} ${WHEEL_LIBRARIES_UNIX})
 
 # Image library
