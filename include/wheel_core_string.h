@@ -100,7 +100,7 @@ namespace wheel
         size_t length() const;
 
         // Substring
-        string substr(size_t start, size_t length);
+        string substr(size_t start, size_t length) const;
 
         // Contains
         bool contains(const string&);
