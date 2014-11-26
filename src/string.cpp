@@ -284,7 +284,7 @@ namespace wheel
 
       \return A string object with a substring of this object.
    */
-   string string::substr(size_t pos, size_t len)
+   string string::substr(size_t pos, size_t len) const
    {
       string rval;
       for (uint32_t it = pos; it < pos + len; ++it)
