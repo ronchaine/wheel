@@ -21,22 +21,24 @@ namespace wheel
       {
          protected:
             uint32_t format;
+
+            uint32_t width;
+            uint32_t height;
+            uint32_t channels;
+
             buffer_t image_data;
 
          public:
-            Image()
-            {
-               format = WHEEL_FILE_FORMAT_UNKNOWN;
-            }
+            Image() : format(WHEEL_FILE_FORMAT_UNKNOWN), width(0), height(0), channels(0) {}
 
             virtual ~Image() {}
 
-            virtual uint32_t Load(const buffer_t& buffer) = 0;
+            uint32_t Load(const wheel::string& file);
 
-            virtual uint32_t GetWidth() = 0;
-            virtual uint32_t GetHeight() = 0;
+            uint32_t GetWidth() { return width; };
+            uint32_t GetHeight() { return height; };
 
-            virtual buffer_t* GetBuffer() { return &image_data; }
+            buffer_t* GetBuffer() { return &image_data; }
       };
    }
 }

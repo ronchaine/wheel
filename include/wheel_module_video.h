@@ -25,7 +25,7 @@ namespace wheel
       float    x0, y0, z0;    // position
       uint16_t s0, t0;        // diffuse     (normalised, from 0 to 0xffff)
       uint16_t s1, t1;        // normal      (normalised, from 0 to 0xffff)
-      uint16_t s2, t2;        // palette     (normalised, from 0 to 0xffff)
+      uint8_t  r, g, b, a;    // colour
    /*
       uint16_t s3, t3;        // padding 1
       uint16_t s4, t4;        // more padding

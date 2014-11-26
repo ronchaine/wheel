@@ -12,6 +12,4 @@
 #include "wheel_image_common.h"
 #include "wheel_image_png.h"
 
-#include "wheel_image_library.h"
-
 #endif
