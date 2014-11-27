@@ -165,6 +165,7 @@ namespace wheel
       */
       PNG::~PNG()
       {
+         std::cout << "delete\n";
          for (size_t i = 0; i < chunks.size(); ++i)
             delete chunks[i];
       }
@@ -176,11 +177,15 @@ namespace wheel
       {
          buffer_t concatenated_data;
 
+         std::cout << chunks.size() << " chunks\n";
+
          PNGChunk* header = chunks[0];
 
          string s(header->type, 4);
+         log << s << "\n";
          if (s != "IHDR")
          {
+            log << s << "\n";
             log << "Failed decoding -- IHDR chunk\n";
             return;
          }
@@ -414,8 +419,10 @@ namespace wheel
       /*!
          Reads a PNG image from memory buffer
       */
-      uint32_t PNG::Load(const buffer_t& buffer)
+      uint32_t PNG::Decode(const buffer_t& buffer)
       {
+         chunks.clear();
+
          size_t bufptr = 8;
 
          uint32_t idat_count = 0;
@@ -462,6 +469,7 @@ namespace wheel
 
             if (chunk->crc == crc_check)
             {
+               std::cout << chunk->type << ";" << chunks.size() << "\n";
                chunks.push_back(chunk);
             } else {
                log << "PNG loading: crc mismatch, skipping chunk...\n";

@@ -7,3 +7,9 @@
 #include "../../include/wheel_core_utility.h"
 #include "../../include/wheel_image.h"
 
+namespace wheel
+{
+   namespace image
+   {
+   }
+}

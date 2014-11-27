@@ -9,6 +9,7 @@
 #include "wheel_core_common.h"
 #include "wheel_core_debug.h"
 #include "wheel_module_video.h"
+#include "wheel_core_resource.h"
 
 namespace wheel
 {
@@ -17,11 +18,9 @@ namespace wheel
       /*!
          Core class for image handling, derive from this for different file formats.
       */
-      class Image
+      class Image : public wheel::Resource
       {
          protected:
-            uint32_t format;
-
             uint32_t width;
             uint32_t height;
             uint32_t channels;
@@ -29,11 +28,9 @@ namespace wheel
             buffer_t image_data;
 
          public:
-            Image() : format(WHEEL_FILE_FORMAT_UNKNOWN), width(0), height(0), channels(0) {}
+            Image() : width(0), height(0), channels(0) {}
 
             virtual ~Image() {}
-
-            uint32_t Load(const wheel::string& file);
 
             uint32_t GetWidth() { return width; };
             uint32_t GetHeight() { return height; };

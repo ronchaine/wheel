@@ -10,6 +10,7 @@
 
 namespace wheel
 {
+  
    namespace image
    {
       struct PNGChunk;
@@ -24,7 +25,7 @@ namespace wheel
             void ReadChunks();
 
          public:
-            uint32_t Load(const buffer_t& buffer);
+            uint32_t Decode(const buffer_t& buffer);
             void     DisplayInfo();
 
             uint32_t GetWidth();

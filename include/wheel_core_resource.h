@@ -15,6 +15,20 @@
 
 namespace wheel
 {
+   //! Resource
+   /*!
+   */
+   class Resource
+   {
+      protected:
+         uint32_t format;
+
+      public:
+         Resource() : format(WHEEL_FILE_FORMAT_UNKNOWN) {}
+
+         static Resource* Load(const wheel::string& file);
+   };
+
    const char*       AppPath();
    const char*       UserPath();
 
@@ -38,12 +52,6 @@ namespace wheel
    void              EmptyCache();
 
    uint32_t          WriteBuffer(const string& file, const buffer_t& buffer);
-
-//   template 
-/*
-   uint32_t          buffer_read_xint32(const buffer_t buffer, size_t& location);
-   uint32_t          buffer_read_xint32_le(const buffer_t buffer, size_t& location);
-*/
 }
 
 #endif
