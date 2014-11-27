@@ -282,7 +282,7 @@ namespace wheel
 
       \return WHEEL_FILE_FORMAT_X, where X is either UNKNOWN or a known format.
    */
-   inline uint32_t CheckFileFormat(const buffer_t& buffer)
+   inline const uint32_t CheckFileFormat(const buffer_t& buffer)
       {
          if (buffer.size() > 8)
             if ((buffer[0] == 137)
