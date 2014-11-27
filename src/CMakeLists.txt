@@ -5,7 +5,7 @@ include_directories(${WHEEL_SOURCE_DIR}/src
 
 set(COMMON_HEADERS ${WHEEL_SOURCE_DIR}/include/wheel_core.h utf8.h)
 set(COMMON_SOURCES core.cpp debug.cpp module.cpp string.cpp resource.cpp
-                   utility.cpp atlas.cpp)
+                   utility.cpp library.cpp atlas.cpp)
 
 set(IMAGE_SOURCES image/image.cpp image/png.cpp)
 set(IMAGE_HEADERS ${WHEEL_SOURCE_DIR}/include/wheel_image.h)
@@ -39,7 +39,7 @@ if (WHEEL_INCLUDE_SOUNDLIBRARY)
   set(WHEEL_HEADERS ${WHEEL_HEADERS} ${SOUND_HEADERS})
 endif()
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --std=c++11 -fno-exceptions -fno-rtti -O3 -fPIC")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --std=c++11 -fno-exceptions -fno-rtti -O2 -fPIC -g")
 
 add_library(wheel_core SHARED ${WHEEL_SOURCES} ${WHEEL_HEADERS})
 add_library(wheel_core_static STATIC ${WHEEL_SOURCES} ${WHEEL_HEADERS})
