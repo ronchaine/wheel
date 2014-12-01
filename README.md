@@ -1,5 +1,5 @@
 #### What is it?
-It is _not working_.  Most parts won't work yet -- use at your own caution.
+It is _somewhat working_.  Some parts won't work yet -- use at your own caution.
 Stable branches will be made after they are ready for it.  That being said, if you want to take a look, use doxygen to create documentation, most of the stuff should be pretty well-explained.  If they aren't - leave me an issue.
 
 On the other note, while this repository doesn't get standard updates, it doesn't mean that I have stopped working on it, just that the work is done mostly in projects that use this library, then "backported" here.
@@ -7,15 +7,14 @@ On the other note, while this repository doesn't get standard updates, it doesn'
 #### No really, what is it?
 It is a framework library.  Or an application/game engine engine.  A newer take on my old Wheel library.  It is still very much a
 work in progress, but it is usable enough for me not to focus on it too much at the moment.  Some other projects that I am fighting with
-use this, so if there are any decent improvements on the way, they will be added to this repository as well.  Texture atlasing and image loading
-should be on their way at some point.
+use this, so if there are any decent improvements on the way, they will be added to this repository as well.
 
 #### Troubleshooting
 OS X requires libc++ as standard library, the stdlibc++ provided by Apple lacks required C++11 functionality.
 
 
 #### Licence
-Copyright (c) 2013 <year> Jari Ronkainen
+Copyright (c) 2013-2014 <year> Jari Ronkainen
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
