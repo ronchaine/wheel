@@ -22,14 +22,14 @@ namespace wheel
 
       struct sound_info_t
       {
-         uint32_t    len_µs;
+         uint32_t    len_us;
          uint32_t    bitrate;
          float       freqrate;
          uint32_t    size;
          uint32_t    channels;
 
          sound_info_t(uint32_t l, uint32_t btr, float freqrate, uint32_t siz, uint32_t cha) :
-            len_µs(l), bitrate(btr), freqrate(freqrate), size(siz), channels(cha) {}
+            len_us(l), bitrate(btr), freqrate(freqrate), size(siz), channels(cha) {}
       };
 
       /*!
@@ -38,7 +38,7 @@ namespace wheel
       class Sound
       {
          protected:
-            uint32_t    len_µs;
+            uint32_t    len_us;
             uint32_t    bitrate;
             float       freqrate;
 
@@ -48,7 +48,7 @@ namespace wheel
             sound_data_t sound;
 
          public:
-            Sound() : len_µs(0), bitrate(0), freqrate(0), size(0), channels(0)
+            Sound() : len_us(0), bitrate(0), freqrate(0), size(0), channels(0)
             {
                sound.format = WHEEL_FILE_FORMAT_UNKNOWN;
             }
@@ -57,7 +57,7 @@ namespace wheel
             virtual uint32_t  Load(const buffer_t& buffer);
 
             virtual buffer_t* GetBuffer() { return &sound.data; }
-            sound_info_t GetInfo() { return sound_info_t(len_µs, bitrate, freqrate, size, channels); }
+            sound_info_t GetInfo() { return sound_info_t(len_us, bitrate, freqrate, size, channels); }
       };
    }
 }
