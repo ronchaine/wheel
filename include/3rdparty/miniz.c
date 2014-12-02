@@ -2927,10 +2927,14 @@ void tinfl_decompressor_free(tinfl_decompressor *pDecomp)
     }
     static FILE *mz_freopen(const char *pPath, const char *pMode, FILE *pStream)
     {
+      #ifdef _MSC_VER
       FILE* pFile = NULL;
       if (freopen_s(&pFile, pPath, pMode, pStream))
         return NULL;
       return pFile;
+      #else
+      return freopen(pPath, pMode, pStream);
+      #endif
     }
     #ifndef MINIZ_NO_TIME
       #include <sys/utime.h>

@@ -20,8 +20,9 @@ namespace wheel
       // Checks if a file is a wheel module
       bool Module_Check_Load(const string& filename, modinfo_t* save_info = nullptr)
       {
-         void* library = nullptr;
-         library = dlopen(filename.std_str().c_str(), RTLD_LAZY | RTLD_LOCAL);
+         module_handle_t library = nullptr;
+
+         library = dlopen(filename.std_str().c_str(), RTLD_NOW | RTLD_LOCAL);
 
          if (!library)
          {
@@ -76,7 +77,7 @@ namespace wheel
    {
       for (auto lib : modules)
       {
-         void* lib_ptr = lib.second->library_handle;
+         module_handle_t lib_ptr = lib.second->library_handle;
 
          typedef Module* (*modptr_fun_t)(Module*);
 
@@ -97,8 +98,8 @@ namespace wheel
    */
    uint32_t ModuleLibrary::Add(const string& filename)
    {
-      void* library = nullptr;
-      library = dlopen(filename.std_str().c_str(), RTLD_LAZY | RTLD_LOCAL);
+      module_handle_t library = nullptr;
+      library = dlopen(filename.std_str().c_str(), RTLD_NOW | RTLD_LOCAL);
 
       if (!library)
       {
@@ -182,7 +183,7 @@ namespace wheel
          if (it->first != ident)
             continue;
 
-         void* lib_ptr = it->second->library_handle;
+         module_handle_t lib_ptr = it->second->library_handle;
 
          typedef Module* (*modptr_fun_t)(Module*);
 

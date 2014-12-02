@@ -22,7 +22,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --std=c++11 -fno-exceptions -fno-rtti -O
 
 add_library(wheel_video_opengl_sdl2 SHARED ${MODULE_SOURCES} ${MODULE_HEADERS})
 
-TARGET_LINK_LIBRARIES(wheel_video_opengl_sdl2 SDL2)
+TARGET_LINK_LIBRARIES(wheel_video_opengl_sdl2 SDL2 GL)
 
 set_target_properties(wheel_video_opengl_sdl2 PROPERTIES OUTPUT_NAME "wcl_video_ogl_sdl2")
 set_target_properties(wheel_video_opengl_sdl2 PROPERTIES VERSION ${MODULE_VERSION})

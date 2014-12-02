@@ -25,7 +25,11 @@ endif()
 # glibc bug may cause this to be required
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D__extern_always_inline=inline")
 
+if (WIN32)
+set(WHEEL_LIBRARIES ${PHYSFS_LIBRARY})
+else()
 set(WHEEL_LIBRARIES ${PHYSFS_LIBRARY} ${WHEEL_LIBRARIES_UNIX})
+endif()
 
 # Image library
 if (WHEEL_INCLUDE_IMAGELIBRARY)

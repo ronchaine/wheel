@@ -14,7 +14,37 @@
 
 // FIXME: dlfcn is UNIX-specific, windows uses something different.
 //        This should work with MingW32 though.
+
+// Ok, it didn't, working on it...
+
+#ifndef _WIN32
 #include <dlfcn.h>
+
+typedef void* module_handle_t;
+
+#else
+#include <windows.h>
+
+// Get rid of moronic defines
+
+#ifdef interface
+   #undef interface
+#endif
+  
+typedef HMODULE module_handle_t;
+
+#define RTLD_NOW     0
+#define RTLD_LAZY    0
+#define RTLD_LOCAL   0
+
+// Create wrappers for dlopen, dlsym, dlclose
+inline module_handle_t dlopen(const char* filename, uint32_t dummy) { return LoadLibrary(filename); }
+inline FARPROC dlsym(module_handle_t library, const char* func) { return GetProcAddress(library, func); }
+inline const char* dlerror() { return "module error"; }
+inline void dlclose(module_handle_t lib) { FreeLibrary(lib); }
+
+#endif
+
 #include <unordered_map>
 #include <set>
 #include <list>
@@ -113,7 +143,7 @@ namespace wheel
 //         virtual int check_depends();
 
       public:
-         void* library_handle;
+         module_handle_t library_handle;
 
          virtual ~Module() {}
          virtual void get_module_info(modinfo_t*) = 0;
