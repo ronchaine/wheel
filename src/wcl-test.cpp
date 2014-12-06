@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "../include/wheel_core.h"
+#include <wheel_core.h>
 
 namespace wheel
 {

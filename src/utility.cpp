@@ -4,7 +4,7 @@
    \author Jari Ronkainen
 */
 
-#include "../include/wheel_core_utility.h"
+#include <wheel_core_utility.h>
 
 namespace wheel
 {

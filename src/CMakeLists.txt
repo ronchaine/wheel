@@ -18,6 +18,7 @@ set(WHEEL_HEADERS ${COMMON_HEADERS})
 
 set(WHEEL_LIBRARIES_UNIX dl)
 
+# Remove if not required anymore
 if (APPLE)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
 endif()

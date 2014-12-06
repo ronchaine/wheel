@@ -4,7 +4,7 @@
    \author Jari Ronkainen
 */
 
-#include "../include/wheel_core_string.h"
+#include <wheel_core_string.h>
 
 #include "utf8.h"
 

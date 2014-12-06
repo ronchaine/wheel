@@ -5,7 +5,7 @@
 */
 
 //#include "atlas.h"
-#include "../include/wheel_atlas.h"
+#include <wheel_atlas.h>
 
 namespace wheel
 {

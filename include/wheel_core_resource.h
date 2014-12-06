@@ -35,6 +35,7 @@ namespace wheel
    uint32_t          CreateDirectory(const char* dir);
 
    uint32_t          SetWritePath(const char* newpath);
+   void              ShowSearchPath();
 
    uint32_t          Filesystem_Init(int argc, char* argv[]);
    void              Filesystem_Deinit();

@@ -1,7 +1,7 @@
 #ifndef WHEEL_RESOURCELOADER_H
 #define WHEEL_RESOURCELOADER_H
 
-#include "../include/wheel_library.h"
+#include <wheel_library.h>
 
 namespace wheel
 {
@@ -15,6 +15,8 @@ namespace wheel
    */
    Resource* Resource::Load(const wcl::string& file)
    {
+      wheel::log << "loading file '" << file << "'\n";
+
       Resource* new_resource = nullptr;
 
       wheel::buffer_t* file_buffer = (wheel::buffer_t*)wheel::GetBuffer(file);
@@ -29,8 +31,8 @@ namespace wheel
 
       wheel::DeleteBuffer(file);
 
-      return new_resource;
 */
+      return new_resource;
    }
 
    Resource* Library::Load(const wcl::string& file)

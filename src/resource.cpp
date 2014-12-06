@@ -4,8 +4,8 @@
    \author Jari Ronkainen
 */
 
-#include "../include/wheel_core_resource.h"
-#include "../include/wheel_core_debug.h"
+#include <wheel_core_resource.h>
+#include <wheel_core_debug.h>
 
 #include <physfs.h>
 
@@ -22,7 +22,7 @@ namespace wheel
 
       \return nothing
    */
-   void DEBUG__ShowPaths()
+   void ShowResourcePath()
    {
       #ifndef NDEBUG
 
