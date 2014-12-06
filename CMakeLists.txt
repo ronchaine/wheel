@@ -23,7 +23,7 @@ option (WHEEL_BUILD_TESTS "Build the unit tests" OFF)
 # Add subdirectories
 #--------------------------------------------------------------
 
-  enable_testing()
+enable_testing()
 
 add_subdirectory(src)
 
@@ -37,4 +37,3 @@ endif()
 if (WHEEL_BUILD_TESTS)
   add_subdirectory(tests)
 endif()
-

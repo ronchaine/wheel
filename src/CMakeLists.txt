@@ -56,3 +56,11 @@ set_target_properties(wheel_core_static PROPERTIES OUTPUT_NAME "${WHEEL_LIB_NAME
 set_target_properties(wheel_core_static PROPERTIES VERSION ${WHEEL_VERSION})
 
 target_link_libraries(wheel_core ${WHEEL_LIBRARIES})
+
+# Install targets
+install (TARGETS wheel_core wheel_core_static DESTINATION lib)
+
+file(GLOB files ${CMAKE_CURRENT_SOURCE_DIR}/../include/*.h)
+foreach(filename ${files})
+   install (FILES ${filename} DESTINATION include/wheel)
+endforeach()
