@@ -18,21 +18,17 @@ namespace wheel
    }
 
    /*!
-      DEBUG__ShowPaths
+      ShowSearchPath
 
       \return nothing
    */
-   void ShowResourcePath()
+   void ShowSearchPath()
    {
-      #ifndef NDEBUG
-
       log << "=== Search paths ===\n";
       char **i;
 
       for (i = PHYSFS_getSearchPath(); *i != NULL; i++)
          log << *i << "\n";
-
-      #endif
    }
 
    /*!
@@ -124,7 +120,10 @@ namespace wheel
          return WHEEL_OK;
 
       if (!PHYSFS_exists(filename.std_str().c_str()))
+      {
+         log << "physfs is unable to find resource: " << filename << "\n";
          return WHEEL_RESOURCE_UNAVAILABLE;
+      }
 
       PHYSFS_file* in = PHYSFS_openRead(filename.std_str().c_str());
 
@@ -223,8 +222,11 @@ namespace wheel
    */
    uint32_t AddToPath(const string& path, const string& mountpoint)
    {
+      log << "Adding search path: '" << path << "' to '" << mountpoint << "'\n";
       if (PHYSFS_mount(path.std_str().c_str(), mountpoint.std_str().c_str(), 1) == 0)
          return WHEEL_RESOURCE_UNAVAILABLE;
+
+      log << "Added to search path: " << path << "\n";
 
       return WHEEL_OK;
    }
