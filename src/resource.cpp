@@ -17,6 +17,10 @@ namespace wheel
       size_t cache_memory = 0;
    }
 
+   Resource::Resource(uint32_t type, const wheel::buffer_t& buffer)
+   {
+   }
+
    /*!
       ShowSearchPath
 

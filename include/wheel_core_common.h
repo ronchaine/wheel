@@ -35,6 +35,7 @@
 #define WHEEL_INVALID_VALUE               0x0004
 #define WHEEL_UNEXPECTED_END_OF_FILE      0x0005
 #define WHEEL_RESOURCE_BUSY               0x0006
+#define WHEEL_INVALID_POINTER             0x0007
 
 #define WHEEL_ERROR_INIT_FILESYSTEM       0x0100
 
@@ -181,6 +182,34 @@ namespace wheel
       return dst.value;
    }
 
+   //! Performs circular rotation right (ror on x86)
+   /*!
+      Performs circular bitwise rotation right, on most
+      compilers, this comes out as ror instruction.
+   */
+   template<typename T>
+   T ror(T x, uint32_t shift)
+   {
+      return (x >> shift) | (x << (sizeof(T)*8 - shift));
+   }
+
+   //! Performs circular rotation left (rol on x86)
+   /*!
+      Performs circular bitwise rotation right, on most
+      compilers, this comes out as rol instruction.
+   */
+   template<typename T>
+   T rol(T x, uint32_t shift)
+   {
+      return (x << shift) | (x >> (sizeof(T)*8 - shift));
+   }
+
+   //! Buffer data type
+   /*!
+      Works exactly as std::vector<uint8_t>, but has some extra functionality,
+      such as endian-independent reading/writing of data, and conversions to
+      std::string class.
+   */
    class buffer_t : public std::vector<uint8_t>
    {
       public:
@@ -276,8 +305,7 @@ namespace wheel
       return rval;
    }
 
-
-    /*!
+   /*!
       \brief  Checks file format of a file.
 
       \return WHEEL_FILE_FORMAT_X, where X is either UNKNOWN or a known format.
