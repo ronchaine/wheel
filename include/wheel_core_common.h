@@ -36,6 +36,7 @@
 #define WHEEL_UNEXPECTED_END_OF_FILE      0x0005
 #define WHEEL_RESOURCE_BUSY               0x0006
 #define WHEEL_INVALID_POINTER             0x0007
+#define WHEEL_UNINITIALISED_RESOURCE      0x0008
 
 #define WHEEL_ERROR_INIT_FILESYSTEM       0x0100
 
@@ -161,6 +162,7 @@ namespace wheel
 
       return true;
    }
+
    //! Swaps endianness of an value
    /*!
        Swaps endianness of an value

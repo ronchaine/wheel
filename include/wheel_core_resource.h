@@ -15,19 +15,23 @@
 
 namespace wheel
 {
-   //! Resource
+   //! Resource, parent class for all loadable resources.
    /*!
+      
    */
    class Resource
    {
       protected:
          uint32_t format;
+         buffer_t data;
 
       public:
          Resource() : format(WHEEL_FILE_FORMAT_UNKNOWN) {}
          Resource(uint32_t type, const buffer_t& buf);
 
          static Resource* Load(const wheel::string& file);
+
+         inline buffer_t* data_ptr() { return &data; }
    };
 
    const char*       AppPath();

@@ -2,12 +2,16 @@
 #define WHEEL_RESOURCELOADER_H
 
 #include "../include/wheel_core_library.h"
+#include "../include/wheel_image.h"
 
 namespace wheel
 {
 
    // Resource hash table, static.
    std::unordered_map<wcl::string, resource_entry_t> Library::resources;
+
+   // Count of library instances
+   uint32_t Library::instance_count = 0;
 
    //! Handler for loading unknown formats
    /*!
@@ -17,12 +21,41 @@ namespace wheel
    uint32_t Library::load_unknown(const wheel::string& name, const buffer_t& buffer)
    {
       wheel::log << "+ loading unknown format resource '" << name << "'\n";
-
-      resources[name].type = WHEEL_FILE_FORMAT_UNKNOWN;
-      resources[name].ptr  = new Resource(WHEEL_FILE_FORMAT_UNKNOWN, buffer);
+      AddBuffer(WHEEL_FILE_FORMAT_UNKNOWN, name, buffer);
 
       return WHEEL_OK;
    }
+
+   //! Add a buffer to resources
+   /*!
+      Static function to add resources to library.
+
+      \param   type     Type of the buffer.  (WHEEL_FILE_FORMAT_X)
+      \param   name     Name to call the buffer in the library
+      \param   buffer   Buffer data.
+
+      \return  WHEEL_OK on success, otherwise wheel error
+   */
+   uint32_t Library::AddBuffer(uint32_t type, const wheel::string& name, const buffer_t& buffer)
+   {
+      // Make sure there is an instance of a library
+      if (instance_count == 0)
+         return WHEEL_UNINITIALISED_RESOURCE;
+
+      // If there already is a resource with the same name, free it from memory.
+      if (resources.count(name))
+      {
+         if (resources[name].ptr != nullptr)
+            delete resources[name].ptr;
+      }
+
+      // Then just put new stuff in.
+      resources[name].type = type;
+      resources[name].ptr = new Resource(type, buffer);
+
+      return WHEEL_OK;
+   }
+
 
    // ============================================================================
 
@@ -56,25 +89,33 @@ namespace wheel
 
    Library::Library()
    {
+      // Add instance count
+      instance_count++;
+
       // Set default file handlers.
 
       // Unknown format handler
       file_handlers[WHEEL_FILE_FORMAT_UNKNOWN] = this->load_unknown;
 
       // Builtin formats.
-      file_handlers[WHEEL_FILE_FORMAT_PNG];
+      file_handlers[WHEEL_FILE_FORMAT_PNG] = wheel::image::decode_png;
    }
 
    Library::~Library()
    {
-      for (auto r : resources)
-      {
-         if (r.second.ptr != nullptr)
-            delete r.second.ptr;
-      }
+      // Decrease instance count
+      instance_count--;
+
+      // If no instances remaining, free resources.
+      if (instance_count == 0)
+         for (auto r : resources)
+         {
+            if (r.second.ptr != nullptr)
+               delete r.second.ptr;
+         }
    }
 
-   //!
+   //! Set handler for a file format
    /*!
    */
    void Library::SetHandler(uint32_t type, std::function<uint32_t(const wheel::string&, const wheel::buffer_t&)> func)

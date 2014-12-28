@@ -13,6 +13,9 @@ namespace wheel
   
    namespace image
    {
+      // Decoder
+      uint32_t decode_png(const wheel::string& name, const buffer_t& buffer);
+/*
       struct PNGChunk;
 
       class PNG : public Image
@@ -33,6 +36,7 @@ namespace wheel
 
            ~PNG();
       };
+*/
    }
 }
 

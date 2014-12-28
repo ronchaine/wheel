@@ -16,7 +16,7 @@ namespace wheel
    namespace image
    {
       /*!
-         Core class for image handling, derive from this for different file formats.
+         Image handling
       */
       class Image : public wheel::Resource
       {
@@ -24,8 +24,9 @@ namespace wheel
             uint32_t width;
             uint32_t height;
             uint32_t channels;
+            uint32_t type;
 
-            buffer_t image_data;
+            buffer_t palette;
 
          public:
             Image() : width(0), height(0), channels(0) {}
@@ -34,8 +35,6 @@ namespace wheel
 
             uint32_t GetWidth() { return width; };
             uint32_t GetHeight() { return height; };
-
-            buffer_t* GetBuffer() { return &image_data; }
       };
    }
 }
