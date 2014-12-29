@@ -47,19 +47,23 @@ endif()
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --std=c++11 -fno-exceptions -fno-rtti -O2 -fPIC -g")
 
 add_library(wheel_core SHARED ${WHEEL_SOURCES} ${WHEEL_HEADERS})
-add_library(wheel_core_static STATIC ${WHEEL_SOURCES} ${WHEEL_HEADERS})
-
 set_target_properties(wheel_core PROPERTIES OUTPUT_NAME "${WHEEL_LIB_NAME}")
 set_target_properties(wheel_core PROPERTIES VERSION ${WHEEL_VERSION})
-
-set_target_properties(wheel_core_static PROPERTIES OUTPUT_NAME "${WHEEL_LIB_NAME}_static")
-set_target_properties(wheel_core_static PROPERTIES VERSION ${WHEEL_VERSION})
-
 target_link_libraries(wheel_core ${WHEEL_LIBRARIES})
-target_link_libraries(wheel_core_static ${WHEEL_LIBRARIES})
+
+if (WHEEL_BUILD_STATIC)
+   add_library(wheel_core_static STATIC ${WHEEL_SOURCES} ${WHEEL_HEADERS})
+   set_target_properties(wheel_core_static PROPERTIES OUTPUT_NAME "${WHEEL_LIB_NAME}_static")
+   set_target_properties(wheel_core_static PROPERTIES VERSION ${WHEEL_VERSION})
+   target_link_libraries(wheel_core_static ${WHEEL_LIBRARIES})
+endif()
 
 # Install targets
-install (TARGETS wheel_core wheel_core_static DESTINATION lib)
+install (TARGETS wheel_core DESTINATION lib)
+
+if (WHEEL_BUILD_STATIC)
+   install (TARGETS wheel_core_static DESTINATION lib)
+endif()
 
 file(GLOB files ${CMAKE_CURRENT_SOURCE_DIR}/../include/*.h)
 foreach(filename ${files})
