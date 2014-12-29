@@ -56,8 +56,47 @@ namespace wheel
       return WHEEL_OK;
    }
 
+   //! Add a resource
+   /*!
+      Static function to add resources to library.
+
+      \param   type     Type of the buffer, must match one of the enums from wheel_resource_t
+      \param   name     Name to call the buffer in the library
+      \param   rptr     Pointer to the resource
+
+      \return  WHEEL_OK on success, otherwise wheel error
+   */
+   uint32_t Library::AddResource(wheel_resource_t type, const wheel::string& name, Resource* rptr)
+   {
+      // Make sure there is an instance of a library
+      if (instance_count == 0)
+         return WHEEL_UNINITIALISED_RESOURCE;
+
+      // If there already is a resource with the same name, free it from memory.
+      if (resources.count(name))
+      {
+         if (resources[name].ptr != nullptr)
+            delete resources[name].ptr;
+      }
+
+      // Then just put new stuff in.
+      resources[name].type = type;
+      resources[name].ptr = rptr;
+
+      return WHEEL_OK;
+   }
+
 
    // ============================================================================
+
+
+   Resource* Library::operator[](const string& name)
+   {
+      if (resources.count(name) != 1)
+         return nullptr;
+
+      return resources[name].ptr;
+   }
 
    //! Load a known resource type from a file
    /*!
@@ -107,12 +146,16 @@ namespace wheel
       instance_count--;
 
       // If no instances remaining, free resources.
+/*
+      FIXME:  Free the bloody memory, commented this out because of glibc crash.
+
       if (instance_count == 0)
          for (auto r : resources)
          {
             if (r.second.ptr != nullptr)
                delete r.second.ptr;
          }
+*/
    }
 
    //! Set handler for a file format
@@ -141,6 +184,7 @@ namespace wheel
 
    void Library::debug_listfiles()
    {
+      std::cout << "::debug:: listing files in library.\n";
       for (auto r : resources)
       {
          std::cout << r.first << "\n";
@@ -156,16 +200,18 @@ namespace wheel
 
       uint32_t file_type = CheckFileFormat(*file_buffer);
 
+      uint32_t rval = WHEEL_UNINITIALISED_RESOURCE;
+
       // If there is registered handler for the file type, use it
       if (file_handlers.count(file_type))
-         file_handlers[file_type](file, *file_buffer);
+         rval = file_handlers[file_type](file, *file_buffer);
       else
-         file_handlers[WHEEL_FILE_FORMAT_UNKNOWN](file, *file_buffer);
+         rval = file_handlers[WHEEL_FILE_FORMAT_UNKNOWN](file, *file_buffer);
 
       // We don't want to keep the original buffer.
       wheel::DeleteBuffer(file);
 
-      return WHEEL_UNIMPLEMENTED_FEATURE;
+      return rval;
    }
 }
 

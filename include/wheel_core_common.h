@@ -19,6 +19,12 @@
    #define WHEEL_NO_DEBUG
 #endif
 
+#ifdef WHEEL_NO_DEBUG
+   #define WCL_DEBUG //
+#else
+   #define WCL_DEBUG wheel::log
+#endif
+
 /// Values
 #define WHEEL_TRUE                        1
 #define WHEEL_FALSE                       0
@@ -37,6 +43,7 @@
 #define WHEEL_RESOURCE_BUSY               0x0006
 #define WHEEL_INVALID_POINTER             0x0007
 #define WHEEL_UNINITIALISED_RESOURCE      0x0008
+#define WHEEL_INVALID_FORMAT              0x0009
 
 #define WHEEL_ERROR_INIT_FILESYSTEM       0x0100
 
@@ -83,7 +90,6 @@
 
 // 0x1y timer event
 #define WHEEL_EVENT_TIMER        0x10
-
 
 // These values correspond to OpenGL numbers
 
@@ -248,6 +254,30 @@ namespace wheel
             std::copy(s.begin(), s.end(), back_inserter(*this));
          }
 
+/*
+         wheel::string read_str(size_t len)
+         {
+            strncpy(next.type, (const char*)(&buffer[0] + buffer.pos()), 4);
+            string s(next.type, 4);
+            buffer.seek(buffer.pos() + 4);
+
+            wheel::string rval;
+            return rval;
+         }
+
+         void write_str(size_t len)
+         {
+            this->reserve(this->size() + len);
+         }
+*/
+         inline bool can_read(size_t s)
+         {
+            if (size() < pos() + s)
+               return false;
+
+            return true;
+         };
+
          template <typename T>
          inline T read()
          {
@@ -260,6 +290,20 @@ namespace wheel
 
             return rval;
          }
+
+         template <typename T>
+         inline T read_le()
+         {
+            T rval = *(T*)&(this->at(read_ptr));
+
+            if (!big_endian())
+               rval = endian_swap(rval);
+
+            read_ptr += sizeof(T);
+
+            return rval;
+         }
+
 
          template <typename T>
          inline void write(const T& data)

@@ -21,22 +21,17 @@ namespace wheel
       class Image : public wheel::Resource
       {
          protected:
-            uint32_t img_w;
-            uint32_t img_h;
-            uint32_t channels;
-            uint32_t bpp;
-
-            uint32_t type;
-
-            buffer_t palette;
-
          public:
-            Image() : img_w(0), img_h(0), channels(0) {}
+            uint32_t width;
+            uint32_t height;
+            uint16_t channels;
+            uint16_t bpp;
+
+            std::vector<uint32_t> palette;
+
+            Image() : width(0), height(0), channels(0) {}
 
             virtual ~Image() {}
-
-            uint32_t width() { return img_w; };
-            uint32_t height() { return img_h; };
       };
    }
 }

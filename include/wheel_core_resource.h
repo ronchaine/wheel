@@ -27,7 +27,7 @@ namespace wheel
 
       public:
          Resource() : format(WHEEL_FILE_FORMAT_UNKNOWN) {}
-         Resource(uint32_t type, const buffer_t& buf);
+         Resource(wheel_resource_t type, const buffer_t& buf);
 
          static Resource* Load(const wheel::string& file);
 

@@ -16,6 +16,8 @@ namespace wheel
    {
       private:
          static std::unordered_map<wcl::string, resource_entry_t> resources;
+
+         // TODO: the first uint32_t should be wheel_filetype_t
          std::unordered_map<uint32_t, std::function<uint32_t(const wheel::string&, wheel::buffer_t&)>> file_handlers;
 
          static uint32_t   instance_count;
@@ -24,7 +26,11 @@ namespace wheel
 
       public:
          static uint32_t   AddBuffer(wheel_resource_t type, const string& name, const buffer_t&);
+         static uint32_t   AddResource(wheel_resource_t type, const string& name, Resource* rptr);
+
          static void       debug_listfiles();
+
+         Resource*         operator[](const string& name);
 
          uint32_t          Load(const wcl::string& file);
 
