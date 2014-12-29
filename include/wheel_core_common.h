@@ -63,12 +63,6 @@
 #define WHEEL_INITIALISED                 0x0001
 #define WHEEL_LITTLE_ENDIAN               0x0002
 
-// File formats
-#define WHEEL_FILE_FORMAT_UNKNOWN   0x00
-#define WHEEL_FILE_FORMAT_PNG       0x01
-#define WHEEL_FILE_FORMAT_OGG       0x02
-#define WHEEL_FILE_FORMAT_WAV       0x03
-
 // Events
 #define WHEEL_EVENT_WINDOW       0x00
 
@@ -110,22 +104,41 @@
 #define WHEEL_FLOAT                 0x1406
 #define WHEEL_DOUBLE                0x140A
 
-// TODO: Keyboard scancodes, follow USB HID, seperate names for different layouts
-// Fill according to http://www.freebsddiary.org/APC/usb_hid_usages.php and https://wiki.libsdl.org/SDLScancodeLookup
-enum scancode_t
-{
-   WHEEL_SCANCODE_US_A        = 0x0004,
-   WHEEL_SCANCODE_FI_A        = 0x0004,
-   WHEEL_SCANCODE_LEFTARROW   = 0x0050,
-   WHEEL_SCANCODE_RIGHTARROW  = 0x004f,
-   WHEEL_SCANCODE_UPARROW     = 0x0052,
-   WHEEL_SCANCODE_DOWNARROW   = 0x0051,
-};
-
 /// Typedefs, structs & stuff
 
 namespace wheel
 {
+   // TODO: Keyboard scancodes, follow USB HID, seperate names for different layouts
+   // Fill according to http://www.freebsddiary.org/APC/usb_hid_usages.php and https://wiki.libsdl.org/SDLScancodeLookup
+
+   //! Scancode enums
+   enum scancode_t
+   {
+      WHEEL_SCANCODE_US_A        = 0x0004,
+      WHEEL_SCANCODE_FI_A        = 0x0004,
+      WHEEL_SCANCODE_LEFTARROW   = 0x0050,
+      WHEEL_SCANCODE_RIGHTARROW  = 0x004f,
+      WHEEL_SCANCODE_UPARROW     = 0x0052,
+      WHEEL_SCANCODE_DOWNARROW   = 0x0051,
+   };
+
+   //! Resource type enums
+   enum wheel_resource_t
+   {
+      WHEEL_RESOURCE_RAW         = 0x0000,
+      WHEEL_RESOURCE_AUDIO       = 0x0001,
+      WHEEL_RESOURCE_IMAGE       = 0x0002,
+   };
+
+   //! File format enums
+   enum wheel_filetype_t
+   {
+      WHEEL_FILE_FORMAT_UNKNOWN  = 0x00,
+      WHEEL_FILE_FORMAT_PNG      = 0x01,
+      WHEEL_FILE_FORMAT_OGG      = 0x02,
+      WHEEL_FILE_FORMAT_WAV      = 0x03,
+   };
+
    typedef int32_t flags_t;
 
    /*!
@@ -268,7 +281,7 @@ namespace wheel
                this->push_back(*(dataptr+it));
          }
 
-         inline size_t pos()
+         inline size_t pos() const
          {
             return read_ptr;
          }

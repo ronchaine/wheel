@@ -165,11 +165,28 @@ namespace wheel
 
       //! Default PNG decoding function
       /*!
-         
+
       */
-      uint32_t decode_png(const wheel::string& name, const buffer_t& buffer)
+      uint32_t decode_png(const wheel::string& name, buffer_t& buffer)
       {
-         return WHEEL_UNIMPLEMENTED_FEATURE;
+         std::vector<PNGChunk> chunks;
+ 
+         buffer.seek(8);
+
+         uint32_t idat_count = 0;
+/*
+         while(buffer.pos() < buffer.size())
+         {
+            //buffer.seek(buffer.pos() + 1);
+            if (buffer.size() < buffer.pos() + sizeof(uint32_t))
+            {
+
+            }
+         }
+*/
+         Library::AddBuffer(WHEEL_RESOURCE_IMAGE, name, buffer);
+
+         return WHEEL_OK;
       }
    }
 }

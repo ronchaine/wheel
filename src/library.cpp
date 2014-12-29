@@ -18,10 +18,10 @@ namespace wheel
       Handler for loading unknown formats, simply puts the unmodified buffer into
       memory.
    */
-   uint32_t Library::load_unknown(const wheel::string& name, const buffer_t& buffer)
+   uint32_t Library::load_unknown(const wheel::string& name, buffer_t& buffer)
    {
       wheel::log << "+ loading unknown format resource '" << name << "'\n";
-      AddBuffer(WHEEL_FILE_FORMAT_UNKNOWN, name, buffer);
+      AddBuffer(WHEEL_RESOURCE_RAW, name, buffer);
 
       return WHEEL_OK;
    }
@@ -30,13 +30,13 @@ namespace wheel
    /*!
       Static function to add resources to library.
 
-      \param   type     Type of the buffer.  (WHEEL_FILE_FORMAT_X)
+      \param   type     Type of the buffer, must match one of the enums from wheel_resource_t
       \param   name     Name to call the buffer in the library
       \param   buffer   Buffer data.
 
       \return  WHEEL_OK on success, otherwise wheel error
    */
-   uint32_t Library::AddBuffer(uint32_t type, const wheel::string& name, const buffer_t& buffer)
+   uint32_t Library::AddBuffer(wheel_resource_t type, const wheel::string& name, const buffer_t& buffer)
    {
       // Make sure there is an instance of a library
       if (instance_count == 0)
@@ -118,15 +118,15 @@ namespace wheel
    //! Set handler for a file format
    /*!
    */
-   void Library::SetHandler(uint32_t type, std::function<uint32_t(const wheel::string&, const wheel::buffer_t&)> func)
+   void Library::SetHandler(wheel_filetype_t type, std::function<uint32_t(const wheel::string&, wheel::buffer_t&)> func)
    {
       file_handlers[type] = func;
    }
 
-   //!
+   //! Remove a handler for a file format
    /*!
    */
-   void Library::RemoveHandler(uint32_t type)
+   void Library::RemoveHandler(wheel_filetype_t type)
    {
       // Do not allow unknown format handler to be deleted.
       assert(type != WHEEL_FILE_FORMAT_UNKNOWN);
@@ -135,17 +135,34 @@ namespace wheel
       if (type == WHEEL_FILE_FORMAT_UNKNOWN)
          return;
 
-
+      // Remove handler
+      file_handlers.erase(type);
    }
 
+   void Library::debug_listfiles()
+   {
+      for (auto r : resources)
+      {
+         std::cout << r.first << "\n";
+      }
+   }
+
+   //! Load a file into resource library
+   /*!
+   */
    uint32_t Library::Load(const wcl::string& file)
    {
       wheel::buffer_t* file_buffer = (wheel::buffer_t*)wheel::GetBuffer(file);
 
       uint32_t file_type = CheckFileFormat(*file_buffer);
 
+      // If there is registered handler for the file type, use it
+      if (file_handlers.count(file_type))
+         file_handlers[file_type](file, *file_buffer);
+      else
+         file_handlers[WHEEL_FILE_FORMAT_UNKNOWN](file, *file_buffer);
 
-
+      // We don't want to keep the original buffer.
       wheel::DeleteBuffer(file);
 
       return WHEEL_UNIMPLEMENTED_FEATURE;

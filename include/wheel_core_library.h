@@ -16,19 +16,20 @@ namespace wheel
    {
       private:
          static std::unordered_map<wcl::string, resource_entry_t> resources;
-         std::unordered_map<uint32_t, std::function<uint32_t(const wheel::string&, const wheel::buffer_t&)>> file_handlers;
+         std::unordered_map<uint32_t, std::function<uint32_t(const wheel::string&, wheel::buffer_t&)>> file_handlers;
 
          static uint32_t   instance_count;
 
-         static uint32_t   load_unknown(const string& entry, const buffer_t& buffer);
+         static uint32_t   load_unknown(const string& entry, buffer_t& buffer);
 
       public:
-         static uint32_t   AddBuffer(uint32_t type, const string& name, const buffer_t&);
+         static uint32_t   AddBuffer(wheel_resource_t type, const string& name, const buffer_t&);
+         static void       debug_listfiles();
 
          uint32_t          Load(const wcl::string& file);
 
-         void              SetHandler(uint32_t type, std::function<uint32_t(const wheel::string&, const wheel::buffer_t&)> func);
-         void              RemoveHandler(uint32_t type);
+         void              SetHandler(wheel_filetype_t fileformat, std::function<uint32_t(const wheel::string&, wheel::buffer_t&)> func);
+         void              RemoveHandler(wheel_filetype_t fileformat);
 
          Library();
         ~Library();
