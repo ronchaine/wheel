@@ -457,8 +457,6 @@ namespace wheel
          uint8_t scanline_filter;
          size_t col, decoded_bytes = 0;         
 
-         buffer_t flipped;
-
          WCL_DEBUG << "+ Decoding...\n";
          for (size_t row = 0; row < image->height; ++row)
          {
@@ -469,10 +467,35 @@ namespace wheel
             {
                if (image->bpp == 8)
                {
+                  for (size_t ch = 0; ch < image->channels; ++ch)
+                  {
+                     uint8_t pd = image_data.read<uint8_t>();
+
+                     if (scanline_filter == 0)        // No filter on this line
+                        f_ptr->push_back(pd);
+                     else if (scanline_filter == 1)   // Left
+                     {
+                        if (col == 0)
+                           f_ptr->push_back(pd);
+                        else
+                        {
+                           f_ptr->push_back(pd + f_ptr->at(f_ptr->size() - 1 * image->channels));
+                        }
+                     }
+                     else if (scanline_filter == 2)   // Up
+                     {
+                        if (row == 0)
+                           f_ptr->push_back(pd);
+                        else
+                           f_ptr->push_back(pd + f_ptr->at(f_ptr->size() - (image->channels * image->width)));
+                     }
+                     else if (scanline_filter > 2)   // Average
+                     {
+                        assert(0 & scanline_filter && "time to write more scanline filters!");
+                     }
+                  }
                   decoded_bytes++;
                   col++;
-//                  flipped.push_back(image_data.read<uint8_t>());
-                  f_ptr->push_back(image_data.read<uint8_t>());
                }
                else
                {
