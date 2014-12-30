@@ -11,7 +11,7 @@
 #include "../../include/wheel_core_string.h"
 #include "../../include/wheel_core_utility.h"
 #include "../../include/wheel_core_library.h"
-#include "../../include/wheel_image_png.h"
+#include "../../include/wheel_image_decoders.h"
 #include <cstring>
 
 #include "../../include/3rdparty/miniz.c"
@@ -232,15 +232,15 @@ namespace wheel
 
             if (next->crc == crc_check)
             {
-               WCL_DEBUG << "-- read chunk: " << s << "\n";
+               WCL_DEBUG_VERBOSE << "-- read chunk: " << s << "\n";
                chunks.push_back(next);
                if (s == "IEND")
                {
-                  WCL_DEBUG << "\n";
+                  WCL_DEBUG_VERBOSE << "\n";
                   break;
                }
             } else {
-               WCL_DEBUG << "-- png chunk crc mismatch. (" << next->crc << "vs." << crc_check << ")\n";
+               WCL_WARNING << "-- png chunk crc mismatch. (" << next->crc << "vs." << crc_check << ")\n";
             }
          }
 
@@ -263,14 +263,14 @@ namespace wheel
 
          if (!found_ihdr)
          {
-            WCL_DEBUG << "-!- no IHDR chunk found, bailing out.\n";
+            WCL_ERROR << "-!- no IHDR chunk found, bailing out.\n";
             for (auto chunk : chunks)
                free(chunk->data);
 
             return WHEEL_INVALID_FORMAT;
          }
 
-         WCL_DEBUG << "-- parsing IHDR chunk\n";
+         WCL_DEBUG_VERBOSE << "-- parsing IHDR chunk\n";
 
          image->width      = *(uint32_t*)chunks[it]->data;
          image->height     = *(uint32_t*)(chunks[it]->data + 4);
@@ -287,77 +287,77 @@ namespace wheel
             image->height = endian_swap(image->height);
          }
 
-         WCL_DEBUG << "++ Image header data\n";
-         WCL_DEBUG << "---- size: " << image->width << "x" << image->height << "x" << (uint32_t)image->bpp << "bpp \n";
+         WCL_DEBUG_VERBOSE << "++ Image header data\n";
+         WCL_DEBUG_VERBOSE << "---- size: " << image->width << "x" << image->height << "x" << (uint32_t)image->bpp << "bpp \n";
 
-         WCL_DEBUG << "---- type: ";
+         WCL_DEBUG_VERBOSE << "---- type: ";
 
          bool supported_format = true;
 
          if (image->bpp < 8)
          {
             supported_format = false;
-            WCL_DEBUG << "-!-  bit depths below 8 are not currently supported.\n";
+            WCL_DEBUG_VERBOSE << "-!-  bit depths below 8 are not currently supported.\n";
          }
 
          if (imgtype == 0)
          {
             image->channels = 1;
-            WCL_DEBUG << "Greyscale\n";
+            WCL_DEBUG_VERBOSE << "Greyscale\n";
          } else if (imgtype == 2) {
             image->channels = 3;
-            WCL_DEBUG << "RGB\n";
+            WCL_DEBUG_VERBOSE << "RGB\n";
          } else if (imgtype == 3) {
             image->channels = 1;
-            WCL_DEBUG << "Paletted\n";
+            WCL_DEBUG_VERBOSE << "Paletted\n";
          } else if (imgtype == 4) {
             image->channels = 2;
-            WCL_DEBUG << "Grayscale-alpha\n";
+            WCL_DEBUG_VERBOSE << "Grayscale-alpha\n";
          } else if (imgtype == 6) {
             image->channels = 4;
-            WCL_DEBUG << "RGBA\n";
+            WCL_DEBUG_VERBOSE << "RGBA\n";
          } else {
             image->channels = 0;
-            WCL_DEBUG << "Unknown\n";
+            WCL_DEBUG_VERBOSE << "Unknown\n";
          }
 
-         WCL_DEBUG << "---- " << image->channels << " channel(s)\n";
+         WCL_DEBUG_VERBOSE << "---- " << image->channels << " channel(s)\n";
 
-         WCL_DEBUG << "---- Compression method: ";
+         WCL_DEBUG_VERBOSE << "---- Compression method: ";
          if (cmethod == 0)
          {
-            WCL_DEBUG << "inflate / deflate\n";
+            WCL_DEBUG_VERBOSE << "inflate / deflate\n";
          } else {
             supported_format = false;
-            WCL_DEBUG << "unknown\n";
+            WCL_DEBUG_VERBOSE << "unknown\n";
          }
 
-         WCL_DEBUG << "---- Filtering: ";
+         WCL_DEBUG_VERBOSE << "---- Filtering: ";
          if (filter == 0)
          {
-            WCL_DEBUG << "adaptive\n";
+            WCL_DEBUG_VERBOSE << "adaptive\n";
          } else {
             supported_format = false;
-            WCL_DEBUG << "unknown\n";
+            WCL_DEBUG_VERBOSE << "unknown\n";
          }
 
-         WCL_DEBUG << "---- Interlacing: ";
+         WCL_DEBUG_VERBOSE << "---- Interlacing: ";
          if (interlace == 0)
          {
-            WCL_DEBUG << "no interlacing\n";
+            WCL_DEBUG_VERBOSE << "no interlacing\n";
          } else if (interlace == 1) {
             supported_format = false;
-            WCL_DEBUG << "Adam7 (unsupported)\n";
+            WCL_DEBUG_VERBOSE << "Adam7 (unsupported)\n";
          } else {
             supported_format = false;
-            WCL_DEBUG << "unknown\n";
+            WCL_DEBUG_VERBOSE << "unknown\n";
          }
 
-         WCL_DEBUG << "\n";
+         WCL_DEBUG_VERBOSE << "\n";
 
          if (!supported_format)
          {
-            log << "Unsupported PNG format.\n";
+            WCL_ERROR << "Unsupported PNG format.\n";
             for (auto chunk : chunks)
                free(chunk->data);
 
@@ -367,7 +367,7 @@ namespace wheel
          // We don't bother with the palette entry on images that are not paletted
          if (imgtype == 3)
          {
-            WCL_DEBUG << "+ Parsing palette information...\n";
+            WCL_DEBUG_VERBOSE << "+ Parsing palette information...\n";
 
             uint32_t plte = ~0;
             uint32_t trns = ~0;
@@ -383,7 +383,7 @@ namespace wheel
 
             if (plte == ~0)
             {
-               WCL_DEBUG << "-- Paletted image with no palette chunk?\n";
+               WCL_ERROR << "-- Paletted image with no palette chunk?\n";
                for (auto chunk : chunks)
                   free(chunk->data);
 
@@ -392,7 +392,7 @@ namespace wheel
 
             if (chunks[plte]->len % 3 != 0)
             {
-               WCL_DEBUG << "-- Invalid PLTE chunk.\n";
+               WCL_ERROR << "-- Invalid PLTE chunk.\n";
                for (auto chunk : chunks)
                   free(chunk->data);
 
@@ -402,12 +402,14 @@ namespace wheel
             size_t entries = chunks[plte]->len / 3;
             size_t trns_entries = 0;
 
-            if (trns == ~0) 
-               WCL_DEBUG << "-- no transparency\n";
-            else
+            if (trns == ~0)
+            {
+               WCL_DEBUG_VERBOSE << "-- no transparency\n";
+            } else {
                trns_entries = chunks[trns]->len;
+            }
 
-            WCL_DEBUG << "-- palette entries: " << entries << "\n";
+            WCL_DEBUG_VERBOSE << "-- palette entries: " << entries << "\n";
 
             uint8_t r, g, b, a;
 
@@ -422,10 +424,10 @@ namespace wheel
                else
                   a = 0xff;
 
-               WCL_DEBUG << "---- r:" << (uint32_t)r << " g:" << (uint32_t)g << " b:" << (uint32_t)b << " a:" << (uint32_t)a << "\n" ;
+               WCL_DEBUG_VERBOSE << "---- r:" << (uint32_t)r << " g:" << (uint32_t)g << " b:" << (uint32_t)b << " a:" << (uint32_t)a << "\n" ;
                image->palette.push_back((r << 24) + (g << 16) + (b << 8) + a);
             }
-            WCL_DEBUG << "\n";
+            WCL_DEBUG_VERBOSE << "\n";
          }
 
 
@@ -439,15 +441,15 @@ namespace wheel
 
             if (s == "IDAT")
             {
-               WCL_DEBUG << "-- Found IDAT chunk, size: " << c->len << "B\n";
+               WCL_DEBUG_VERBOSE << "-- Found IDAT chunk, size: " << c->len << "B\n";
                concatenated_data.insert(concatenated_data.end(), c->data, c->data + c->len);
             }
          }
-         WCL_DEBUG << "-- Total size: " << concatenated_data.size() << " bytes\n\n";
+         WCL_DEBUG_VERBOSE << "-- Total size: " << concatenated_data.size() << " bytes\n\n";
 
-         WCL_DEBUG << "+ Uncompressing...\n";
+         WCL_DEBUG_VERBOSE << "+ Uncompressing...\n";
          z_uncompress((const void*)&concatenated_data[0], concatenated_data.size(), image_data);
-         WCL_DEBUG << "-- Uncompressed size: " << image_data.size() << " bytes\n\n";
+         WCL_DEBUG_VERBOSE << "-- Uncompressed size: " << image_data.size() << " bytes\n\n";
 
          buffer_t* f_ptr = image->data_ptr();
          f_ptr->clear();
@@ -489,7 +491,7 @@ namespace wheel
                         else
                            f_ptr->push_back(pd + f_ptr->at(f_ptr->size() - (image->channels * image->width)));
                      }
-                     else if (scanline_filter > 2)   // Average
+                     else if (scanline_filter > 2)   // Unimplemented
                      {
                         assert(0 & scanline_filter && "time to write more scanline filters!");
                      }
@@ -503,7 +505,7 @@ namespace wheel
                }
             }
          }
-         WCL_DEBUG << "-- Decoded " << f_ptr->size() << " bytes of data.\n\n";
+         WCL_DEBUG_VERBOSE << "-- Decoded " << f_ptr->size() << " bytes of data.\n\n";
 
          // We're done with the chunks, let them go.
          for (auto chunk : chunks)

@@ -16,13 +16,47 @@
 #include <iostream>
 
 #ifdef NDEBUG
-   #define WHEEL_NO_DEBUG
+   #define WHEEL_DEBUG_LEVEL 0
 #endif
 
-#ifdef WHEEL_NO_DEBUG
-   #define WCL_DEBUG //
+#define WHEEL_DEBUG_LEVEL 4
+
+#if WHEEL_DEBUG_LEVEL==0
+   #define WCL_DEBUG_VERBOSE     if(0) wheel::log
+   #define WCL_DEBUG             if(0) wheel::log
+   #define WCL_WARNING           if(0) wheel::log
+   #define WCL_ERROR             if(0) wheel::log
+   #define WCL_FATAL             if(0) wheel::log
+#elif WHEEL_DEBUG_LEVEL==1
+   #define WCL_DEBUG_VERBOSE     if(0) wheel::log
+   #define WCL_DEBUG             if(0) wheel::log
+   #define WCL_WARNING           if(0) wheel::log
+   #define WCL_ERROR             if(0) wheel::log
+   #define WCL_FATAL             if(1) wheel::log
+#elif WHEEL_DEBUG_LEVEL==2
+   #define WCL_DEBUG_VERBOSE     if(0) wheel::log
+   #define WCL_DEBUG             if(0) wheel::log
+   #define WCL_WARNING           if(0) wheel::log
+   #define WCL_ERROR             wheel::log
+   #define WCL_FATAL             wheel::log
+#elif WHEEL_DEBUG_LEVEL==3
+   #define WCL_DEBUG_VERBOSE     if(0) wheel::log
+   #define WCL_DEBUG             if(0) wheel::log
+   #define WCL_WARNING           wheel::log
+   #define WCL_ERROR             wheel::log
+   #define WCL_FATAL             wheel::log
+#elif WHEEL_DEBUG_LEVEL==4
+   #define WCL_DEBUG_VERBOSE     if(0) wheel::log
+   #define WCL_DEBUG             wheel::log
+   #define WCL_WARNING           wheel::log
+   #define WCL_ERROR             wheel::log
+   #define WCL_FATAL             wheel::log
 #else
-   #define WCL_DEBUG wheel::log
+   #define WCL_DEBUG_VERBOSE     wheel::log
+   #define WCL_DEBUG             wheel::log
+   #define WCL_WARNING           wheel::log
+   #define WCL_ERROR             wheel::log
+   #define WCL_FATAL             wheel::log
 #endif
 
 /// Values

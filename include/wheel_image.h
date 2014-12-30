@@ -10,6 +10,6 @@
 #include "wheel_core_resource.h"
 
 #include "wheel_image_common.h"
-#include "wheel_image_png.h"
+#include "wheel_image_decoders.h"
 
 #endif

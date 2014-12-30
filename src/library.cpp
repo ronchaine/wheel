@@ -86,9 +86,7 @@ namespace wheel
       return WHEEL_OK;
    }
 
-
    // ============================================================================
-
 
    Resource* Library::operator[](const string& name)
    {
