@@ -19,7 +19,9 @@
    #define WHEEL_DEBUG_LEVEL 0
 #endif
 
-#define WHEEL_DEBUG_LEVEL 4
+#ifndef WHEEL_DEBUG_LEVEL
+   #define WHEEL_DEBUG_LEVEL 4
+#endif
 
 #if WHEEL_DEBUG_LEVEL==0
    #define WCL_DEBUG_VERBOSE     if(0) wheel::log
