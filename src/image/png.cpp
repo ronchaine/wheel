@@ -473,27 +473,59 @@ namespace wheel
                   {
                      uint8_t pd = image_data.read<uint8_t>();
 
+                     // These make everything a bit cleaner
+                     uint8_t a, b, c;
+
+                     if (col == 0)
+                        a = 0;
+                     else
+                        a = f_ptr->at(f_ptr->size() - 1 * image->channels);
+
+                     if (row == 0)
+                        b = 0;
+                     else
+                        b = f_ptr->at(f_ptr->size() - (image->channels * image->width));
+
+                     if (a == 0 && b == 0)
+                        c = 0;
+                     else
+                        c = f_ptr->at(f_ptr->size() - (row != 0) * (image->channels * image->width) - (col != 0) * 1 * image->channels);
+
                      if (scanline_filter == 0)        // No filter on this line
                         f_ptr->push_back(pd);
                      else if (scanline_filter == 1)   // Left
                      {
-                        if (col == 0)
-                           f_ptr->push_back(pd);
-                        else
-                        {
-                           f_ptr->push_back(pd + f_ptr->at(f_ptr->size() - 1 * image->channels));
-                        }
+                        f_ptr->push_back(pd + a);
                      }
                      else if (scanline_filter == 2)   // Up
                      {
-                        if (row == 0)
-                           f_ptr->push_back(pd);
-                        else
-                           f_ptr->push_back(pd + f_ptr->at(f_ptr->size() - (image->channels * image->width)));
+                        f_ptr->push_back(pd + b);
                      }
-                     else if (scanline_filter > 2)   // Unimplemented
+                     else if (scanline_filter == 3)   // Average
                      {
-                        assert(0 & scanline_filter && "time to write more scanline filters!");
+                        uint32_t result = (a + b) >> 1;
+                        f_ptr->push_back(pd + result);
+                     }
+                     else if (scanline_filter == 4)   // Paeth
+                     {
+                        int32_t p  = a + b - c;
+                        int32_t pa = abs(p - a);
+                        int32_t pb = abs(p - b);
+                        int32_t pc = abs(p - c);
+                        uint8_t pr;
+                        if ((pa <= pb) && (pa <= pc))
+                           pr = a;
+                        else if (pb <= pc)
+                           pr = b;
+                        else
+                           pr = c;
+
+                        f_ptr->push_back(pd + pr);
+                     }
+                     else // undefined
+                     {
+                        WCL_DEBUG << (int)scanline_filter << "\n";
+                        assert(0 && "nonconforming PNG file");
                      }
                   }
                   decoded_bytes++;

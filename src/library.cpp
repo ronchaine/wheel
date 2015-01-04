@@ -223,7 +223,7 @@ namespace wheel
       if (resources.count(file) == 0)
          return WHEEL_UNINITIALISED_RESOURCE;
 
-      delete resources[file].ptr;
+//      delete resources[file].ptr;
       resources.erase(file);
 
       return WHEEL_OK;
