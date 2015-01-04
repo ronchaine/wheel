@@ -463,7 +463,6 @@ namespace wheel
          for (size_t row = 0; row < image->height; ++row)
          {
             scanline_filter = image_data.read<uint8_t>();
-
             col = 0;
             while(col < image->width)
             {
@@ -474,7 +473,7 @@ namespace wheel
                      uint8_t pd = image_data.read<uint8_t>();
 
                      // These make everything a bit cleaner
-                     uint8_t a, b, c;
+                     int32_t a, b, c;
 
                      if (col == 0)
                         a = 0;
@@ -489,7 +488,14 @@ namespace wheel
                      if (a == 0 && b == 0)
                         c = 0;
                      else
-                        c = f_ptr->at(f_ptr->size() - (row != 0) * (image->channels * image->width) - (col != 0) * 1 * image->channels);
+                     {
+                        if (row == 0)
+                           c = 0;
+                        else if (col == 0)
+                           c = a;
+                        else
+                           c = f_ptr->at(f_ptr->size() - (image->channels * image->width) - 1 * image->channels);
+                     }
 
                      if (scanline_filter == 0)        // No filter on this line
                         f_ptr->push_back(pd);
@@ -509,10 +515,13 @@ namespace wheel
                      else if (scanline_filter == 4)   // Paeth
                      {
                         int32_t p  = a + b - c;
+
                         int32_t pa = abs(p - a);
                         int32_t pb = abs(p - b);
                         int32_t pc = abs(p - c);
+
                         uint8_t pr;
+
                         if ((pa <= pb) && (pa <= pc))
                            pr = a;
                         else if (pb <= pc)
