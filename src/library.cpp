@@ -195,6 +195,8 @@ namespace wheel
    uint32_t Library::Load(const wcl::string& file)
    {
       wheel::buffer_t* file_buffer = (wheel::buffer_t*)wheel::GetBuffer(file);
+         if (file_buffer == nullptr)
+            return WHEEL_RESOURCE_UNAVAILABLE;
 
       uint32_t file_type = CheckFileFormat(*file_buffer);
 
@@ -210,6 +212,21 @@ namespace wheel
       wheel::DeleteBuffer(file);
 
       return rval;
+   }
+
+   //! Unload a file from resource library
+   /*!
+   */
+   uint32_t Library::Unload(const wcl::string& file)
+   {
+//         static std::unordered_map<wcl::string, resource_entry_t> resources;
+      if (resources.count(file) == 0)
+         return WHEEL_UNINITIALISED_RESOURCE;
+
+      delete resources[file].ptr;
+      resources.erase(file);
+
+      return WHEEL_OK;
    }
 }
 

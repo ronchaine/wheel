@@ -33,6 +33,7 @@ namespace wheel
          Resource*         operator[](const string& name);
 
          uint32_t          Load(const wcl::string& file);
+         uint32_t          Unload(const wcl::string& file);
 
          void              SetHandler(wheel_filetype_t fileformat, std::function<uint32_t(const wheel::string&, wheel::buffer_t&)> func);
          void              RemoveHandler(wheel_filetype_t fileformat);
