@@ -177,7 +177,7 @@ namespace wheel
 
          uint32_t idat_count = 0;
 
-         WCL_DEBUG << "+ Reading chunks...\n";
+         WCL_DEBUG_VERBOSE << "+ Reading chunks...\n";
 
          // Read chunks to buffer.
          while(buffer.pos() < buffer.size())
@@ -244,7 +244,7 @@ namespace wheel
             }
          }
 
-         WCL_DEBUG << "+ PNG reading complete, decoding...\n";
+         WCL_DEBUG_VERBOSE << "+ PNG reading complete, decoding...\n";
 
          Image* image = new Image;
 
@@ -542,6 +542,8 @@ namespace wheel
          // We're done with the chunks, let them go.
          for (auto chunk : chunks)
             free(chunk->data);
+
+         WCL_DEBUG << "+ Loaded PNG, size:" << image->width << "x" << image->height << ", channels: " << image->channels << "\n";
 
          Library::AddResource(WHEEL_RESOURCE_IMAGE, name, image);
 
