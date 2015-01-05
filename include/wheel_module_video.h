@@ -248,6 +248,8 @@ namespace wheel
             virtual  void     SetTexture(uint32_t tu, const wcl::string& name);
             virtual  void     SetTexture(const wcl::string& uniform, uint32_t tu, const wcl::string& name);
 
+            virtual  uint32_t AssignTU(const wcl::string& uniform, uint32_t tu) { return WHEEL_UNIMPLEMENTED_FEATURE; }
+
             // Surfaces
             virtual  uint32_t CreateSurface(const wcl::string& name, uint32_t type = 0) { return WHEEL_UNIMPLEMENTED_FEATURE; }
             virtual  uint32_t AttachToSurface(const wcl::string& surface, const wcl::string& texture) { return WHEEL_UNIMPLEMENTED_FEATURE; }
