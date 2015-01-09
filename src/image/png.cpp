@@ -169,7 +169,7 @@ namespace wheel
       */
       uint32_t decode_png(const wheel::string& name, buffer_t& buffer)
       {
-         WCL_DEBUG << "=== Loading PNG (" << name << ")\n";
+         WCL_DEBUG_VERBOSE << "=== Loading PNG (" << name << ")\n";
 
          std::vector<PNGChunk*> chunks;
  
@@ -431,7 +431,7 @@ namespace wheel
          }
 
 
-         WCL_DEBUG << "+ Concatenating IDAT chunks...\n";
+         WCL_DEBUG_VERBOSE << "+ Concatenating IDAT chunks...\n";
 
          // Then IDAT stuff...
          buffer_t concatenated_data, image_data;
@@ -459,7 +459,7 @@ namespace wheel
          uint8_t scanline_filter;
          size_t col, decoded_bytes = 0;         
 
-         WCL_DEBUG << "+ Decoding...\n";
+         WCL_DEBUG_VERBOSE << "+ Decoding...\n";
          for (size_t row = 0; row < image->height; ++row)
          {
             scanline_filter = image_data.read<uint8_t>();
@@ -533,7 +533,7 @@ namespace wheel
                      }
                      else // undefined
                      {
-                        WCL_DEBUG << (int)scanline_filter << "\n";
+                        WCL_ERROR << (int)scanline_filter << "\n";
                         assert(0 && "nonconforming PNG file");
                      }
                   }
@@ -552,7 +552,7 @@ namespace wheel
          for (auto chunk : chunks)
             free(chunk->data);
 
-         WCL_DEBUG << "+ Loaded PNG, size:" << image->width << "x" << image->height << ", channels: " << image->channels << "\n";
+         WCL_DEBUG << "+ Loaded PNG, file: " << name << ", size:" << image->width << "x" << image->height << ", channels: " << image->channels << "\n";
 
          Library::AddResource(WHEEL_RESOURCE_IMAGE, name, image);
 

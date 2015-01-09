@@ -91,8 +91,6 @@ namespace wheel
       resources[name].type = type;
       resources[name].ptr = rptr;
 
-      printf("Resource pointer at %x\n", resources[name].ptr);
-
       return WHEEL_OK;
    }
 
