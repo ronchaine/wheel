@@ -23,6 +23,7 @@ namespace wheel
          static uint32_t   instance_count;
 
          static uint32_t   load_unknown(const string& entry, buffer_t& buffer);
+         void              unload_resource(resource_entry_t);
 
       public:
          static uint32_t   AddBuffer(wheel_resource_t type, const string& name, const buffer_t&);

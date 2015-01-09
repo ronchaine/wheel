@@ -26,6 +26,14 @@ namespace wheel
       return WHEEL_OK;
    }
 
+   void Library::unload_resource(resource_entry_t r)
+   {
+      if (r.type == WHEEL_RESOURCE_IMAGE)
+         delete (wheel::image::Image*)r.ptr;
+      else
+         delete r.ptr;
+   }
+
    //! Add a buffer to resources
    /*!
       Static function to add resources to library.
@@ -83,6 +91,8 @@ namespace wheel
       resources[name].type = type;
       resources[name].ptr = rptr;
 
+      printf("Resource pointer at %x\n", resources[name].ptr);
+
       return WHEEL_OK;
    }
 
@@ -94,34 +104,6 @@ namespace wheel
          return nullptr;
 
       return resources[name].ptr;
-   }
-
-   //! Load a known resource type from a file
-   /*!
-      Loads a file to memory buffer for later use
-
-      \param file  filename to load
-   */
-   Resource* Resource::Load(const wcl::string& file)
-   {
-      wheel::log << "loading file '" << file << "'\n";
-
-      Resource* new_resource = nullptr;
-
-      wheel::buffer_t* file_buffer = (wheel::buffer_t*)wheel::GetBuffer(file);
-
-      if (file_buffer == nullptr)
-         return nullptr;
-
-      uint32_t file_format = CheckFileFormat(*file_buffer);
-/*
-      if (file_format == WHEEL_FILE_FORMAT_PNG)
-      {}
-
-      wheel::DeleteBuffer(file);
-
-*/
-      return new_resource;
    }
 
    Library::Library()
@@ -144,16 +126,9 @@ namespace wheel
       instance_count--;
 
       // If no instances remaining, free resources.
-/*
-      FIXME:  Free the bloody memory, commented this out because of glibc crash.
-
       if (instance_count == 0)
          for (auto r : resources)
-         {
-            if (r.second.ptr != nullptr)
-               delete r.second.ptr;
-         }
-*/
+            unload_resource(r.second);
    }
 
    //! Set handler for a file format
@@ -223,7 +198,7 @@ namespace wheel
       if (resources.count(file) == 0)
          return WHEEL_UNINITIALISED_RESOURCE;
 
-//      delete resources[file].ptr;
+      unload_resource(resources[file]);
       resources.erase(file);
 
       return WHEEL_OK;

@@ -248,6 +248,8 @@ namespace wheel
 
          Image* image = new Image;
 
+         printf("Created image at %x\n", image);
+
          // Normally PNG should have IHDR as its first chunk (by specification), but we are lenient.
          size_t   it = 0;
          bool     found_ihdr = false;
@@ -554,6 +556,7 @@ namespace wheel
 
          WCL_DEBUG << "+ Loaded PNG, size:" << image->width << "x" << image->height << ", channels: " << image->channels << "\n";
 
+         printf("Add resource at %x\n", image);
          Library::AddResource(WHEEL_RESOURCE_IMAGE, name, image);
 
          return WHEEL_OK;
