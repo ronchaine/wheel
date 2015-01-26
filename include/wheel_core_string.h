@@ -49,10 +49,12 @@ namespace wheel
         string(const char*, size_t length);
 
         string(double);
+
+        string(int32_t);
         string(int64_t);
         string(uint32_t);
 
-        // Destuctor
+        // Destructor
         ~string();
 
         // Convenience (stupid) constructors
