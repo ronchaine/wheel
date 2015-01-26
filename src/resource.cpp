@@ -185,7 +185,7 @@ namespace wheel
 
       \return  pointer to the cached buffer in buffer_t -format.
    */
-   const buffer_t* GetBuffer(const string& filename)
+   buffer_t* GetBuffer(const string& filename)
    {
       if (!IsCached(filename))
          if (Buffer(filename) != WHEEL_OK)
