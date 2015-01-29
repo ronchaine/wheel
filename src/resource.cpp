@@ -197,6 +197,36 @@ namespace wheel
    }
 
    /*!
+      Retrieves a buffer without caching it, unsafe operation.
+
+      \return buffer_t rvalue reference
+   */
+   buffer_t GetFile(const string& filename)
+   {
+      buffer_t data;
+
+      if (!PHYSFS_exists(filename.std_str().c_str()))
+      {
+         log << "physfs is unable to find resource: " << filename << "\n";
+         return std::move(data);
+      }
+
+      PHYSFS_file* in = PHYSFS_openRead(filename.std_str().c_str());
+
+      if (in == nullptr)
+         return std::move(data);
+
+      size_t len = PHYSFS_fileLength(in);
+
+      data.resize(len+1);
+
+      PHYSFS_read(in, (void*)data.getptr(), 1, len);
+      PHYSFS_close(in);
+
+      return std::move(data);
+   }
+
+   /*!
       Writes a buffer to a file in user directory.
    */
    uint32_t WriteBuffer(const string& file, const buffer_t& buffer)
@@ -223,10 +253,10 @@ namespace wheel
 
       \return <code>WHEEL_OK</code> on success, otherwise an error code depicting the error.
    */
-   uint32_t AddToPath(const string& path, const string& mountpoint)
+   uint32_t AddToPath(const string& path, const string& mountpoint, int sorder)
    {
       log << "Adding search path: '" << path << "' to '" << mountpoint << "'\n";
-      if (PHYSFS_mount(path.std_str().c_str(), mountpoint.std_str().c_str(), 1) == 0)
+      if (PHYSFS_mount(path.std_str().c_str(), mountpoint.std_str().c_str(), sorder) == 0)
          return WHEEL_RESOURCE_UNAVAILABLE;
 
       log << "Added to search path: " << path << "\n";

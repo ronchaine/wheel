@@ -12,6 +12,7 @@
 #include <cassert>
 #include <vector>
 #include <list>
+#include <chrono>
 
 #include <iostream>
 
@@ -80,6 +81,7 @@
 #define WHEEL_INVALID_POINTER             0x0007
 #define WHEEL_UNINITIALISED_RESOURCE      0x0008
 #define WHEEL_INVALID_FORMAT              0x0009
+#define WHEEL_ERROR                       0xffff
 
 #define WHEEL_ERROR_INIT_FILESYSTEM       0x0100
 
@@ -306,13 +308,24 @@ namespace wheel
             this->reserve(this->size() + len);
          }
 */
-         inline bool can_read(size_t s)
+         inline bool can_read(size_t s) const
          {
             if (size() < pos() + s)
                return false;
 
             return true;
          };
+
+         template <typename T>
+         inline T read(size_t where) const
+         {
+            T rval = *(T*)&(this->at(where));
+
+            if (big_endian())
+               rval = endian_swap(rval);
+
+            return rval;
+         }
 
          template <typename T>
          inline T read()
@@ -323,6 +336,17 @@ namespace wheel
                rval = endian_swap(rval);
 
             read_ptr += sizeof(T);
+
+            return rval;
+         }
+
+         template <typename T>
+         inline T read_le(size_t where) const
+         {
+            T rval = *(T*)&(this->at(where));
+
+            if (!big_endian())
+               rval = endian_swap(rval);
 
             return rval;
          }
@@ -515,6 +539,15 @@ namespace wheel
       wheel::Hash<wheel::buffer_t> rval_hash;
       return rval_hash(*this);
    }
+}
+
+namespace wheel
+{
+   // Core core
+   int         initialise(int argc, char* argv[]);
+   void        terminate();
+
+   bool        big_endian();
 }
 
 namespace std

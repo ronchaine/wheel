@@ -45,9 +45,10 @@ namespace wheel
    uint32_t          Filesystem_Init(int argc, char* argv[]);
    void              Filesystem_Deinit();
 
-   uint32_t          AddToPath(const string& resource, const string& where);
+   uint32_t          AddToPath(const string& resource, const string& where, int search_last = 1);
 
    buffer_t*         GetBuffer(const string& filename);
+
    size_t            BufferSize(const string& filename);
 
    bool              IsCached(const string& filename);
@@ -58,6 +59,8 @@ namespace wheel
    void              EmptyCache();
 
    uint32_t          WriteBuffer(const string& file, const buffer_t& buffer);
+
+   buffer_t          GetFile(const string& filename);
 }
 
 #endif

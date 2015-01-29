@@ -54,9 +54,29 @@ namespace wheel
       return update_crc(0xffffffff, buf, len) ^ 0xffffffff;
    }
 
-   //! Hash a string
-   /*!
-      If no flags are specified, this function returns the same value as std::hash would.
-      
-   */
+
+   Timer::Timer(wcl::string id, uint64_t usec, bool repeat) : id(id), usec(usec), repeat(repeat)
+   {
+      Reset();
+   }
+
+   void Timer::Reset()
+   {
+      start = std::chrono::steady_clock::steady_clock::now();
+   }
+
+   bool Timer::Check()
+   {
+      std::chrono::steady_clock::time_point now = std::chrono::steady_clock::steady_clock::now();
+
+      uint64_t d = std::chrono::duration_cast<std::chrono::duration<uint64_t, std::ratio<1,1000>>>(now - start).count();
+
+      if (d > usec)
+      {
+         Reset();
+         return true;
+      }
+
+      return false;
+   }
 }

@@ -4,7 +4,8 @@
    \author Jari Ronkainen
 */
 
-#include <wheel_core.h>
+#include <wheel_core_common.h>
+#include <wheel_core_resource.h>
 #include <wheel_core_debug.h>
 
 #include <physfs.h>

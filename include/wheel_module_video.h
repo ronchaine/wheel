@@ -226,7 +226,7 @@ namespace wheel
             /*!
             */
             virtual  void     AddVertex(vertex_t v, buffer_t* buf = nullptr);
-            virtual  void     Flush() {}
+            virtual  void     Flush(int32_t array_type = 4) {}
 
             virtual  uint32_t DrawRect(int32_t x, int32_t y, uint32_t w, uint32_t h, float rot = 0.0f, int32_t x_pivot = 0, int32_t y_pivot = 0) = 0;
 

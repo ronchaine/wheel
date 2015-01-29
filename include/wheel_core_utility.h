@@ -7,6 +7,7 @@
 #define WHEEL_UTILITY_HEADER
 
 #include "wheel_core_common.h"
+#include "wheel_core_string.h"
 
 #include <cstdint>
 
@@ -135,6 +136,31 @@ namespace wheel
    */
    uint32_t crc32(uint8_t* buffer, size_t len);
    uint32_t update_crc(uint32_t crc, uint8_t* buf, size_t len);
+
+
+   //! Timer
+   /*!
+      A timer that counts microseconds and reports an event if it has
+      reached given amount of.
+   */
+   class Timer
+   {
+      private:
+         std::chrono::steady_clock::time_point  start;
+         wheel::string                          id;
+
+         uint64_t                               usec;
+
+      public:
+         Timer(wheel::string id, uint64_t usec, bool repeat);
+
+         void Reset();
+         bool Check();
+
+         wcl::string getID() { return id; }
+
+         bool                                   repeat;
+   };
 }
 
 #endif //WHEEL_UTILITY_HEADER
