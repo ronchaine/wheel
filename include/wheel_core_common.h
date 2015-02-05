@@ -193,11 +193,11 @@ namespace wheel
       int32_t w, h, x, y;
 
       // Required for sorting
-      bool operator<(const rect_t& r)
+      bool operator<(const rect_t& r) const
       {
          return w*h < r.w * r.h;
       }
-      bool operator==(const rect_t& r)
+      bool operator==(const rect_t& r) const
       {
          return ((w == r.w) && (h == r.h) && (x == r.x) && (y == r.y));
       }
