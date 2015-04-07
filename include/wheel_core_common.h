@@ -129,6 +129,9 @@
 // 0x1y timer event
 #define WHEEL_EVENT_TIMER        0x10
 
+// 0x2y variable change
+#define WHEEL_EVENT_VAR_CHANGED  0x20
+
 // These values correspond to OpenGL numbers
 
 #define WHEEL_PIXEL_FMT_NONE        ~0
