@@ -45,7 +45,7 @@ namespace wheel
    {
       char integer[32];
 
-      snprintf(integer, 15, "%lld", in);
+      snprintf(integer, 15, "%ld", in);
       std::string result;
 
       utf8::replace_invalid(integer, integer + strlen(integer), back_inserter(result));

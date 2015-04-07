@@ -7,7 +7,7 @@ include_directories(${WHEEL_SOURCE_DIR}/src
 
 #set(COMMON_HEADERS ${WHEEL_SOURCE_DIR}/include/wheel_core.h utf8.h)
 set(COMMON_SOURCES core.cpp debug.cpp module.cpp string.cpp resource.cpp
-                   utility.cpp library.cpp atlas.cpp)
+                   utility.cpp library.cpp atlas.cpp event.cpp)
 
 set(IMAGE_SOURCES image/image.cpp image/png.cpp)
 set(IMAGE_HEADERS ${WHEEL_SOURCE_DIR}/include/wheel_image.h)

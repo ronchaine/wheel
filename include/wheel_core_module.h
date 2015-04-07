@@ -11,6 +11,7 @@
 
 #include "wheel_core_common.h"
 #include "wheel_core_string.h"
+#include "wheel_core_event.h"
 
 // FIXME: dlfcn is UNIX-specific, windows uses something different.
 //        This should work with MingW32 though.

@@ -396,34 +396,6 @@ namespace wheel
          }
    };
 
-   //! Event
-   /*!
-   */
-   class Event
-   {
-      public:
-         buffer_t data;
-
-         uint32_t GetType();
-   };
-
-   typedef std::list<Event> EventList;
-
-   // FIXME:  unimplemented: describe_event()
-   template<typename ...Args>
-   inline wheel::Event describe_event(Args ... codes)
-   {
-      wheel::Event rval;
-      uint8_t args[] { (uint8_t)codes ... };
-
-      for (uint8_t c : args)
-      {
-         rval.data.push_back(c);
-      }
-
-      return rval;
-   }
-
    /*!
       \brief  Checks file format of a file.
 
