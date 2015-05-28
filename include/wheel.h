@@ -17,6 +17,9 @@
 #include "wheel_core_library.h"
 #include "wheel_core_event.h"
 
+// Video
+#include "wheel_video.h"
+
 // Module
 #include "wheel_module_audio.h"
 #include "wheel_module_video.h"

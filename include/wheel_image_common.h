@@ -8,7 +8,7 @@
 
 #include "wheel_core_common.h"
 #include "wheel_core_debug.h"
-#include "wheel_module_video.h"
+#include "wheel_video.h"
 #include "wheel_core_resource.h"
 
 namespace wheel

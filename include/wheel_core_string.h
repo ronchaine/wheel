@@ -216,9 +216,9 @@ namespace std {
 }
 
 //std::ostream& operator<<(std::ostream& out, const wheel::string& str);
-
 #ifndef WHEEL_NAMESPACE_CORE_ALIASES_DEFINED
 #define WHEEL_NAMESPACE_CORE_ALIASES_DEFINED
 namespace wcl = wheel;
 #endif //WHEEL_NAMESPACE_ALIASES_DEFINED
+
 #endif //WHEEL_STRING_HEADER

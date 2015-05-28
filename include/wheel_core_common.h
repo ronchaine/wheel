@@ -538,4 +538,9 @@ namespace std
    };
 }
 
+#ifndef WHEEL_NAMESPACE_CORE_ALIASES_DEFINED
+#define WHEEL_NAMESPACE_CORE_ALIASES_DEFINED
+namespace wcl = wheel;
+#endif //WHEEL_NAMESPACE_ALIASES_DEFINED
+
 #endif
