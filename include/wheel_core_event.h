@@ -15,10 +15,7 @@ namespace wheel
       public:
          buffer_t    data;
 
-         bool        is_window_event() const;
-         bool        is_mouse_event() const;
-         bool        is_keyboard_event() const;
-         bool        is_controller_event() const;
+         string      get_event_string() const;
    };
 
    typedef std::list<Event> EventList;

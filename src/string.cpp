@@ -207,7 +207,24 @@ namespace wheel
    {
       std::string result;
       utf8::utf32to8(data.begin(), data.end(), std::back_inserter(result));
-      return result;         
+      return result;
+   }
+
+   //! Generate c-style string
+   /*
+      The C-style string is written to array given as a parameter, no allocation is made
+      so the array must be pre-allocated.
+
+      \return nothing
+   */
+   void string::to_c_str(char* array) const
+   {
+      std::vector<char> utf8_result;
+
+      utf8::utf32to8(data.begin(), data.end(), std::back_inserter(utf8_result));
+
+      utf8_result.push_back('\0');
+      memcpy(array, &utf8_result[0], utf8_result.size());
    }
 
    //! Return integer value

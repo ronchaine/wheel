@@ -83,8 +83,9 @@ namespace wheel
         // Get pointer to the string
         const char32_t* getptr() const;
 
-        // Return C string
+        // Get C string
 //            const char* const c_str() const;
+        void to_c_str(char* array) const;
 
         // Returns std string
         const std::string std_str() const;

@@ -81,6 +81,7 @@
 #define WHEEL_INVALID_POINTER             0x0007
 #define WHEEL_UNINITIALISED_RESOURCE      0x0008
 #define WHEEL_INVALID_FORMAT              0x0009
+#define WHEEL_UNINITIALISED_DEPENDENCY    0x000a
 #define WHEEL_ERROR                       0xffff
 
 #define WHEEL_ERROR_INIT_FILESYSTEM       0x0100
