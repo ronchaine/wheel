@@ -1,11 +1,13 @@
 #### What is it?
-It is _somewhat working_.  Some parts won't work yet -- use at your own caution.
-Stable branches will be made after they are ready for it.  That being said, if you want to take a look, use doxygen to create documentation, most of the stuff should be pretty well-explained.  If they aren't - leave me an issue.
+It is a library to ease the handling application glue in a modular way so dependencies can be left at bare minimum.
+
+If you want to take a look, use doxygen to create documentation, most of the stuff should be pretty well-explained.  If they aren't - leave me an issue.
 
 Note that the API is NOT stable yet.  During 2014 I have been using this for
 a lot of different projects, and the requirements of those projects affect which
-features are to remain and to be added.  (The module_video and module_audio are
-most likely candidates for complete rework.)
+features are to remain and to be added.  In particular, module_video is currently
+going through almost complete rewrite, while the string class is only going to
+be expanded if new features are required.
 
 On the other note, while this repository doesn't get standard updates, it doesn't mean that I have stopped working on it, just that the work is done mostly in projects that use this library, then "backported" here.
 
@@ -20,9 +22,9 @@ This is because the current cmakelists links it against static physfs built agai
 musl (done for debugging purposes), will fix in stable version, or when I get
 buildbot running, whichever comes first.
 
-#### Troubleshooting
-OS X requires libc++ as standard library, the stdlibc++ provided by Apple lacks required C++11 functionality.
-
+#### What is this about unstable API?
+Unfortunatelhy, there are parts that are not up to the task they should be doing, and as such some changes will be made from time to time.  On the other hand, classes such as wheel::String are doing their job very well, and do not
+need to be changed.
 
 #### Licence
 Copyright (c) 2013-2015 Jari Ronkainen
