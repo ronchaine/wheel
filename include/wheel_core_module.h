@@ -13,11 +13,6 @@
 #include "wheel_core_string.h"
 #include "wheel_core_event.h"
 
-// FIXME: dlfcn is UNIX-specific, windows uses something different.
-//        This should work with MingW32 though.
-
-// Ok, it didn't, working on it...
-
 #ifndef _WIN32
 #include <dlfcn.h>
 
@@ -27,7 +22,6 @@ typedef void* module_handle_t;
 #include <windows.h>
 
 // Get rid of moronic defines
-
 #ifdef interface
    #undef interface
 #endif
@@ -143,10 +137,12 @@ namespace wheel
       private:
 //         virtual int check_depends();
 
+      protected:
+         virtual ~Module() {}
+
       public:
          module_handle_t library_handle;
 
-         virtual ~Module() {}
          virtual void get_module_info(modinfo_t*) = 0;
 
          virtual uint32_t GetEvents(EventList* events) { return WHEEL_UNIMPLEMENTED_FEATURE; }

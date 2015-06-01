@@ -16,15 +16,19 @@ namespace wheel
 {
    class Shader
    {
-      private:
       public:
-         uint32_t             SetVertexSource(const wcl::string& vs);
-         uint32_t             SetFragmentSource(const wcl::string& fs);
+//*
+         uint32_t                   SetVertexSource(const wcl::string& vs);
+         uint32_t                   SetFragmentSource(const wcl::string& fs);
 
-         virtual uint32_t     Compile();
-         virtual uint32_t     Use();
+         virtual uint32_t           Compile() = 0;
+// /*/
+         virtual uint32_t           Use() = 0;
 
-         virtual ~Shader()    {}
+         // Used to set uniforms
+         virtual uint32_t           operator[](const wcl::string& idx) = 0;
+
+         virtual ~Shader()          {}
    };
 
    struct vertex_t

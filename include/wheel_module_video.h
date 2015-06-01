@@ -139,6 +139,29 @@ namespace wheel
 
             // Shader-related
 
+            //! Create shader
+            /*!
+               Creates a shader from files given.  Takes shader name, fragment shader filename
+               and vertex shader filename as parameters.
+
+               \param name    name to give the new shader
+               \param vert    vertex shader filename
+               \param frag    fragment shader filename
+
+               \return pointer to a new shader object.
+            */
+            virtual  Shader*  CreateShader(const string& name, const string& vert, const string& frag) { return nullptr; }
+
+            //! Create shader
+            /*!
+               Creates a shader from files given.  Takes a shader definition file as an input.
+
+               \param info    file to read shader info from
+
+               \return pointer to a new shader object.
+            */
+            virtual  Shader*  CreateShader(const string& info) { return nullptr; }
+
             //! Add new shader
             /*!
                Compiles and links a shader program.  This function SHOULD be implemented if any
@@ -151,6 +174,8 @@ namespace wheel
                \param frag    file to read fragment shader from.
 
                \return <code>WHEEL_OK</code> on success, or a value depicting an error.
+
+               \deprecated
             */
             virtual  uint32_t AddShader(const string& name, const string& vert, const string& frag) { return WHEEL_UNIMPLEMENTED_FEATURE; }
 
@@ -162,6 +187,8 @@ namespace wheel
                \param name    name that the shader program is identified by.
 
                \return <code>WHEEL_OK</code> on success, or a value depicting an error.
+
+               \deprecated
             */
             virtual  uint32_t RemoveShader(const string& name) { return WHEEL_UNIMPLEMENTED_FEATURE; }
 
@@ -188,6 +215,7 @@ namespace wheel
                \param name    name of the shader program to use. 
 
                \return <code>WHEEL_OK</code> on success, or a value depicting an error.
+               \warning       DEPRECATED
             */
             virtual  uint32_t UseShader(const string& name) { return WHEEL_UNIMPLEMENTED_FEATURE; }
 
