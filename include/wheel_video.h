@@ -24,7 +24,7 @@ namespace wheel
          virtual uint32_t     Compile();
          virtual uint32_t     Use();
 
-         virtual ~Shader() {}
+         virtual ~Shader()    {}
    };
 
    struct vertex_t
