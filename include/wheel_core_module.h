@@ -50,17 +50,17 @@ inline void dlclose(module_handle_t lib) { FreeLibrary(lib); }
    Use name of the module class as an argument or just write the needed functions
    yourself if you need more detailed options.
 */
-#define WHEEL_MODULE_REGISTER(x)             \
-   extern "C" {                              \
-      wheel::Module* register_module()       \
-      {                                      \
-         return new x;                       \
-      }                                      \
-                                             \
-      void remove_module(wheel::Module* mod) \
-      {                                      \
-         delete mod;                         \
-      }                                      \
+#define WHEEL_MODULE_REGISTER(x)                   \
+   extern "C" {                                    \
+      wheel::Module* register_module()             \
+      {                                            \
+         return new x;                             \
+      }                                            \
+                                                   \
+      void remove_module(wheel::Module* mod)       \
+      {                                            \
+         delete mod;                               \
+      }                                            \
    }
 
 namespace wheel
@@ -135,12 +135,10 @@ namespace wheel
    class Module
    {
       private:
-//         virtual int check_depends();
-
       protected:
+      public:
          virtual ~Module() {}
 
-      public:
          module_handle_t library_handle;
 
          virtual void get_module_info(modinfo_t*) = 0;
