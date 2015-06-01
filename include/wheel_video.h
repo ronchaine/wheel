@@ -17,12 +17,6 @@ namespace wheel
    class Shader
    {
       public:
-//*
-         uint32_t                   SetVertexSource(const wcl::string& vs);
-         uint32_t                   SetFragmentSource(const wcl::string& fs);
-
-         virtual uint32_t           Compile() = 0;
-// /*/
          virtual uint32_t           Use() = 0;
 
          // Used to set uniforms
