@@ -142,25 +142,32 @@ namespace wheel
             //! Create shader
             /*!
                Creates a shader from files given.  Takes shader name, fragment shader filename
-               and vertex shader filename as parameters.
+               and vertex shader filename as parameters.  This function is optional.
 
                \param name    name to give the new shader
                \param vert    vertex shader filename
                \param frag    fragment shader filename
 
-               \return pointer to a new shader object.
+               \return pointer to a new shader object or nullptr.
             */
             virtual  Shader*  CreateShader(const string& name, const string& vert, const string& frag) { return nullptr; }
 
             //! Create shader
             /*!
                Creates a shader from files given.  Takes a shader definition file as an input.
+               This function is optional.
 
                \param info    file to read shader info from
 
-               \return pointer to a new shader object.
+               \return pointer to a new shader object or nullptr.
             */
             virtual  Shader*  CreateShader(const string& info) { return nullptr; }
+
+            //! Add a shader to collection
+            /*!
+               Add a shader to material collection
+            */
+            virtual  uint32_t AddShader(Shader* shader) { return WHEEL_UNIMPLEMENTED_FEATURE; }
 
             //! Add new shader
             /*!
