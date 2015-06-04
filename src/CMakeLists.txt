@@ -1,5 +1,5 @@
 # Use musl static linked version or find
- find_package(PhysFS REQUIRED)
+find_package(PhysFS REQUIRED)
 #set(PHYSFS_LIBRARY ${WHEEL_SOURCE_DIR}/lib/libphysfs.a)
 
 include_directories(${WHEEL_SOURCE_DIR}/src
