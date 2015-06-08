@@ -18,6 +18,21 @@ namespace wheel
    */
    void EventMapping::map_event(const wheel::Event& ev, const wheel::string& ident, std::function<void(wheel::Event& e)> func)
    {
+      buffer_t& evd = (buffer_t&)ev.data;
+      evd.seek(0);
+      uint8_t ev_type = evd.read<uint8_t>();
+
+      if (ev_type == WHEEL_EVENT_TIMER)
+      {
+         uint64_t ptr = evd.read<uint64_t>();
+         ev_timers.push_back((Timer*)ptr);
+      }
+      else if (ev_type == WHEEL_EVENT_VAR_CHANGED)
+      {         
+         uint64_t ptr = evd.read<uint64_t>();
+         ev_vars.push_back((void*)ptr);
+      }
+
       wheel::eventinfo_t nei;
       nei.ident = ident;
       nei.func = func;
