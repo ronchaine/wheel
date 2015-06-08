@@ -59,32 +59,10 @@ namespace wheel
    inline wheel::Event describe_event(uint8_t t, T* var)
    {
       wheel::Event rval;
-      if (t == WHEEL_EVENT_TIMER)
-      {
-         wheel::Timer* it = (wheel::Timer*) var;
-         rval.data.push_back(WHEEL_EVENT_TIMER);
+      rval.data.push_back(WHEEL_EVENT_TIMER);
 
-         uint64_t ptr_u64 = (uint64_t)var;
-         rval.data.write<uint64_t>(var);
-/*
-         std::string str = it->getID().std_str();
-
-         uint32_t size_u32 = str.size();
-
-         rval.data.write<uint32_t>(size_u32);
-         for (auto c : str)
-         {
-            rval.data.push_back(c);
-         }
-*/
-      }
-      else if (t == WHEEL_EVENT_VAR_CHANGED)
-      {
-         rval.data.push_back(WHEEL_EVENT_VAR_CHANGED);
-
-         uint64_t ptr_u64 = (uint64_t)var;
-         rval.data.write<uint64_t>(var);
-      }
+      uint64_t ptr_u64 = (uint64_t)var;
+      rval.data.write<uint64_t>(var);
 
       return rval;
    }
