@@ -69,7 +69,7 @@ namespace wheel
    {
       std::chrono::steady_clock::time_point now = std::chrono::steady_clock::steady_clock::now();
 
-      uint64_t d = std::chrono::duration_cast<std::chrono::duration<uint64_t, std::ratio<1,1000>>>(now - start).count();
+      uint64_t d = std::chrono::duration_cast<std::chrono::duration<uint64_t, std::ratio<1,1000000>>>(now - start).count();
 
       if (d > usec)
       {
