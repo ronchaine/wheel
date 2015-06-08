@@ -109,6 +109,11 @@
 #define WHEEL_INITIALISED                 0x0001
 #define WHEEL_LITTLE_ENDIAN               0x0002
 
+// Values
+#define WHEEL_SECONDS                     1000000
+#define WHEEL_MILLISECONDS                1000
+#define WHEEL_MICROSECONDS                1
+
 // Events
 #define WHEEL_EVENT_WINDOW       0x00
 
@@ -134,7 +139,6 @@
 #define WHEEL_EVENT_VAR_CHANGED  0x20
 
 // These values correspond to OpenGL numbers
-
 #define WHEEL_PIXEL_FMT_NONE        ~0
 #define WHEEL_PIXEL_FMT_BGR         0x80e0
 #define WHEEL_PIXEL_FMT_BGRA        0x80e1
