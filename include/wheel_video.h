@@ -19,6 +19,9 @@ namespace wheel
       public:
          virtual uint32_t           Use() = 0;
 
+         // Convert vertexes to shaader format
+         void                       to_shader_format(const buffer_t& input, buffer_t& output);
+
          // Used to set uniforms
          virtual uint32_t           operator[](const wcl::string& idx) = 0;
 
@@ -38,6 +41,14 @@ namespace wheel
       vertex_t() {}
       vertex_t(float x, float y, float z) : x0(x), y0(y), z0(z) {}
       vertex_t(float x, float y, float z, uint16_t s, uint16_t t) : x0(x), y0(y), z0(z), s0(s), t0(t) {}
+   };
+
+   class VertexBuffer
+   {
+      private:
+         std::vector<vertex_t>   data;
+      public:
+         void                    add_vertices();
    };
 }
 
