@@ -43,6 +43,50 @@ namespace wheel
       }
    }
 
+   void EventMapping::process(const wheel::EventList& events)
+   {
+      if (!active)
+         return;
+/*
+      std::list< std::list<wheel::Timer>::iterator > erase_list;
+
+      for (auto it = eventtimers.begin(); it != eventtimers.end(); ++it)
+      {
+         if (it->Check())
+         {
+            if (it->repeat == false)
+               erase_list.push_back(it);
+
+            wheel::Event newevent;
+            newevent.data.push_back(WHEEL_EVENT_TIMER);
+
+            std::string str = it->getID().std_str();
+
+            uint32_t size_u32 = str.size();
+
+            newevent.data.write<uint32_t>(size_u32);
+            for (auto c : str)
+            {
+               newevent.data.push_back(c);
+            }
+
+            //newevent.data.write<>
+            eventlist.push_back(newevent);
+         }
+      }
+
+      for (auto it : erase_list)
+         eventtimers.erase(it);
+*/
+      // Trigger events
+      for (wheel::Event e : events)
+         for (auto ev : map_data)
+         {
+            if (match_events(ev.first, e.data))
+               ev.second.func(e);
+         }
+   }
+
    //! Check events for a match
    /*!
       Compare two event buffers for a match
