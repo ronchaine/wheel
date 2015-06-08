@@ -64,7 +64,7 @@ namespace wheel
    }
 
    template<typename T>
-   inline wheel::Event describe_event(uint8_t t, T* var)
+   inline wheel::Event event_from_ptr(uint8_t t, T* var)
    {
       wheel::Event rval;
       rval.data.push_back(t);
@@ -110,6 +110,7 @@ namespace wheel
          void           unmap_event(const wheel::string& ident);
 
          void           process(EventList& el);
+         void           process();
    };
 
    uint32_t match_events(const wheel::buffer_t& l, const wheel::buffer_t& r);

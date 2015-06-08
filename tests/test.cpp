@@ -10,15 +10,19 @@ int main(void)
    printf("created timer at %08x, with 5000 µsec interval\n", &t5);
    printf("created timer at %08x, with 2000 µsec interval\n", &t2);
 
-   events.map_event(wheel::describe_event2(WHEEL_EVENT_TIMER, &t5), "test timer", [&](wheel::Event& e)
+   events.map_event(wheel::event_from_ptr(WHEEL_EVENT_TIMER, &t5), "test timer", [&](wheel::Event& e)
       { 
-         std::cout << "second!\n";
+         e.data.seek(1);
+         uint64_t ptr = e.data.read<uint64_t>();
+         printf("event from timer @ %08x\n", ptr);
       }
    );
 
-   events.map_event(wheel::describe_event2(WHEEL_EVENT_TIMER, &t2), "test timer2", [&](wheel::Event& e)
+   events.map_event(wheel::event_from_ptr(WHEEL_EVENT_TIMER, &t2), "test timer2", [&](wheel::Event& e)
       { 
-         std::cout << "faster second!\n";
+         e.data.seek(1);
+         uint64_t ptr = e.data.read<uint64_t>();
+         printf("event from timer @ %08x\n", ptr);
       }
    );
 

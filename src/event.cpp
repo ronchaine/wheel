@@ -66,6 +66,11 @@ namespace wheel
       }
    }
 
+   void EventMapping::process()
+   {
+      wheel::EventList empty;
+      process(empty);
+   }
    void EventMapping::process(wheel::EventList& events)
    {
       // Handle timers
