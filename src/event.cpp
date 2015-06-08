@@ -47,9 +47,9 @@ namespace wheel
    {
       if (!active)
          return;
-/*
       std::list< std::list<wheel::Timer>::iterator > erase_list;
 
+/*
       for (auto it = eventtimers.begin(); it != eventtimers.end(); ++it)
       {
          if (it->Check())

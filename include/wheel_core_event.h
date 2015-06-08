@@ -2,11 +2,16 @@
 #define WHEEL_CORE_EVENT_HEADER
 
 #include "wheel_core_string.h"
+#include "wheel_core_utility.h"
 
 #include <unordered_map>
 
 namespace wheel
 {
+   struct wheel_event_t
+   {
+   };
+
    //! Event
    /*!
    */
@@ -51,6 +56,40 @@ namespace wheel
    }
 
    template<typename T>
+   inline wheel::Event describe_event(uint8_t t, T* var)
+   {
+      wheel::Event rval;
+      if (t == WHEEL_EVENT_TIMER)
+      {
+         wheel::Timer* it = (wheel::Timer*) var;
+         rval.data.push_back(WHEEL_EVENT_TIMER);
+
+         uint64_t ptr_u64 = (uint64_t)var;
+         rval.data.write<uint64_t>(var);
+/*
+         std::string str = it->getID().std_str();
+
+         uint32_t size_u32 = str.size();
+
+         rval.data.write<uint32_t>(size_u32);
+         for (auto c : str)
+         {
+            rval.data.push_back(c);
+         }
+*/
+      }
+      else if (t == WHEEL_EVENT_VAR_CHANGED)
+      {
+         rval.data.push_back(WHEEL_EVENT_VAR_CHANGED);
+
+         uint64_t ptr_u64 = (uint64_t)var;
+         rval.data.write<uint64_t>(var);
+      }
+
+      return rval;
+   }
+
+   template<typename T>
    inline wheel::Event variable_event(T& var)
    {
       wheel::Event rval;
@@ -68,8 +107,11 @@ namespace wheel
    class EventMapping
    {
       private:
-         eventlinks_t   map_data;
-         bool           active;
+         eventlinks_t         map_data;
+         bool                 active;
+
+         std::list<Timer*>    ev_timers;
+         std::vector<void*>   ev_vars;
 
       public:
          wheel::string  id;
