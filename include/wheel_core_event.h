@@ -12,6 +12,14 @@ namespace wheel
    {
    };
 
+   struct var_tracker_t
+   {
+      void*    ptr;
+      size_t   data_size;
+
+      uint64_t hash;
+   };
+
    //! Event
    /*!
    */
@@ -59,14 +67,17 @@ namespace wheel
    inline wheel::Event describe_event(uint8_t t, T* var)
    {
       wheel::Event rval;
-      rval.data.push_back(WHEEL_EVENT_TIMER);
+      rval.data.push_back(t);
 
-      uint64_t ptr_u64 = (uint64_t)var;
-      rval.data.write<uint64_t>(var);
+      uint64_t ptr_val = (uint64_t) var;
+      rval.data.write<uint64_t>(ptr_val);
+
+      if (t == WHEEL_EVENT_VAR_CHANGED)
+         rval.data.write<uint64_t>(sizeof(T));
 
       return rval;
    }
-
+/*
    template<typename T>
    inline wheel::Event variable_event(T& var)
    {
@@ -81,15 +92,15 @@ namespace wheel
          rval.data.write<uint8_t>(*(var_byte_ptr + i));
       }
    }
-
+*/
    class EventMapping
    {
       private:
-         eventlinks_t         map_data;
-         bool                 active;
+         eventlinks_t               map_data;
+         bool                       active;
 
-         std::list<Timer*>    ev_timers;
-         std::vector<void*>   ev_vars;
+         std::list<Timer*>          ev_timers;
+         std::vector<var_tracker_t> ev_vars;
 
       public:
          wheel::string  id;
@@ -98,7 +109,7 @@ namespace wheel
          void           map_event(const wheel::Event&, const wheel::string& ident, std::function<void(wheel::Event&)>);
          void           unmap_event(const wheel::string& ident);
 
-         void           process(const EventList& el);
+         void           process(EventList& el);
    };
 
    uint32_t match_events(const wheel::buffer_t& l, const wheel::buffer_t& r);

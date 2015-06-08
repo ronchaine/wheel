@@ -28,9 +28,17 @@ namespace wheel
          ev_timers.push_back((Timer*)ptr);
       }
       else if (ev_type == WHEEL_EVENT_VAR_CHANGED)
-      {         
+      {
+         var_tracker_t var_tracker;
+
          uint64_t ptr = evd.read<uint64_t>();
-         ev_vars.push_back((void*)ptr);
+
+         var_tracker.ptr = (void*)evd.read<uint64_t>();
+         var_tracker.data_size = evd.read<uint64_t>();
+
+         // TODO: FIXME: Calculate hash.
+         var_tracker.hash = 0x70d0;
+         ev_vars.push_back(var_tracker);
       }
 
       wheel::eventinfo_t nei;
@@ -58,41 +66,40 @@ namespace wheel
       }
    }
 
-   void EventMapping::process(const wheel::EventList& events)
+   void EventMapping::process(wheel::EventList& events)
    {
-      if (!active)
-         return;
-      std::list< std::list<wheel::Timer>::iterator > erase_list;
+      // Handle timers
+      std::list< std::list<wheel::Timer*>::iterator > erase_list;
 
-/*
-      for (auto it = eventtimers.begin(); it != eventtimers.end(); ++it)
+      for (auto it = ev_timers.begin(); it != ev_timers.end(); ++it)
       {
-         if (it->Check())
+         if ((*it)->Check())
          {
-            if (it->repeat == false)
+            if ((*it)->repeat == false)
                erase_list.push_back(it);
 
             wheel::Event newevent;
             newevent.data.push_back(WHEEL_EVENT_TIMER);
 
-            std::string str = it->getID().std_str();
+            uint64_t ptr_val = (uint64_t) (*it);
+            newevent.data.write<uint64_t>(ptr_val);
 
-            uint32_t size_u32 = str.size();
-
-            newevent.data.write<uint32_t>(size_u32);
-            for (auto c : str)
-            {
-               newevent.data.push_back(c);
-            }
-
-            //newevent.data.write<>
-            eventlist.push_back(newevent);
+            events.push_back(newevent);
          }
       }
-
       for (auto it : erase_list)
-         eventtimers.erase(it);
-*/
+         ev_timers.erase(it);
+
+      // Handle variables
+      for (auto var : ev_vars)
+      {
+         
+      }
+
+
+      if (!active)
+         return;
+
       // Trigger events
       for (wheel::Event e : events)
          for (auto ev : map_data)
