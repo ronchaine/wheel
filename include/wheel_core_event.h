@@ -76,6 +76,7 @@ namespace wheel
 
          bool           is_active() const;
          void           map_event(const wheel::Event&, const wheel::string& ident, std::function<void(wheel::Event&)>);
+         void           unmap_event(const wheel::string& ident);
    };
 
    uint32_t match_events(const wheel::buffer_t& l, const wheel::buffer_t& r);

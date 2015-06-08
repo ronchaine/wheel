@@ -25,6 +25,24 @@ namespace wheel
       map_data[ev.data] = nei;
    }
 
+   //! Unmap an event
+   /**
+    * Remove an event mapping
+    * 
+    * \param ident   Name of the event to be removed
+    */
+   void EventMapping::unmap_event(const wheel::string& ident)
+   {
+      for (auto it = map_data.begin(); it != map_data.end(); ++it)
+      {
+         if (it->second.ident == ident)
+         {
+            map_data.erase(it);
+            return;
+         }
+      }
+   }
+
    //! Check events for a match
    /*!
       Compare two event buffers for a match
