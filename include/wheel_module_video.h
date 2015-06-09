@@ -32,7 +32,10 @@ namespace wheel
             virtual ~Shader()          {}
       };
 
-      //! Interface for viewports
+      // Interface for viewports
+      /*
+         This feature probably gets cut or moved to extras.
+      */
       class Viewport
       {
          private:
