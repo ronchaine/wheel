@@ -17,6 +17,31 @@ namespace wheel
 {
    namespace interface
    {
+      //! Interface for shaders
+      class Shader
+      {
+         public:
+            virtual uint32_t           Use() = 0;
+   
+            // Convert vertexes to shaader format
+            void                       to_shader_format(const buffer_t& input, buffer_t& output);
+   
+            // Used to set uniforms
+            virtual uint32_t           operator[](const wcl::string& idx) = 0;
+   
+            virtual ~Shader()          {}
+      };
+
+      //! Interface for viewports
+      class Viewport
+      {
+         private:
+            Video*      video;
+
+         public:
+            virtual    ~Viewport() {};
+      };
+
       //! Interface for renderer modules
       class Video : public Module
       {
