@@ -18,11 +18,100 @@ namespace wheel
    */
    void EventMapping::map_event(const wheel::Event& ev, const wheel::string& ident, std::function<void(wheel::Event& e)> func)
    {
+      buffer_t& evd = (buffer_t&)ev.data;
+      evd.seek(0);
+      uint8_t ev_type = evd.read<uint8_t>();
+
+      if (ev_type == WHEEL_EVENT_TIMER)
+      {
+         uint64_t ptr = evd.read<uint64_t>();
+         ev_timers.push_back((Timer*)ptr);
+      }
+      else if (ev_type == WHEEL_EVENT_VAR_CHANGED)
+      {
+         var_tracker_t var_tracker;
+
+         uint64_t ptr = evd.read<uint64_t>();
+
+         var_tracker.ptr = (void*)evd.read<uint64_t>();
+         var_tracker.data_size = evd.read<uint64_t>();
+
+         // TODO: FIXME: Calculate hash.
+         var_tracker.hash = 0x70d0;
+         ev_vars.push_back(var_tracker);
+      }
+
       wheel::eventinfo_t nei;
       nei.ident = ident;
       nei.func = func;
 
       map_data[ev.data] = nei;
+   }
+
+   //! Unmap an event
+   /**
+    * Remove an event mapping
+    * 
+    * \param ident   Name of the event to be removed
+    */
+   void EventMapping::unmap_event(const wheel::string& ident)
+   {
+      for (auto it = map_data.begin(); it != map_data.end(); ++it)
+      {
+         if (it->second.ident == ident)
+         {
+            map_data.erase(it);
+            return;
+         }
+      }
+   }
+
+   void EventMapping::process()
+   {
+      wheel::EventList empty;
+      process(empty);
+   }
+   void EventMapping::process(wheel::EventList& events)
+   {
+      // Handle timers
+      std::list< std::list<wheel::Timer*>::iterator > erase_list;
+
+      for (auto it = ev_timers.begin(); it != ev_timers.end(); ++it)
+      {
+         if ((*it)->Check())
+         {
+            if ((*it)->repeat == false)
+               erase_list.push_back(it);
+
+            wheel::Event newevent;
+            newevent.data.push_back(WHEEL_EVENT_TIMER);
+
+            uint64_t ptr_val = (uint64_t) (*it);
+            newevent.data.write<uint64_t>(ptr_val);
+
+            events.push_back(newevent);
+         }
+      }
+      for (auto it : erase_list)
+         ev_timers.erase(it);
+
+      // Handle variables
+      for (auto var : ev_vars)
+      {
+         
+      }
+
+
+      if (!active)
+         return;
+
+      // Trigger events
+      for (wheel::Event e : events)
+         for (auto ev : map_data)
+         {
+            if (match_events(ev.first, e.data))
+               ev.second.func(e);
+         }
    }
 
    //! Check events for a match

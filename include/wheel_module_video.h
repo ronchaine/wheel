@@ -233,7 +233,7 @@ namespace wheel
             //! Update the framebuffer
             /*!
             */
-            virtual  void Update() = 0;
+            virtual  void Update() {};
 
             // Retrieve stuff
             virtual  uint32_t getScrWidth() = 0;
@@ -247,7 +247,7 @@ namespace wheel
             virtual  void     AddVertex(vertex_t v, buffer_t* buf = nullptr);
             virtual  void     Flush(int32_t array_type = 4) {}
 
-            virtual  uint32_t DrawRect(int32_t x, int32_t y, uint32_t w, uint32_t h, float rot = 0.0f, int32_t x_pivot = 0, int32_t y_pivot = 0) = 0;
+            virtual  uint32_t DrawRect(int32_t x, int32_t y, uint32_t w, uint32_t h, float rot = 0.0f, int32_t x_pivot = 0, int32_t y_pivot = 0) { return WHEEL_UNIMPLEMENTED_FEATURE; }
 
             virtual  uint32_t Rotate(float x, float y, float z, float w) { return WHEEL_UNIMPLEMENTED_FEATURE; }            
 
@@ -257,7 +257,7 @@ namespace wheel
             // Atlasing
             virtual  uint32_t CreateAtlas(const wcl::string& atlas, const wcl::string& texture) { return WHEEL_UNIMPLEMENTED_FEATURE; }
             virtual  uint32_t AtlasBuffer(const wcl::string& atlasname, const wcl::string& name, uint32_t w, uint32_t h, void* data) { return WHEEL_UNIMPLEMENTED_FEATURE; }
-            virtual  uint32_t GetAtlasPos(const wcl::string& atlasname, const wcl::string& buffername, rect_t* result);
+            virtual  uint32_t GetAtlasPos(const wcl::string& atlasname, const wcl::string& buffername, rect_t* result) { return WHEEL_UNIMPLEMENTED_FEATURE; }
 
             // Texturing
             virtual  void     CreateTexture(const wcl::string& name, uint32_t w, uint32_t h, uint32_t components, uint32_t format);

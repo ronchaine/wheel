@@ -140,8 +140,7 @@ namespace wheel
 
    //! Timer
    /*!
-      A timer that counts microseconds and reports an event if it has
-      reached given amount of.
+      A timer that counts microseconds
    */
    class Timer
    {

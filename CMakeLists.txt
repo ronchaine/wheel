@@ -15,8 +15,8 @@ set(WHEEL_LIB_NAME wheel)
 
 option (WHEEL_INCLUDE_IMAGELIBRARY "Include image loading functionality" ON)
 option (WHEEL_INCLUDE_SOUNDLIBRARY "Include sound loading functionality" ON)
-option (WHEEL_BUILD_MODULES "Build the basic modules" OFF)
-option (WHEEL_BUILD_EXAMPLES "Build the examples (needs basic modules)" OFF)
+#option (WHEEL_BUILD_MODULES "Build the basic modules" OFF)
+#option (WHEEL_BUILD_EXAMPLES "Build the examples (needs basic modules)" OFF)
 option (WHEEL_BUILD_TESTS "Build the unit tests" OFF)
 option (WHEEL_BUILD_STATIC "Build static library" OFF)
 
