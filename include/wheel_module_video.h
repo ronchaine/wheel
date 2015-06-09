@@ -32,19 +32,6 @@ namespace wheel
             virtual ~Shader()          {}
       };
 
-      // Interface for viewports
-      /*
-         This feature probably gets cut or moved to extras.
-      */
-      class Viewport
-      {
-         private:
-            Video*      video;
-
-         public:
-            virtual    ~Viewport() {};
-      };
-
       //! Interface for renderer modules
       class Video : public Module
       {
