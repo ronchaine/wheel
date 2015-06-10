@@ -17,6 +17,21 @@ namespace wheel
 {
    namespace interface
    {
+      //! Interface for shaders
+      class Shader
+      {
+         public:
+            virtual uint32_t           Use() = 0;
+   
+            // Convert vertexes to shaader format
+            void                       to_shader_format(const buffer_t& input, buffer_t& output);
+   
+            // Used to set uniforms
+            virtual uint32_t           operator[](const wcl::string& idx) = 0;
+   
+            virtual ~Shader()          {}
+      };
+
       //! Interface for renderer modules
       class Video : public Module
       {
@@ -142,7 +157,8 @@ namespace wheel
             //! Create shader
             /*!
                Creates a shader from files given.  Takes shader name, fragment shader filename
-               and vertex shader filename as parameters.  This function is optional.
+               and vertex shader filename as parameters.  This function is optional to
+               implement.
 
                \param name    name to give the new shader
                \param vert    vertex shader filename
@@ -155,7 +171,7 @@ namespace wheel
             //! Create shader
             /*!
                Creates a shader from files given.  Takes a shader definition file as an input.
-               This function is optional.
+               This function is optional to implement.
 
                \param info    file to read shader info from
 
@@ -200,6 +216,9 @@ namespace wheel
             virtual  uint32_t RemoveShader(const string& name) { return WHEEL_UNIMPLEMENTED_FEATURE; }
 
             //! Return shader ID
+            /*!
+               \deprecated
+            */
             virtual  int32_t getProgram() { return WHEEL_UNIMPLEMENTED_FEATURE; }
 
 

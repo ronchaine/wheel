@@ -14,19 +14,6 @@
 
 namespace wheel
 {
-   class Shader
-   {
-      public:
-         virtual uint32_t           Use() = 0;
-
-         // Convert vertexes to shaader format
-         void                       to_shader_format(const buffer_t& input, buffer_t& output);
-
-         // Used to set uniforms
-         virtual uint32_t           operator[](const wcl::string& idx) = 0;
-
-         virtual ~Shader()          {}
-   };
 
    struct vertex_t
    {
