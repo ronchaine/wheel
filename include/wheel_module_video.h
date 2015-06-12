@@ -20,15 +20,21 @@ namespace wheel
       //! Interface for shaders
       class Shader
       {
+         private:
+            wcl::string                shader_type;
+
          public:
             virtual uint32_t           Use() = 0;
-   
+            
             // Convert vertexes to shaader format
             void                       to_shader_format(const buffer_t& input, buffer_t& output);
-   
+
             // Used to set uniforms
             virtual uint32_t           operator[](const wcl::string& idx) = 0;
    
+            wcl::string                type() { return shader_type; }
+
+            Shader(wcl::string type) : shader_type(type) {}
             virtual ~Shader()          {}
       };
 
@@ -86,6 +92,8 @@ namespace wheel
             /*!
             */
             virtual  void     AddVertex(vertex_t v, buffer_t* buf = nullptr);
+
+            virtual  void     DrawSprite(uint32_t x, uint32_t y, uint32_t w, uint32_t h);
       };
 
    }
