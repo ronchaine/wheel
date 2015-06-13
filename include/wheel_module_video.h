@@ -26,7 +26,7 @@ namespace wheel
          public:
             virtual uint32_t           Use() = 0;
             
-            // Convert vertexes to shaader format
+            // Convert vertices to shader format
             void                       to_shader_format(const buffer_t& input, buffer_t& output);
 
             // Used to set uniforms
@@ -93,7 +93,20 @@ namespace wheel
             */
             virtual  void     AddVertex(vertex_t v, buffer_t* buf = nullptr);
 
-            virtual  void     DrawSprite(uint32_t x, uint32_t y, uint32_t w, uint32_t h);
+            //! Flush all the vertex buffers
+            /*!
+            */
+            virtual  void     Flush();
+
+            //! Load a texture
+            /*!
+            */
+            virtual  void     LoadTexture(const wcl::string& file);
+
+            //! Draw a sprite to the buffer
+            /*!
+            */
+            virtual  void     DrawSprite(uint32_t x, uint32_t y, uint32_t w, uint32_t h, const wcl::string& file);
       };
 
    }
