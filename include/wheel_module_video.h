@@ -104,20 +104,15 @@ namespace wheel
             */
             virtual  uint32_t LoadTexture(const wcl::string& file, const wcl::string& name = "") { return WHEEL_UNIMPLEMENTED_FEATURE; }
 
-            //! Load a texture
+            //! Load/modify a texture
             /*!
             */
             virtual  uint32_t Texture(const wcl::string& name, int32_t x_off, int32_t y_off, size_t w, size_t h, void* pixel_data, uint32_t flags = 0) { return WHEEL_UNIMPLEMENTED_FEATURE; }
 
-            // Generate a drawing surface
-            /*
-            virtual  uint32_t CreateSurface(const wcl::string& file, uint8_t flags = 0) {}
-            */
-
             //! Draw a sprite to the buffer
             /*!
             */
-            virtual  uint32_t DrawSprite(const wcl::string& sprite, uint32_t x, uint32_t y, uint32_t w, uint32_t h, int32_t pivot_x, int32_t pivot_y, float angle) { return WHEEL_UNIMPLEMENTED_FEATURE; }
+            virtual  uint32_t DrawSprite(const wcl::string& sprite, uint32_t x, uint32_t y, uint32_t w = ~0, uint32_t h = ~0, int32_t pivot_x = 0, int32_t pivot_y = 0, float angle = .0f) { return WHEEL_UNIMPLEMENTED_FEATURE; }
       };
 
    }
