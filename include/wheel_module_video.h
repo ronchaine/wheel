@@ -7,6 +7,7 @@
 #ifndef WHEEL_MODULE_VIDEO_INTERFACE_H
 #define WHEEL_MODULE_VIDEO_INTERFACE_H
 
+#include "wheel_core_debug.h"
 #include "wheel_core_module.h"
 #include "wheel_video.h"
 
@@ -91,7 +92,7 @@ namespace wheel
             //! Add a single vertex to the buffer
             /*!
             */
-            virtual  void     AddVertex(vertex_t v, buffer_t* buf = nullptr);
+            virtual  void     AddVertex(vertex_t v, buffer_t* buf = nullptr) = 0;
 
             //! Flush all the vertex buffers
             /*!
@@ -101,12 +102,22 @@ namespace wheel
             //! Load a texture
             /*!
             */
-            virtual  void     LoadTexture(const wcl::string& file);
+            virtual  uint32_t LoadTexture(const wcl::string& file, const wcl::string& name = "") { return WHEEL_UNIMPLEMENTED_FEATURE; }
+
+            //! Load a texture
+            /*!
+            */
+            virtual  uint32_t Texture(const wcl::string& name, int32_t x_off, int32_t y_off, size_t w, size_t h, void* pixel_data, uint32_t flags = 0) { return WHEEL_UNIMPLEMENTED_FEATURE; }
+
+            // Generate a drawing surface
+            /*
+            virtual  uint32_t CreateSurface(const wcl::string& file, uint8_t flags = 0) {}
+            */
 
             //! Draw a sprite to the buffer
             /*!
             */
-            virtual  void     DrawSprite(uint32_t x, uint32_t y, uint32_t w, uint32_t h, const wcl::string& file);
+            virtual  uint32_t DrawSprite(const wcl::string& sprite, uint32_t x, uint32_t y, uint32_t w, uint32_t h, int32_t pivot_x, int32_t pivot_y, float angle) { return WHEEL_UNIMPLEMENTED_FEATURE; }
       };
 
    }

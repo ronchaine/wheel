@@ -138,6 +138,10 @@
 // 0x2y variable change
 #define WHEEL_EVENT_VAR_CHANGED  0x20
 
+
+// Bitfields
+#define WHEEL_TEXTURE_NUM_CHANNELS  0xf
+
 // These values correspond to OpenGL numbers
 #define WHEEL_PIXEL_FMT_NONE        ~0
 #define WHEEL_PIXEL_FMT_BGR         0x80e0

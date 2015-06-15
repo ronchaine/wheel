@@ -265,6 +265,9 @@ namespace wheel
    */
    Module* ModuleLibrary::operator[](const string& ident)
    {
+      if (modules.count(ident) == 0)
+         return nullptr;
+
       return modules[ident];
    }
 }
