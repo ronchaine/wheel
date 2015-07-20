@@ -98,7 +98,7 @@ namespace wheel
       // Handle variables
       for (auto var : ev_vars)
       {
-         
+         // If hash of <data> of <size> at <ptr> differs
       }
 
 

@@ -99,6 +99,16 @@ namespace wheel
             */
             virtual  void     Flush();
 
+            //! Set scissor region
+            /*!
+            */
+            virtual  void     SetScissor(int x, int y, int w, int h) {}
+
+            //! Enable scissor test
+            /*!
+            */
+            virtual  void     EnableScissor(bool enabled) {}
+
             //! Load a texture
             /*!
             */
@@ -107,7 +117,7 @@ namespace wheel
             //! Load/modify a texture
             /*!
             */
-            virtual  uint32_t Texture(const wcl::string& name, int32_t x_off, int32_t y_off, size_t w, size_t h, void* pixel_data, uint32_t flags = 0) { return WHEEL_UNIMPLEMENTED_FEATURE; }
+            virtual  uint32_t UpdateTexture(const wcl::string& name, int32_t x_off, int32_t y_off, size_t w, size_t h, void* pixel_data, uint32_t flags = 0) { return WHEEL_UNIMPLEMENTED_FEATURE; }
 
             //! Draw a sprite to the buffer
             /*!
