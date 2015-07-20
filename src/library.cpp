@@ -162,10 +162,17 @@ namespace wheel
       }
    }
 
-   //! Load a file into resource library
-   /*!
-   */
-   uint32_t Library::Load(const wcl::string& file)
+   /**
+    * \brief Load a file into resource library
+    * \details Loads a file into memory, all library instances use same storage, so duplicate
+    *          files will not be stored twice.
+    * 
+    * \param file File to load
+    * \param flags Flags to be used while loading, accepted: WHEEL_NONE, WHEEL_KNOWN
+    * 
+    * \return WHEEL_OK or error code
+    */
+   uint32_t Library::Load(const wcl::string& file, flags_t flags)
    {
       wheel::buffer_t* file_buffer = (wheel::buffer_t*)wheel::GetBuffer(file);
          if (file_buffer == nullptr)
@@ -176,10 +183,21 @@ namespace wheel
       uint32_t rval = WHEEL_UNINITIALISED_RESOURCE;
 
       // If there is registered handler for the file type, use it
-      if (file_handlers.count(file_type))
+      if (file_handlers.count(file_type) && (file_type != WHEEL_FILE_FORMAT_UNKNOWN))
+      {
          rval = file_handlers[file_type](file, *file_buffer);
+      }
       else
+      {
+         // If we require known format, bail here.
+         if (flags & WHEEL_KNOWN)
+         {
+            wheel::DeleteBuffer(file);
+            return WHEEL_UNKNOWN_FORMAT;
+         }
+
          rval = file_handlers[WHEEL_FILE_FORMAT_UNKNOWN](file, *file_buffer);
+      }
 
       // We don't want to keep the original buffer.
       wheel::DeleteBuffer(file);
