@@ -106,8 +106,12 @@
 #define WHEEL_MODULE_CONTEXT_CREATION_ERROR 0xef05
 
 /// Flags
+#define WHEEL_NONE                        0x0000
 #define WHEEL_INITIALISED                 0x0001
 #define WHEEL_LITTLE_ENDIAN               0x0002
+
+#define WHEEL_NOCONVERT                   0x0004
+#define WHEEL_KNOWN                       0x0008
 
 // Values
 #define WHEEL_SECONDS                     1000000
@@ -159,6 +163,10 @@
 #define WHEEL_UNSIGNED_INT          0x8035
 #define WHEEL_FLOAT                 0x1406
 #define WHEEL_DOUBLE                0x140A
+
+// Add paletted formats for convenience
+#define WHEEL_PIXEL_FMT_PALETTE        WHEEL_PIXEL_FMT_MONO
+#define WHEEL_PIXEL_FMT_PALETTE_ALPHA  WHEEL_PIXEL_FMT_RG
 
 /// Typedefs, structs & stuff
 
