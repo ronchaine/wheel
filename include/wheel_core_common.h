@@ -133,6 +133,10 @@
 // 0x2y variable change
 #define WHEEL_EVENT_VAR_CHANGED  0x20
 
+// 0x3y misc
+#define WHEEL_EVENT_ERROR        0x30
+#define WHEEL_EVENT_CUSTOM       0x31
+
 // These values correspond to OpenGL numbers
 
 #define WHEEL_PIXEL_FMT_NONE        ~0
@@ -285,7 +289,7 @@ namespace wheel
          inline const uint8_t* getptr() const { return &this->at(0); }
          inline size_t hash() const noexcept;
 
-         inline std::string to_stl_string()
+         inline std::string to_stl_string() const
          {
             return std::string(this->begin(), this->end());
          }
