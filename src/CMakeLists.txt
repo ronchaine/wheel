@@ -46,7 +46,7 @@ if (WHEEL_INCLUDE_SOUNDLIBRARY)
   set(WHEEL_HEADERS ${WHEEL_HEADERS} ${SOUND_HEADERS})
 endif()
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --std=c++11 -fno-exceptions -fno-rtti -O2 -fPIC -g")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --std=c++14 -fno-exceptions -fno-rtti -O2 -fPIC -g")
 
 add_library(wheel_core SHARED ${WHEEL_SOURCES} ${WHEEL_HEADERS})
 set_target_properties(wheel_core PROPERTIES OUTPUT_NAME "${WHEEL_LIB_NAME}")
