@@ -265,6 +265,23 @@ namespace wheel
    std::vector<string> string::split(const string& delim)
    {
       std::vector<string> rval;
+
+      if (data.size() == 0)
+         return rval;
+
+      for_each_token(cbegin(data), cend(data),
+                     cbegin(delim), cend(delim),
+                     [&rval] (auto first, auto second)
+      {
+         if (first != last)
+         {
+            rval.emplace_back(first, second);
+         }
+      }
+
+      return rval;
+/*
+      std::vector<string> rval;
       if (data.size() == 0)
          return rval;
 
@@ -294,8 +311,8 @@ namespace wheel
       if (temp.length() != 0)
          rval.push_back(temp);
 
-
       return rval;
+*/
    }
 
    //! Generate substring
