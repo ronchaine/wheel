@@ -10,6 +10,7 @@
 #include "wheel_core_string.h"
 
 #include <cstdint>
+#include <algorithm>
 
 namespace wheel
 {
@@ -28,7 +29,7 @@ namespace wheel
    //! Split by delim
    template <class InputIt, class FwdIt, class BinOp>
    void for_each_token(InputIt first, InputIt last,
-                       ForwardIt sfirst, ForwardIt slast,
+                       FwdIt sfirst, FwdIt slast,
                        BinOp binary_op)
    {
       while(first != last)
