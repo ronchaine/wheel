@@ -25,6 +25,23 @@ namespace wheel
       return (endian_check_value_first == 0x1e);
    }
 
+   //! Split by delim
+   template <class InputIt, class FwdIt, class BinOp>
+   void for_each_token(InputIt first, InputIt last,
+                       ForwardIt sfirst, ForwardIt slast,
+                       BinOp binary_op)
+   {
+      while(first != last)
+      {
+         const auto pos = std::find_first_of(first, last, sfirst, slast);
+         binary_op(first, pos);
+         if (pos == last)
+            break;
+
+         first = std::next(pos);
+      }
+   }
+
    //! Reads a big-endian value from a buffer and increments pointer.
    /*!
       \param buffer     Buffer to be read
@@ -136,7 +153,6 @@ namespace wheel
    */
    uint32_t crc32(uint8_t* buffer, size_t len);
    uint32_t update_crc(uint32_t crc, uint8_t* buf, size_t len);
-
 
    //! Timer
    /*!
