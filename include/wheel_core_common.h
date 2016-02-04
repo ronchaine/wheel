@@ -11,6 +11,7 @@
 #include <cstdlib>
 #include <cassert>
 #include <vector>
+#include <unordered_map>
 #include <list>
 #include <chrono>
 
@@ -528,6 +529,8 @@ namespace wheel
    void        terminate();
 
    bool        big_endian();
+
+   static std::unordered_map<std::string, std::string> arguments;
 }
 
 namespace std
