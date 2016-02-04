@@ -210,6 +210,12 @@ namespace wheel
       return result;
    }
 
+   //! Implicit conversion to std::string
+   string::operator std::string() const
+   {
+      return this->std_str();
+   }
+
    //! Generate c-style string
    /*
       The C-style string is written to array given as a parameter, no allocation is made
