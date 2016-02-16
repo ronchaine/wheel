@@ -23,11 +23,11 @@ musl (done for debugging purposes), will fix in stable version, or when I get
 buildbot running, whichever comes first.
 
 #### What is this about unstable API?
-Unfortunatelhy, there are parts that are not up to the task they should be doing, and as such some changes will be made from time to time.  On the other hand, classes such as wheel::String are doing their job very well, and do not
-need to be changed.
+Unfortunately, there are parts that are not up to the task they should be doing, and as such some changes will be made from time to time.  On the other hand, classes such as wheel::String are doing their job very well, and do not
+need to be changed.  As long as you ignore everything in wheel::video, things should be pretty stable.
 
 #### Licence
-Copyright (c) 2013-2015 Jari Ronkainen
+Copyright (c) 2013 Jari Ronkainen
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
