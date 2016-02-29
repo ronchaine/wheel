@@ -398,6 +398,26 @@ namespace wheel
                this->push_back(*(dataptr+it));
          }
 
+         template <typename T>
+         inline void write_le(const T& data)
+         {
+            this->reserve(this->size() + sizeof(T));
+
+            uint8_t* dataptr = nullptr;
+            T t_val;
+
+            if (!big_endian())
+            {
+               t_val = endian_swap(data);
+               dataptr = (uint8_t*)&t_val;
+            } else {
+               dataptr = (uint8_t*)&data;
+            }
+
+            for (size_t it = 0; it < sizeof(T); ++it)
+               this->push_back(*(dataptr+it));
+         }
+
          inline size_t pos() const
          {
             return read_ptr;
