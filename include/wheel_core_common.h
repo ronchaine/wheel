@@ -418,6 +418,24 @@ namespace wheel
                this->push_back(*(dataptr+it));
          }
 
+         template <typename T>
+         inline void write_byte(uint8_t byte)
+         {
+            this->write<uint8_t>(byte);
+         }
+         template <typename... Ts>
+         inline void write_byte(uint8_t byte, Ts... bytes)
+         {
+            this->write<uint8_t>(byte);
+            this->write_byte(bytes...);
+         }
+         template <typename... Ts>
+         inline void write_bytes(Ts... bytes)
+         {
+            this->reserve(this->size() + sizeof...(bytes));
+            this->write_byte(bytes...);
+         }
+
          inline size_t pos() const
          {
             return read_ptr;
