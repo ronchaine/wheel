@@ -418,6 +418,10 @@ namespace wheel
                this->push_back(*(dataptr+it));
          }
 
+         inline void write_byte()
+         {
+         }
+
          template <typename T>
          inline void write_byte(uint8_t byte)
          {
