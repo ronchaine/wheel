@@ -429,6 +429,12 @@ namespace wheel
          }
    };
 
+   template<>
+   inline void buffer_t::write(const buffer_t& buf)
+   {
+      this->insert(std::end(*this), std::begin(buf), std::end(buf));
+   }
+
    /*!
       \brief  Checks file format of a file.
 
