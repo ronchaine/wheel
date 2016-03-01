@@ -187,6 +187,21 @@ namespace wheel
     wheel::Hash<wheel::string> rval_hash;
     return rval_hash(*this);
   }
+
+  /*!
+    Specialisation for buffer_t to write strings
+  */
+  template<>
+  inline void buffer_t::write(const string& input)
+  {
+    std::string actual = input.std_str();
+    this->reserve(this->size() + actual.size());
+
+    for (auto c : actual)
+    {
+      this->push_back(c);
+    }
+  }
 }
 
 namespace wheel {
