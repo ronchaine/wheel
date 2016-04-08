@@ -65,7 +65,7 @@ namespace wheel
 
          while (stream.avail_in != 0)
          {
-            if (deflate(&stream, Z_NO_FLUSH) != Z_OK);
+            if (deflate(&stream, Z_NO_FLUSH) != Z_OK)
             {
                log << "zlib error - deflating failed\n";
                return 0;
