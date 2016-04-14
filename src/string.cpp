@@ -469,6 +469,8 @@ namespace wheel
       for (size_t i = 0; i < std::min(length(), other.length()); ++i)
          if (data[i] < other.data[i])
             return true;
+         else if (data[i] > other.data[i])
+            return false;
 
       return false;
    }
@@ -476,10 +478,12 @@ namespace wheel
    bool string::operator>(const string& other) const
    {
       for (size_t i = 0; i < std::min(length(), other.length()); ++i)
-         if (data[i] > other.data[i])
+         if (data[i] < other.data[i])
+            return false;
+         else if (data[i] > other.data[i])
             return true;
 
-      return false;
+      return true;
    }
 
 
