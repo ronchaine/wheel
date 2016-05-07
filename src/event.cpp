@@ -98,12 +98,9 @@ namespace wheel
       // Handle variables
       for (auto var : ev_vars)
       {
-         
+         //TODO: handle         
       }
 
-
-      if (!active)
-         return;
 
       // Trigger events
       for (wheel::Event e : events)

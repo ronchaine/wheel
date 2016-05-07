@@ -97,7 +97,7 @@ namespace wheel
    {
       private:
          eventlinks_t               map_data;
-         bool                       active;
+//         bool                       active;
 
          std::list<Timer*>          ev_timers;
          std::vector<var_tracker_t> ev_vars;
@@ -105,7 +105,7 @@ namespace wheel
       public:
          wheel::string  id;
 
-         bool           is_active() const;
+//         bool           is_active() const;
          void           map_event(const wheel::Event&, const wheel::string& ident, std::function<void(wheel::Event&)>);
          void           unmap_event(const wheel::string& ident);
 
