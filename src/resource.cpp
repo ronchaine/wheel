@@ -125,6 +125,7 @@ namespace wheel
       if (!PHYSFS_exists(filename.std_str().c_str()))
       {
          log << "physfs is unable to find resource: " << filename << "\n";
+         ShowSearchPath();
          return WHEEL_RESOURCE_UNAVAILABLE;
       }
 
