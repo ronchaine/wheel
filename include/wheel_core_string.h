@@ -112,7 +112,7 @@ namespace wheel
         bool contains(const string&);
 
         // Is empty?
-        bool empty();
+        bool empty() const;
 
         // Make it empty
         void clear();

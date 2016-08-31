@@ -354,7 +354,7 @@ namespace wheel
    /*!
       \return <code>true</code> if the string is empty.
    */
-   bool string::empty()
+   bool string::empty() const
    {
       if (this->length() == 0)
          return true;

@@ -256,11 +256,11 @@ namespace wheel
    */
    uint32_t AddToPath(const string& path, const string& mountpoint, int sorder)
    {
-      log << "Adding search path: '" << path << "' to '" << mountpoint << "'\n";
+//      log << "Adding search path: '" << path << "' to '" << mountpoint << "'\n";
       if (PHYSFS_mount(path.std_str().c_str(), mountpoint.std_str().c_str(), sorder) == 0)
          return WHEEL_RESOURCE_UNAVAILABLE;
 
-      log << "Added to search path: " << path << "\n";
+//      log << "Added to search path: " << path << "\n";
 
       return WHEEL_OK;
    }
